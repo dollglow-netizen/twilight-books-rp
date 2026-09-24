@@ -1,1 +1,1924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Twilight: The Books — Interactive RP</title>
 
+<style>
+:root {
+    --forest: #101914;
+    --forest-light: #18241d;
+    --mist: #dfe5df;
+    --silver: #b9c2bd;
+    --white: #f5f7f5;
+    --glass: rgba(15, 24, 19, 0.82);
+    --border: rgba(220, 230, 223, 0.18);
+    --accent: #c8d1ca;
+    --danger: #9b6464;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+    font-family: Georgia, "Times New Roman", serif;
+    background:
+        radial-gradient(circle at top, #26372d 0%, #111b15 42%, #080d0a 100%);
+    color: var(--white);
+}
+
+body {
+    min-height: 100vh;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.screen {
+    display: none;
+    min-height: 100vh;
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* HOME */
+
+#homeScreen {
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+#homeScreen::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(
+            rgba(5, 10, 7, 0.35),
+            rgba(5, 10, 7, 0.78)
+        );
+    pointer-events: none;
+}
+
+.home-content {
+    position: relative;
+    z-index: 2;
+    width: min(760px, 100%);
+    text-align: center;
+}
+
+.eyebrow {
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--silver);
+    font-size: 0.72rem;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: clamp(3rem, 10vw, 7rem);
+    font-weight: normal;
+    letter-spacing: 0.06em;
+    margin: 0;
+    line-height: 0.95;
+}
+
+.subtitle {
+    margin: 18px auto 45px;
+    color: #cbd3cd;
+    font-style: italic;
+    max-width: 560px;
+    line-height: 1.6;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: min(380px, 100%);
+    margin: auto;
+}
+
+.main-button {
+    background: rgba(230, 237, 232, 0.08);
+    border: 1px solid var(--border);
+    color: var(--white);
+    padding: 17px 25px;
+    border-radius: 4px;
+    transition: 0.2s ease;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.main-button:hover {
+    background: rgba(230, 237, 232, 0.16);
+    transform: translateY(-2px);
+}
+
+/* PANELS */
+
+.panel-screen {
+    padding: 30px;
+    align-items: center;
+    justify-content: center;
+}
+
+.panel {
+    width: min(850px, 100%);
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 35px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 20px 70px rgba(0,0,0,0.35);
+}
+
+.panel h2 {
+    margin-top: 0;
+    font-size: 2rem;
+    font-weight: normal;
+}
+
+.panel-description {
+    color: var(--silver);
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+label {
+    color: #cdd5cf;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    border: 1px solid var(--border);
+    background: rgba(0,0,0,0.25);
+    color: white;
+    border-radius: 5px;
+    padding: 13px;
+    outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: rgba(220,230,223,0.5);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+select option {
+    background: #152019;
+}
+
+.panel-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 28px;
+    justify-content: flex-end;
+}
+
+.secondary-button,
+.primary-button {
+    border-radius: 4px;
+    padding: 12px 20px;
+    border: 1px solid var(--border);
+}
+
+.secondary-button {
+    background: transparent;
+    color: var(--silver);
+}
+
+.primary-button {
+    background: var(--accent);
+    color: #111;
+}
+
+/* SAVE LIST */
+
+.save-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.save-card {
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.04);
+    padding: 18px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.save-info strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.save-info small {
+    color: var(--silver);
+}
+
+.save-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* RP */
+
+#rpScreen {
+    flex-direction: column;
+    height: 100vh;
+    min-height: 100vh;
+}
+
+.rp-header {
+    height: 72px;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--border);
+    background: rgba(5,10,7,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 22px;
+}
+
+.rp-title {
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+}
+
+.rp-meta {
+    display: flex;
+    gap: 18px;
+    color: var(--silver);
+    font-size: 0.8rem;
+}
+
+.rp-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    flex: 1;
+    min-height: 0;
+}
+
+.rp-sidebar {
+    border-right: 1px solid var(--border);
+    background: rgba(5,10,7,0.45);
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.sidebar-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--silver);
+    margin-bottom: 15px;
+}
+
+.character-mini {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.character-mini strong {
+    display: block;
+}
+
+.character-mini span {
+    color: var(--silver);
+    font-size: 0.75rem;
+}
+
+.rp-main {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+}
+
+.story-info {
+    padding: 16px 25px;
+    border-bottom: 1px solid var(--border);
+    color: var(--silver);
+    font-size: 0.8rem;
+}
+
+.messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 35px max(20px, 6vw);
+    scroll-behavior: smooth;
+}
+
+.message {
+    max-width: 850px;
+    margin: 0 auto 28px;
+}
+
+.message-label {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.67rem;
+    color: var(--silver);
+    margin-bottom: 7px;
+}
+
+.message-content {
+    line-height: 1.75;
+    white-space: pre-wrap;
+}
+
+.message.narrator .message-content {
+    font-size: 1.05rem;
+}
+
+.message.player {
+    border-left: 2px solid rgba(220,230,223,0.35);
+    padding-left: 15px;
+}
+
+.message.player .message-content {
+    color: #d8ded9;
+}
+
+.composer {
+    border-top: 1px solid var(--border);
+    background: rgba(5,10,7,0.82);
+    padding: 14px 20px;
+}
+
+.composer-inner {
+    width: min(900px, 100%);
+    margin: auto;
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.composer textarea {
+    min-height: 55px;
+    max-height: 180px;
+}
+
+.send-button {
+    height: 55px;
+    padding: 0 22px;
+    background: var(--accent);
+    border: 0;
+    border-radius: 4px;
+    color: #101510;
+}
+
+.rp-controls {
+    display: flex;
+    gap: 7px;
+    margin-top: 8px;
+    width: min(900px, 100%);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.small-button {
+    padding: 7px 10px;
+    background: transparent;
+    color: var(--silver);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-size: 0.7rem;
+}
+
+/* MODAL */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(0,0,0,0.72);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-box {
+    width: min(600px, 100%);
+    background: #101914;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 700px) {
+
+    .panel-screen {
+        padding: 15px;
+    }
+
+    .panel {
+        padding: 22px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full {
+        grid-column: auto;
+    }
+
+    .panel-actions {
+        flex-direction: column;
+    }
+
+    .rp-header {
+        height: auto;
+        min-height: 62px;
+        padding: 10px 14px;
+        gap: 10px;
+    }
+
+    .rp-meta {
+        display: none;
+    }
+
+    .rp-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .rp-sidebar {
+        display: none;
+    }
+
+    .messages {
+        padding: 25px 17px;
+    }
+
+    .composer {
+        padding: 10px;
+    }
+
+    .composer-inner {
+        align-items: stretch;
+    }
+
+    .send-button {
+        height: auto;
+        padding: 0 15px;
+    }
+
+    .rp-controls {
+        overflow-x: auto;
+        padding-bottom: 2px;
+    }
+
+    .title {
+        font-size: 3.5rem;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HOME -->
+
+<section id="homeScreen" class="screen active">
+    <div class="home-content">
+        <div class="eyebrow">The Books • Interactive Roleplay</div>
+
+        <h1 class="title">TWILIGHT</h1>
+
+        <p class="subtitle">
+            Enter the world of the books. Create your own character,
+            step into the timeline, and let the story unfold around you.
+        </p>
+
+        <div class="menu">
+            <button class="main-button" onclick="startNewGame()">
+                New Game
+            </button>
+
+            <button class="main-button" onclick="openLoadScreen()">
+                Load Game
+            </button>
+        </div>
+    </div>
+</section>
+
+
+<!-- CHARACTER CREATOR -->
+
+<section id="creatorScreen" class="screen panel-screen">
+    <div class="panel">
+
+        <h2>Create Your Character</h2>
+
+        <p class="panel-description">
+            Your character will be stored together with the story.
+            When you load the save later, your character and previous
+            roleplay will return exactly where you left it.
+        </p>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label for="ocName">Name</label>
+                <input id="ocName" placeholder="Your character's name">
+            </div>
+
+            <div class="form-group">
+                <label for="ocAge">Age</label>
+                <input id="ocAge" type="number" min="1" placeholder="17">
+            </div>
+
+            <div class="form-group">
+                <label for="ocAppearance">Appearance</label>
+                <textarea id="ocAppearance"
+                    placeholder="Describe your character's appearance..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="ocPersonality">Personality</label>
+                <textarea id="ocPersonality"
+                    placeholder="Describe their personality..."></textarea>
+            </div>
+
+            <div class="form-group full">
+                <label for="ocBackground">Background</label>
+                <textarea id="ocBackground"
+                    placeholder="Tell us about your character's history..."></textarea>
+            </div>
+
+            <div class="form-group full">
+                <label for="ocDetails">Additional Details</label>
+                <textarea id="ocDetails"
+                    placeholder="Anything else the narrator should remember..."></textarea>
+            </div>
+
+        </div>
+
+        <div class="panel-actions">
+            <button class="secondary-button" onclick="showScreen('homeScreen')">
+                Back
+            </button>
+
+            <button class="primary-button" onclick="createCharacter()">
+                Continue
+            </button>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- STORY SETUP -->
+
+<section id="setupScreen" class="screen panel-screen">
+    <div class="panel">
+
+        <h2>Story Setup</h2>
+
+        <p class="panel-description">
+            Choose where your story begins. This first version starts
+            with the world of <em>Twilight</em>, while keeping the system
+            ready for additional books and timelines later.
+        </p>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label for="bookSelect">Book</label>
+
+                <select id="bookSelect">
+                    <option value="twilight">
+                        Twilight
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="startLocation">Starting Location</label>
+
+                <select id="startLocation">
+                    <option value="forks">
+                        Forks, Washington
+                    </option>
+
+                    <option value="school">
+                        Forks High School
+                    </option>
+
+                    <option value="home">
+                        Your Home
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group full">
+                <label for="startPoint">Starting Point</label>
+
+                <select id="startPoint">
+
+                    <option value="arrival">
+                        Before Bella's arrival in Forks
+                    </option>
+
+                    <option value="early">
+                        Early in the Twilight timeline
+                    </option>
+
+                    <option value="custom">
+                        Custom starting situation
+                    </option>
+
+                </select>
+            </div>
+
+            <div class="form-group full">
+                <label for="customSituation">
+                    Custom Situation
+                </label>
+
+                <textarea
+                    id="customSituation"
+                    placeholder="Optional. Describe anything specific you want happening when the story begins."></textarea>
+            </div>
+
+        </div>
+
+        <div class="panel-actions">
+
+            <button class="secondary-button"
+                    onclick="showScreen('creatorScreen')">
+                Back
+            </button>
+
+            <button class="primary-button"
+                    onclick="beginStory()">
+                Begin Story
+            </button>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- LOAD -->
+
+<section id="loadScreen" class="screen panel-screen">
+
+    <div class="panel">
+
+        <h2>Load Game</h2>
+
+        <p class="panel-description">
+            Your saves contain your OC, story state, timeline,
+            conversation and world information.
+        </p>
+
+        <div id="saveList" class="save-list"></div>
+
+        <div class="panel-actions">
+
+            <button class="secondary-button"
+                    onclick="showScreen('homeScreen')">
+                Back
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ROLEPLAY -->
+
+<section id="rpScreen" class="screen">
+
+    <header class="rp-header">
+
+        <div class="rp-title">
+            TWILIGHT • THE BOOKS
+        </div>
+
+        <div class="rp-meta">
+            <span id="rpLocation">Forks</span>
+            <span id="rpWordCount">0 words</span>
+            <span id="saveStatus">Saved</span>
+        </div>
+
+    </header>
+
+    <div class="rp-layout">
+
+        <aside class="rp-sidebar">
+
+            <div class="sidebar-title">
+                Your Character
+            </div>
+
+            <div class="character-mini">
+                <strong id="sidebarName">OC</strong>
+                <span id="sidebarAge"></span>
+            </div>
+
+            <br>
+
+            <div class="sidebar-title">
+                Current Story
+            </div>
+
+            <div class="character-mini">
+                <strong>Twilight</strong>
+                <span id="sidebarTimeline">
+                    Beginning
+                </span>
+            </div>
+
+            <br>
+
+            <div class="sidebar-title">
+                Remember
+            </div>
+
+            <div class="character-mini">
+                <span id="memoryPreview">
+                    Nothing forgotten.
+                </span>
+            </div>
+
+        </aside>
+
+
+        <main class="rp-main">
+
+            <div class="story-info">
+                <span id="storyInfo">
+                    The story is beginning...
+                </span>
+            </div>
+
+            <div id="messages" class="messages"></div>
+
+            <div class="composer">
+
+                <div class="composer-inner">
+
+                    <textarea
+                        id="playerInput"
+                        placeholder="What do you do or say?"
+                        onkeydown="handleComposerKey(event)"></textarea>
+
+                    <button class="send-button"
+                            onclick="submitPlayerResponse()">
+                        Send
+                    </button>
+
+                </div>
+
+                <div class="rp-controls">
+
+                    <button class="small-button"
+                            onclick="manualSave()">
+                        Save
+                    </button>
+
+                    <button class="small-button"
+                            onclick="continueScene()">
+                        Continue Scene
+                    </button>
+
+                    <button class="small-button"
+                            onclick="retryLastNarration()">
+                        Retry
+                    </button>
+
+                    <button class="small-button"
+                            onclick="showMemory()">
+                        Memory
+                    </button>
+
+                    <button class="small-button"
+                            onclick="exitToHome()">
+                        Exit
+                    </button>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</section>
+
+
+<!-- MEMORY MODAL -->
+
+<div id="memoryModal" class="modal">
+
+    <div class="modal-box">
+
+        <h2>Story Memory</h2>
+
+        <div id="memoryContent"></div>
+
+        <div class="panel-actions">
+
+            <button class="secondary-button"
+                    onclick="closeMemory()">
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   GAME STATE
+   ========================================================= */
+
+let game = null;
+
+let currentSaveId = null;
+
+const MAX_SAVE_SLOTS = 10;
+
+
+/* =========================================================
+   SCREEN MANAGEMENT
+   ========================================================= */
+
+function showScreen(id) {
+
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+    });
+
+    document.getElementById(id).classList.add("active");
+}
+
+
+/* =========================================================
+   NEW GAME
+   ========================================================= */
+
+function startNewGame() {
+
+    document.getElementById("ocName").value = "";
+    document.getElementById("ocAge").value = "";
+    document.getElementById("ocAppearance").value = "";
+    document.getElementById("ocPersonality").value = "";
+    document.getElementById("ocBackground").value = "";
+    document.getElementById("ocDetails").value = "";
+
+    showScreen("creatorScreen");
+}
+
+
+/* =========================================================
+   CHARACTER CREATION
+   ========================================================= */
+
+function createCharacter() {
+
+    const name =
+        document.getElementById("ocName").value.trim();
+
+    if (!name) {
+        alert("Please enter your character's name.");
+        return;
+    }
+
+    game = {
+
+        id: generateId(),
+
+        createdAt: new Date().toISOString(),
+
+        updatedAt: new Date().toISOString(),
+
+        book: "Twilight",
+
+        location: "Forks, Washington",
+
+        timeline: "Beginning",
+
+        oc: {
+
+            name,
+
+            age:
+                document.getElementById("ocAge").value,
+
+            appearance:
+                document.getElementById("ocAppearance").value.trim(),
+
+            personality:
+                document.getElementById("ocPersonality").value.trim(),
+
+            background:
+                document.getElementById("ocBackground").value.trim(),
+
+            details:
+                document.getElementById("ocDetails").value.trim()
+
+        },
+
+        memory: [],
+
+        relationships: {},
+
+        inventory: [],
+
+        worldState: {},
+
+        conversation: [],
+
+        versions: []
+
+    };
+
+    showScreen("setupScreen");
+}
+
+
+/* =========================================================
+   BEGIN STORY
+   ========================================================= */
+
+function beginStory() {
+
+    const location =
+        document.getElementById("startLocation").value;
+
+    const startPoint =
+        document.getElementById("startPoint").value;
+
+    const customSituation =
+        document.getElementById("customSituation").value.trim();
+
+    game.location = getLocationName(location);
+
+    game.timeline = getTimelineName(startPoint);
+
+    game.startingPoint = startPoint;
+
+    game.customSituation = customSituation;
+
+    game.conversation = [];
+
+    addNarratorMessage(
+        createOpeningNarration()
+    );
+
+    updateRPInterface();
+
+    showScreen("rpScreen");
+
+    autosave();
+}
+
+
+/* =========================================================
+   OPENING NARRATION
+   ========================================================= */
+
+function createOpeningNarration() {
+
+    const name = game.oc.name;
+
+    if (game.customSituation) {
+
+        return (
+            "The morning settles over Forks beneath a low ceiling " +
+            "of clouds. Rain hangs in the air, soft and constant, " +
+            "turning the familiar roads dark and reflective.\n\n" +
+
+            customOpening(name)
+        );
+
+    }
+
+    if (game.startingPoint === "arrival") {
+
+        return (
+            "Forks is exactly the sort of place people forget exists " +
+            "until they have a reason to come here. The sky is gray, " +
+            "the trees rise dark and endless beyond the roads, and " +
+            "the rain seems less like weather than a permanent part " +
+            "of the landscape.\n\n" +
+
+            name +
+            " is here now, standing at the beginning of a story " +
+            "that has not yet revealed what it will become."
+        );
+
+    }
+
+    return (
+        "Another gray morning settles over Forks. " +
+        "The rain taps softly against the windows while the forest " +
+        "stands dark beyond the town.\n\n" +
+
+        "For " + name +
+        ", the day begins normally enough.\n\n" +
+
+        "At least, for now."
+    );
+}
+
+
+function customOpening(name) {
+
+    return (
+        "Whatever brought " +
+        name +
+        " here, this is where the story begins.\n\n" +
+
+        game.customSituation
+    );
+}
+
+
+/* =========================================================
+   PLAYER RESPONSE
+   ========================================================= */
+
+function submitPlayerResponse() {
+
+    const input =
+        document.getElementById("playerInput");
+
+    const text = input.value.trim();
+
+    if (!text) return;
+
+    input.value = "";
+
+    /*
+       OOC COMMAND SYSTEM
+
+       Anything written between parentheses is treated
+       as an out-of-character instruction.
+
+       Example:
+
+       (The narrator forgot that my OC is already friends
+       with Jessica. Fix the scene.)
+
+       In this prototype we record the correction and
+       remove the previous narration.
+    */
+
+    if (text.startsWith("(") && text.endsWith(")")) {
+
+        handleOOC(text);
+
+        return;
+    }
+
+    addPlayerMessage(text);
+
+    processPlayerAction(text);
+
+    autosave();
+}
+
+
+/* =========================================================
+   OOC
+   ========================================================= */
+
+function handleOOC(text) {
+
+    const instruction =
+        text.slice(1, -1).trim();
+
+    /*
+       If the user asks to retry/correct the previous
+       narration, remove the last narrator message.
+    */
+
+    if (
+        instruction.toLowerCase().includes("retry") ||
+        instruction.toLowerCase().includes("redo") ||
+        instruction.toLowerCase().includes("fix")
+    ) {
+
+        const index =
+            findLastNarratorIndex();
+
+        if (index !== -1) {
+
+            game.conversation.splice(index, 1);
+
+            addNarratorMessage(
+                "Understood. The previous narration has been removed " +
+                "and the scene will be regenerated from the established " +
+                "story state."
+            );
+        }
+
+    } else {
+
+        game.memory.push({
+            type: "ooc_instruction",
+            text: instruction,
+            timestamp: Date.now()
+        });
+
+        addNarratorMessage(
+            "OOC note recorded: " + instruction
+        );
+    }
+
+    updateRPInterface();
+
+    autosave();
+}
+
+
+/* =========================================================
+   TEMPORARY RP ENGINE
+   ========================================================= */
+
+function processPlayerAction(text) {
+
+    /*
+       THIS IS TEMPORARY.
+
+       Later this function becomes the AI connector.
+
+       The rest of the game does NOT need to be rebuilt.
+    */
+
+    const lower = text.toLowerCase();
+
+    let response;
+
+    if (
+        lower.includes("hello") ||
+        lower.includes("hi")
+    ) {
+
+        response =
+            "The quiet of the morning seems to pause around you. " +
+            "For a moment, nothing happens. Then somewhere nearby, " +
+            "a car passes along the wet road.";
+
+    } else if (
+        lower.includes("look") ||
+        lower.includes("observe")
+    ) {
+
+        response =
+            "You take in your surroundings. The town is muted beneath " +
+            "the rain, with dark evergreens framing nearly every road. " +
+            "There is something strangely peaceful about it, although " +
+            "you cannot quite explain why.";
+
+    } else if (
+        lower.includes("school")
+    ) {
+
+        game.location = "Forks High School";
+
+        response =
+            "The school comes into view through the rain. Students move " +
+            "between buildings and cars, their voices blending with the " +
+            "sound of tires on wet pavement.";
+
+    } else {
+
+        response =
+            "The moment stretches naturally around your choice. " +
+            "Nothing forces the scene forward. The world waits to see " +
+            "what " + game.oc.name + " does next.";
+    }
+
+    addNarratorMessage(response);
+
+    game.memory.push({
+        type: "player_action",
+        text,
+        timestamp: Date.now()
+    });
+
+    updateRPInterface();
+}
+
+
+/* =========================================================
+   CONTINUE SCENE
+   ========================================================= */
+
+function continueScene() {
+
+    addNarratorMessage(
+        "The rain continues beyond the glass. Somewhere nearby, " +
+        "voices drift through the building before fading again. " +
+        "The story does not stop simply because you have nothing " +
+        "specific to say. The world continues moving around you."
+    );
+
+    updateRPInterface();
+
+    autosave();
+}
+
+
+/* =========================================================
+   RETRY
+   ========================================================= */
+
+function retryLastNarration() {
+
+    const index =
+        findLastNarratorIndex();
+
+    if (index === -1) return;
+
+    game.conversation.splice(index, 1);
+
+    addNarratorMessage(
+        "The scene shifts subtly, returning to the moment before " +
+        "the previous narration. The established events remain intact, " +
+        "but the scene is allowed to unfold again."
+    );
+
+    updateRPInterface();
+
+    autosave();
+}
+
+
+function findLastNarratorIndex() {
+
+    for (
+        let i = game.conversation.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        if (
+            game.conversation[i].role === "narrator"
+        ) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+
+/* =========================================================
+   MESSAGES
+   ========================================================= */
+
+function addNarratorMessage(text) {
+
+    game.conversation.push({
+
+        role: "narrator",
+
+        text,
+
+        timestamp: Date.now()
+
+    });
+}
+
+
+function addPlayerMessage(text) {
+
+    game.conversation.push({
+
+        role: "player",
+
+        text,
+
+        timestamp: Date.now()
+
+    });
+}
+
+
+/* =========================================================
+   RP INTERFACE
+   ========================================================= */
+
+function updateRPInterface() {
+
+    if (!game) return;
+
+    document.getElementById("rpLocation")
+        .textContent = game.location;
+
+    document.getElementById("sidebarName")
+        .textContent = game.oc.name;
+
+    document.getElementById("sidebarAge")
+        .textContent =
+            game.oc.age
+                ? "Age " + game.oc.age
+                : "";
+
+    document.getElementById("sidebarTimeline")
+        .textContent = game.timeline;
+
+    document.getElementById("storyInfo")
+        .textContent =
+            game.book +
+            " • " +
+            game.timeline;
+
+    const memory =
+        game.memory.length;
+
+    document.getElementById("memoryPreview")
+        .textContent =
+            memory +
+            (memory === 1
+                ? " remembered event."
+                : " remembered events.");
+
+    renderConversation();
+
+    updateWordCount();
+}
+
+
+function renderConversation() {
+
+    const container =
+        document.getElementById("messages");
+
+    container.innerHTML = "";
+
+    game.conversation.forEach(message => {
+
+        const wrapper =
+            document.createElement("div");
+
+        wrapper.className =
+            "message " + message.role;
+
+        const label =
+            document.createElement("div");
+
+        label.className = "message-label";
+
+        label.textContent =
+            message.role === "player"
+                ? game.oc.name
+                : "Narrator";
+
+        const content =
+            document.createElement("div");
+
+        content.className = "message-content";
+
+        content.textContent =
+            message.text;
+
+        wrapper.appendChild(label);
+
+        wrapper.appendChild(content);
+
+        container.appendChild(wrapper);
+    });
+
+    container.scrollTop =
+        container.scrollHeight;
+}
+
+
+/* =========================================================
+   WORD COUNT
+   ========================================================= */
+
+function updateWordCount() {
+
+    let total = 0;
+
+    game.conversation.forEach(message => {
+
+        total +=
+            message.text
+                .trim()
+                .split(/\s+/)
+                .filter(Boolean)
+                .length;
+    });
+
+    document.getElementById("rpWordCount")
+        .textContent =
+            total + " words";
+}
+
+
+/* =========================================================
+   SAVE SYSTEM
+   ========================================================= */
+
+function manualSave() {
+
+    if (!game) return;
+
+    saveGame();
+
+    setSaveStatus("Saved");
+}
+
+
+function autosave() {
+
+    if (!game) return;
+
+    saveGame();
+
+    setSaveStatus("Autosaved");
+}
+
+
+function saveGame() {
+
+    game.updatedAt =
+        new Date().toISOString();
+
+    /*
+       Create a version snapshot.
+
+       This lets us eventually add full version-history
+       restoration.
+    */
+
+    game.versions.push({
+        timestamp: Date.now(),
+        conversationLength:
+            game.conversation.length
+    });
+
+    if (game.versions.length > 50) {
+        game.versions.shift();
+    }
+
+    currentSaveId = game.id;
+
+    localStorage.setItem(
+        "twilight_save_" + game.id,
+        JSON.stringify(game)
+    );
+
+    addToSaveIndex(game);
+}
+
+
+function addToSaveIndex(game) {
+
+    let index =
+        JSON.parse(
+            localStorage.getItem(
+                "twilight_save_index"
+            ) || "[]"
+        );
+
+    index =
+        index.filter(id => id !== game.id);
+
+    index.unshift(game.id);
+
+    if (index.length > MAX_SAVE_SLOTS) {
+        index = index.slice(0, MAX_SAVE_SLOTS);
+    }
+
+    localStorage.setItem(
+        "twilight_save_index",
+        JSON.stringify(index)
+    );
+}
+
+
+function loadGame(id) {
+
+    const saved =
+        localStorage.getItem(
+            "twilight_save_" + id
+        );
+
+    if (!saved) {
+        alert("Save could not be found.");
+        return;
+    }
+
+    try {
+
+        game = JSON.parse(saved);
+
+        currentSaveId = game.id;
+
+        updateRPInterface();
+
+        showScreen("rpScreen");
+
+        setSaveStatus("Loaded");
+
+    } catch (error) {
+
+        alert(
+            "This save appears to be corrupted."
+        );
+    }
+}
+
+
+/* =========================================================
+   LOAD SCREEN
+   ========================================================= */
+
+function openLoadScreen() {
+
+    renderSaveList();
+
+    showScreen("loadScreen");
+}
+
+
+function renderSaveList() {
+
+    const container =
+        document.getElementById("saveList");
+
+    container.innerHTML = "";
+
+    const index =
+        JSON.parse(
+            localStorage.getItem(
+                "twilight_save_index"
+            ) || "[]"
+        );
+
+    if (index.length === 0) {
+
+        container.innerHTML =
+            "<p style='color:#b9c2bd'>" +
+            "No saved games yet." +
+            "</p>";
+
+        return;
+    }
+
+    index.forEach(id => {
+
+        const raw =
+            localStorage.getItem(
+                "twilight_save_" + id
+            );
+
+        if (!raw) return;
+
+        let saved;
+
+        try {
+            saved = JSON.parse(raw);
+        } catch {
+            return;
+        }
+
+        const card =
+            document.createElement("div");
+
+        card.className = "save-card";
+
+        const info =
+            document.createElement("div");
+
+        info.className = "save-info";
+
+        const date =
+            new Date(saved.updatedAt)
+                .toLocaleString();
+
+        info.innerHTML =
+            "<strong>" +
+            escapeHtml(saved.oc.name) +
+            "</strong>" +
+
+            "<small>" +
+            escapeHtml(saved.book) +
+            " • " +
+            escapeHtml(saved.timeline) +
+            " • " +
+            date +
+            "</small>";
+
+        const actions =
+            document.createElement("div");
+
+        actions.className = "save-actions";
+
+        const loadButton =
+            document.createElement("button");
+
+        loadButton.className =
+            "primary-button";
+
+        loadButton.textContent =
+            "Load";
+
+        loadButton.onclick =
+            () => loadGame(saved.id);
+
+        const deleteButton =
+            document.createElement("button");
+
+        deleteButton.className =
+            "secondary-button";
+
+        deleteButton.textContent =
+            "Delete";
+
+        deleteButton.onclick =
+            () => deleteSave(saved.id);
+
+        actions.appendChild(loadButton);
+
+        actions.appendChild(deleteButton);
+
+        card.appendChild(info);
+
+        card.appendChild(actions);
+
+        container.appendChild(card);
+    });
+}
+
+
+function deleteSave(id) {
+
+    if (
+        !confirm(
+            "Delete this save permanently?"
+        )
+    ) {
+        return;
+    }
+
+    localStorage.removeItem(
+        "twilight_save_" + id
+    );
+
+    let index =
+        JSON.parse(
+            localStorage.getItem(
+                "twilight_save_index"
+            ) || "[]"
+        );
+
+    index =
+        index.filter(saveId => saveId !== id);
+
+    localStorage.setItem(
+        "twilight_save_index",
+        JSON.stringify(index)
+    );
+
+    renderSaveList();
+}
+
+
+/* =========================================================
+   MEMORY
+   ========================================================= */
+
+function showMemory() {
+
+    const container =
+        document.getElementById("memoryContent");
+
+    if (!game.memory.length) {
+
+        container.innerHTML =
+            "<p>No memories recorded yet.</p>";
+
+    } else {
+
+        container.innerHTML =
+            game.memory
+                .map(memory =>
+                    "<p>" +
+                    escapeHtml(memory.text) +
+                    "</p>"
+                )
+                .join("");
+    }
+
+    document
+        .getElementById("memoryModal")
+        .classList.add("active");
+}
+
+
+function closeMemory() {
+
+    document
+        .getElementById("memoryModal")
+        .classList.remove("active");
+}
+
+
+/* =========================================================
+   EXIT
+   ========================================================= */
+
+function exitToHome() {
+
+    autosave();
+
+    showScreen("homeScreen");
+}
+
+
+/* =========================================================
+   KEYBOARD
+   ========================================================= */
+
+function handleComposerKey(event) {
+
+    /*
+       Enter sends.
+       Shift + Enter creates a new line.
+    */
+
+    if (
+        event.key === "Enter" &&
+        !event.shiftKey
+    ) {
+
+        event.preventDefault();
+
+        submitPlayerResponse();
+    }
+}
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+function generateId() {
+
+    return (
+        Date.now().toString(36) +
+        Math.random()
+            .toString(36)
+            .substring(2, 8)
+    );
+}
+
+
+function getLocationName(value) {
+
+    const locations = {
+
+        forks:
+            "Forks, Washington",
+
+        school:
+            "Forks High School",
+
+        home:
+            "Home"
+
+    };
+
+    return locations[value] || "Forks";
+}
+
+
+function getTimelineName(value) {
+
+    const timeline = {
+
+        arrival:
+            "Before Bella's arrival",
+
+        early:
+            "Early Twilight",
+
+        custom:
+            "Custom Starting Point"
+
+    };
+
+    return timeline[value] || "Beginning";
+}
+
+
+function setSaveStatus(text) {
+
+    document.getElementById("saveStatus")
+        .textContent = text;
+}
+
+
+function escapeHtml(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+}
+
+
+/* =========================================================
+   STARTUP
+   ========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        /*
+           The game intentionally opens at HOME.
+
+           It never automatically resumes a previous RP.
+
+           The player must explicitly choose LOAD GAME.
+        */
+
+        showScreen("homeScreen");
+
+    }
+);
+
+</script>
+
+</body>
+</html>
