@@ -3,203 +3,185 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Twilight — Books RP</title>
+<title>Twilight Books Roleplay</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 * {
-  box-sizing: border-box;
-}
-
-:root {
-  --black: #090909;
-  --dark: #111111;
-  --panel: #171717;
-  --panel2: #202020;
-  --silver: #b9b9b9;
-  --light: #eeeeee;
-  --white: #ffffff;
-  --red: #7c1717;
-  --red2: #a52828;
-  --muted: #777;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  background:
-    radial-gradient(circle at top, #252525 0%, #090909 55%);
-  color: var(--light);
-  font-family: Georgia, "Times New Roman", serif;
-  min-height: 100vh;
+    margin: 0;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top, rgba(255,255,255,.12), transparent 35%),
+        linear-gradient(135deg, #11151a, #252b31 45%, #0d1014);
+    color: #eee;
+    font-family: Georgia, "Times New Roman", serif;
 }
 
 button,
 input,
 textarea,
 select {
-  font: inherit;
+    font: inherit;
 }
 
 button {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .hidden {
-  display: none !important;
+    display: none !important;
 }
 
 /* =========================
-   GENERAL
+   AUTH
 ========================= */
 
 .screen {
-  min-height: 100vh;
-  width: 100%;
+    min-height: 100vh;
 }
 
-.center-screen {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 25px;
+.auth-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
 }
 
-.card {
-  width: min(680px, 100%);
-  background: rgba(18,18,18,.96);
-  border: 1px solid #3a3a3a;
-  box-shadow: 0 25px 70px rgba(0,0,0,.6);
-  padding: 35px;
+.auth-card {
+    width: min(430px, 100%);
+    padding: 40px;
+    background: rgba(15,18,22,.92);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 18px;
+    box-shadow: 0 25px 80px rgba(0,0,0,.5);
 }
 
-h1,
-h2,
-h3 {
-  margin-top: 0;
-  font-weight: normal;
-}
-
-.title {
-  text-align: center;
-  font-size: clamp(50px, 10vw, 100px);
-  letter-spacing: 15px;
-  margin-bottom: 5px;
+.logo {
+    text-align: center;
+    letter-spacing: 9px;
+    font-size: clamp(34px, 9vw, 58px);
+    margin-bottom: 5px;
 }
 
 .subtitle {
-  text-align: center;
-  color: #999;
-  letter-spacing: 5px;
-  font-size: 13px;
-  margin-bottom: 45px;
+    text-align: center;
+    opacity: .65;
+    letter-spacing: 3px;
+    margin-bottom: 35px;
+    font-size: 12px;
 }
 
-button.primary {
-  width: 100%;
-  border: 1px solid #777;
-  background: linear-gradient(#292929,#101010);
-  color: white;
-  padding: 14px;
-  margin-top: 12px;
-  letter-spacing: 2px;
-  transition: .2s;
+.field {
+    margin-bottom: 16px;
 }
 
-button.primary:hover {
-  background: linear-gradient(#3b3b3b,#151515);
-  border-color: #aaa;
+.field label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 13px;
+    opacity: .75;
 }
 
-button.danger {
-  border-color: #762020;
+.field input,
+.field textarea,
+.field select {
+    width: 100%;
+    padding: 13px;
+    border-radius: 9px;
+    border: 1px solid rgba(255,255,255,.15);
+    background: rgba(255,255,255,.07);
+    color: white;
+    outline: none;
 }
 
-button.small {
-  padding: 8px 12px;
-  background: #191919;
-  color: #ddd;
-  border: 1px solid #444;
+.field textarea {
+    min-height: 90px;
+    resize: vertical;
 }
 
-button.small:hover {
-  border-color: #888;
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+    border-color: rgba(255,255,255,.45);
 }
 
-label {
-  display: block;
-  margin: 18px 0 7px;
-  color: #aaa;
-  font-size: 13px;
-  letter-spacing: 1px;
+.primary-btn,
+.secondary-btn,
+.danger-btn {
+    width: 100%;
+    padding: 13px 18px;
+    border-radius: 9px;
+    border: 1px solid rgba(255,255,255,.18);
+    margin-top: 8px;
+    transition: .2s;
 }
 
-input,
-textarea,
-select {
-  width: 100%;
-  background: #0d0d0d;
-  border: 1px solid #3b3b3b;
-  color: white;
-  padding: 12px;
-  outline: none;
+.primary-btn {
+    background: #eee;
+    color: #111;
 }
 
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: #888;
+.secondary-btn {
+    background: rgba(255,255,255,.08);
+    color: white;
 }
 
-textarea {
-  resize: vertical;
-  min-height: 100px;
+.danger-btn {
+    background: rgba(130,35,35,.45);
+    color: white;
 }
 
-/* =========================
-   LOGIN
-========================= */
-
-.login-logo {
-  text-align: center;
-  font-size: 48px;
-  letter-spacing: 8px;
-  margin-bottom: 4px;
+button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
 }
 
-.login-sub {
-  text-align: center;
-  color: #888;
-  margin-bottom: 30px;
-}
-
-.auth-message {
-  margin-top: 15px;
-  color: #c7c7c7;
-  font-size: 14px;
-  text-align: center;
-}
-
-.auth-error {
-  color: #e27777;
-}
-
-.auth-success {
-  color: #8fbd8f;
+.message {
+    min-height: 22px;
+    margin: 12px 0;
+    text-align: center;
+    font-size: 13px;
+    color: #d9b5b5;
 }
 
 /* =========================
    HOME
 ========================= */
 
-.home-content {
-  width: min(700px, 100%);
-  text-align: center;
+.home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+.home-inner {
+    width: min(700px, 100%);
+    text-align: center;
+}
+
+.home-logo {
+    font-size: clamp(55px, 13vw, 110px);
+    letter-spacing: 15px;
+    margin: 0;
+}
+
+.home-subtitle {
+    letter-spacing: 6px;
+    opacity: .55;
+    margin-bottom: 55px;
 }
 
 .home-buttons {
-  margin-top: 30px;
+    display: grid;
+    gap: 12px;
+    max-width: 360px;
+    margin: auto;
 }
 
 /* =========================
@@ -207,2462 +189,1858 @@ textarea {
 ========================= */
 
 .creator {
-  width: min(900px, 100%);
-  margin: auto;
-  padding: 35px 20px 70px;
+    padding: 30px;
 }
 
-.creator-header {
-  border-bottom: 1px solid #333;
-  padding-bottom: 20px;
-  margin-bottom: 25px;
+.creator-container {
+    width: min(850px, 100%);
+    margin: auto;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 35px;
+    letter-spacing: 4px;
+    margin-bottom: 5px;
+}
+
+.page-description {
+    text-align: center;
+    opacity: .6;
+    margin-bottom: 35px;
 }
 
 .section {
-  margin-top: 30px;
-  padding: 22px;
-  border: 1px solid #303030;
-  background: rgba(20,20,20,.8);
+    background: rgba(10,13,17,.78);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 20px;
 }
 
-.section h3 {
-  color: #ddd;
-  letter-spacing: 2px;
+.section h2 {
+    margin-top: 0;
+    font-size: 18px;
+    letter-spacing: 2px;
 }
 
-.two-col {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
+.two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
 }
 
-.creator-actions {
-  margin-top: 30px;
+@media(max-width:650px) {
+    .two-column {
+        grid-template-columns: 1fr;
+    }
+
+    .creator,
+    .auth-screen {
+        padding: 15px;
+    }
 }
 
 /* =========================
    LOAD
 ========================= */
 
-.load-container {
-  width: min(850px, 100%);
+.load {
+    padding: 30px;
 }
 
-.save-list {
-  margin-top: 20px;
+.load-container {
+    width: min(850px, 100%);
+    margin: auto;
 }
 
 .save-card {
-  border: 1px solid #363636;
-  background: #151515;
-  padding: 18px;
-  margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 18px;
+    margin-bottom: 12px;
+    background: rgba(10,13,17,.8);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px;
 }
 
-.save-card:hover {
-  border-color: #666;
+.save-info h3 {
+    margin: 0 0 6px;
 }
 
-.save-title {
-  font-size: 20px;
-  margin-bottom: 7px;
-}
-
-.save-meta {
-  color: #888;
-  font-size: 13px;
-  margin-bottom: 12px;
+.save-info p {
+    margin: 3px 0;
+    opacity: .6;
+    font-size: 13px;
 }
 
 .save-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+    display: flex;
+    gap: 8px;
+}
+
+.small-btn {
+    border: 1px solid rgba(255,255,255,.15);
+    background: rgba(255,255,255,.08);
+    color: white;
+    padding: 9px 12px;
+    border-radius: 7px;
 }
 
 /* =========================
    RP
 ========================= */
 
-#rpScreen {
-  height: 100vh;
-  overflow: hidden;
-}
-
-.rp-layout {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  height: 100vh;
+.rp {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 270px 1fr;
+    overflow: hidden;
 }
 
 .sidebar {
-  background: #0b0b0b;
-  border-right: 1px solid #333;
-  padding: 20px;
-  overflow-y: auto;
+    background: rgba(8,10,13,.95);
+    border-right: 1px solid rgba(255,255,255,.1);
+    padding: 20px;
+    overflow-y: auto;
 }
 
 .sidebar-title {
-  font-size: 25px;
-  letter-spacing: 3px;
-  margin-bottom: 4px;
+    letter-spacing: 3px;
+    font-size: 18px;
+    margin-bottom: 25px;
 }
 
-.sidebar-book {
-  color: #888;
-  font-size: 13px;
-  margin-bottom: 25px;
+.sidebar-section {
+    margin-bottom: 25px;
 }
 
-.stat {
-  border-bottom: 1px solid #242424;
-  padding: 12px 0;
+.sidebar-section h4 {
+    font-size: 11px;
+    letter-spacing: 2px;
+    opacity: .45;
+    margin-bottom: 9px;
 }
 
-.stat-label {
-  color: #777;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+.sidebar-section p {
+    margin: 4px 0;
+    font-size: 13px;
+    opacity: .75;
 }
 
-.stat-value {
-  color: #ddd;
-  margin-top: 3px;
+.sidebar button {
+    width: 100%;
+    margin-top: 7px;
 }
 
-.sidebar-buttons {
-  margin-top: 25px;
-}
-
-.sidebar-buttons button {
-  width: 100%;
-  margin-bottom: 8px;
-}
-
-.story-area {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  min-width: 0;
+.story {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
 }
 
 .story-header {
-  min-height: 62px;
-  border-bottom: 1px solid #333;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  background: #101010;
+    padding: 15px 22px;
+    background: rgba(15,18,22,.92);
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
 }
 
-.story-location {
-  font-size: 16px;
+.story-title {
+    letter-spacing: 3px;
 }
 
-.story-status {
-  color: #777;
-  font-size: 12px;
+.story-meta {
+    opacity: .55;
+    font-size: 12px;
 }
 
 .messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 35px max(20px, calc((100% - 850px)/2));
+    flex: 1;
+    overflow-y: auto;
+    padding: 25px;
 }
 
-.message {
-  margin-bottom: 28px;
-  max-width: 850px;
-  margin-left: auto;
-  margin-right: auto;
+.message-row {
+    max-width: 850px;
+    margin: 0 auto 20px;
 }
 
-.message-role {
-  font-size: 11px;
-  color: #777;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 7px;
+.message-author {
+    font-size: 11px;
+    letter-spacing: 2px;
+    opacity: .45;
+    margin-bottom: 5px;
+    text-transform: uppercase;
 }
 
 .message-content {
-  white-space: pre-wrap;
-  line-height: 1.75;
-  font-size: 17px;
+    line-height: 1.75;
+    white-space: pre-wrap;
 }
 
-.message.narrator .message-content {
-  color: #ddd;
+.message-row.narrator .message-content {
+    font-style: italic;
 }
 
-.message.player {
-  border-left: 2px solid #777;
-  padding-left: 15px;
-}
-
-.message.player .message-content {
-  color: #eee;
-}
-
-.message.ooc {
-  border-left: 2px solid #7c1717;
-  padding-left: 15px;
-  color: #aaa;
+.message-row.player .message-content {
+    background: rgba(255,255,255,.07);
+    padding: 14px 17px;
+    border-radius: 12px;
 }
 
 .composer {
-  border-top: 1px solid #333;
-  background: #101010;
-  padding: 12px 20px;
+    border-top: 1px solid rgba(255,255,255,.1);
+    padding: 15px;
+    background: rgba(10,12,15,.96);
 }
 
 .composer-inner {
-  max-width: 900px;
-  margin: auto;
+    max-width: 900px;
+    margin: auto;
 }
 
-#playerInput {
-  min-height: 90px;
-  max-height: 250px;
+.composer textarea {
+    width: 100%;
+    min-height: 90px;
+    resize: none;
+    border-radius: 10px;
+    padding: 13px;
+    background: rgba(255,255,255,.06);
+    color: white;
+    border: 1px solid rgba(255,255,255,.12);
 }
 
-.composer-row {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-  flex-wrap: wrap;
+.composer-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
 }
 
-.composer-row button {
-  flex: 1;
-  min-width: 120px;
+.composer-buttons button {
+    flex: 1;
+}
+
+.word-count {
+    text-align: right;
+    font-size: 11px;
+    opacity: .4;
+    margin-top: 5px;
+}
+
+@media(max-width:750px) {
+    .rp {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .story-header {
+        padding: 12px;
+    }
+
+    .messages {
+        padding: 15px;
+    }
 }
 
 /* =========================
    MODAL
 ========================= */
 
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  z-index: 100;
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 100;
 }
 
 .modal {
-  width: min(700px,100%);
-  max-height: 85vh;
-  overflow-y: auto;
-  background: #141414;
-  border: 1px solid #555;
-  padding: 30px;
+    width: min(700px, 100%);
+    max-height: 80vh;
+    overflow-y: auto;
+    background: #15191e;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 15px;
+    padding: 25px;
 }
 
-/* =========================
-   TOAST
-========================= */
-
-.toast {
-  position: fixed;
-  bottom: 25px;
-  right: 25px;
-  background: #222;
-  border: 1px solid #555;
-  padding: 12px 18px;
-  z-index: 200;
-  opacity: 0;
-  transform: translateY(15px);
-  transition: .25s;
-  pointer-events: none;
+.modal h2 {
+    margin-top: 0;
 }
 
-.toast.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 750px) {
-
-  .card {
-    padding: 25px 18px;
-  }
-
-  .two-col {
-    grid-template-columns: 1fr;
-  }
-
-  .rp-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar {
-    display: none;
-  }
-
-  .story-header {
-    padding: 9px 12px;
-  }
-
-  .messages {
-    padding: 25px 15px;
-  }
-
-  .message-content {
-    font-size: 16px;
-  }
-
-  .composer {
-    padding: 10px;
-  }
-
-  .title {
-    letter-spacing: 8px;
-  }
+.close-btn {
+    float: right;
+    background: none;
+    color: white;
+    border: none;
+    font-size: 20px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- =====================================================
+<!-- =========================
      LOGIN
-===================================================== -->
+========================= -->
 
-<div id="loginScreen" class="screen center-screen">
+<section id="loginScreen" class="screen auth-screen">
+    <div class="auth-card">
+        <div class="logo">TWILIGHT</div>
+        <div class="subtitle">BOOKS ROLEPLAY</div>
 
-  <div class="card">
+        <div class="field">
+            <label>Email</label>
+            <input id="loginEmail" type="email" autocomplete="email">
+        </div>
 
-    <div class="login-logo">TWILIGHT</div>
-    <div class="login-sub">BOOKS ROLEPLAY</div>
+        <div class="field">
+            <label>Password</label>
+            <input id="loginPassword" type="password" autocomplete="current-password">
+        </div>
 
-    <div id="loginForm">
+        <button class="primary-btn" onclick="login()">Log In</button>
+        <button class="secondary-btn" onclick="createAccount()">Create Account</button>
 
-      <label>Email</label>
-      <input
-        id="emailInput"
-        type="email"
-        placeholder="your@email.com"
-        autocomplete="email"
-      >
-
-      <label>Password</label>
-      <input
-        id="passwordInput"
-        type="password"
-        placeholder="Password"
-        autocomplete="current-password"
-      >
-
-      <button class="primary" onclick="signIn()">
-        LOG IN
-      </button>
-
-      <button class="primary" onclick="signUp()">
-        CREATE ACCOUNT
-      </button>
-
-      <div id="authMessage" class="auth-message"></div>
-
+        <div id="authMessage" class="message"></div>
     </div>
+</section>
 
-  </div>
-
-</div>
-
-
-<!-- =====================================================
+<!-- =========================
      HOME
-===================================================== -->
+========================= -->
 
-<div id="homeScreen" class="screen center-screen hidden">
+<section id="homeScreen" class="screen home hidden">
+    <div class="home-inner">
+        <h1 class="home-logo">TWILIGHT</h1>
+        <div class="home-subtitle">BOOKS ROLEPLAY</div>
 
-  <div class="home-content">
-
-    <div class="title">TWILIGHT</div>
-
-    <div class="subtitle">
-      BOOKS ROLEPLAY
+        <div class="home-buttons">
+            <button class="primary-btn" onclick="showCreator()">NEW GAME</button>
+            <button class="secondary-btn" onclick="showLoad()">LOAD GAME</button>
+            <button class="secondary-btn" onclick="logout()">LOG OUT</button>
+        </div>
     </div>
+</section>
 
-    <div class="home-buttons">
-
-      <button class="primary" onclick="showCreator()">
-        NEW GAME
-      </button>
-
-      <button class="primary" onclick="showLoad()">
-        LOAD GAME
-      </button>
-
-      <button class="primary" onclick="signOut()">
-        LOG OUT
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- =====================================================
+<!-- =========================
      CHARACTER CREATOR
-===================================================== -->
+========================= -->
 
-<div id="creatorScreen" class="screen hidden">
+<section id="creatorScreen" class="screen creator hidden">
+    <div class="creator-container">
 
-  <div class="creator">
+        <h1 class="page-title">CREATE YOUR CHARACTER</h1>
+        <p class="page-description">
+            Your character becomes part of the Twilight world.
+        </p>
 
-    <div class="creator-header">
+        <div class="section">
+            <h2>CHARACTER</h2>
 
-      <h1>Create Your Character</h1>
+            <div class="two-column">
 
-      <div style="color:#888;">
-        Your character and story will be saved together.
-      </div>
+                <div class="field">
+                    <label>Name</label>
+                    <input id="ocName" placeholder="Your character's name">
+                </div>
 
-    </div>
+                <div class="field">
+                    <label>Age</label>
+                    <input id="ocAge" type="number" placeholder="Age">
+                </div>
 
+            </div>
 
-    <div class="section">
+            <div class="field">
+                <label>Appearance</label>
+                <textarea id="ocAppearance"
+                    placeholder="Describe your character's appearance..."></textarea>
+            </div>
 
-      <h3>CHARACTER</h3>
+            <div class="field">
+                <label>Personality</label>
+                <textarea id="ocPersonality"
+                    placeholder="Personality, habits, mannerisms..."></textarea>
+            </div>
 
-      <label>Character Name</label>
-      <input id="ocName" placeholder="Your character's name">
+            <div class="field">
+                <label>Background</label>
+                <textarea id="ocBackground"
+                    placeholder="Family, history, where they came from..."></textarea>
+            </div>
 
-      <div class="two-col">
-
-        <div>
-          <label>Age</label>
-          <input id="ocAge" type="number" placeholder="18">
+            <div class="field">
+                <label>Additional Details</label>
+                <textarea id="ocDetails"
+                    placeholder="Anything else you want the story to know..."></textarea>
+            </div>
         </div>
 
-        <div>
-          <label>Pronouns</label>
-          <input id="ocPronouns" placeholder="she/her">
+        <div class="section">
+            <h2>STORY SETUP</h2>
+
+            <div class="field">
+                <label>Book</label>
+                <select id="book">
+                    <option value="Twilight">Twilight</option>
+                    <option value="New Moon">New Moon</option>
+                    <option value="Eclipse">Eclipse</option>
+                    <option value="Breaking Dawn">Breaking Dawn</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Starting Location</label>
+                <select id="location">
+                    <option value="Forks">Forks</option>
+                    <option value="Forks High School">Forks High School</option>
+                    <option value="Bella's neighborhood">Bella's neighborhood</option>
+                    <option value="The Cullen house">The Cullen house</option>
+                    <option value="La Push">La Push</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Starting Point</label>
+                <select id="timeline">
+                    <option value="Before Bella arrives in Forks">
+                        Before Bella arrives in Forks
+                    </option>
+                    <option value="Early Twilight">
+                        Early Twilight
+                    </option>
+                    <option value="During Twilight">
+                        During Twilight
+                    </option>
+                    <option value="Custom">
+                        Custom
+                    </option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Custom Situation</label>
+                <textarea id="customSituation"
+                    placeholder="Optional. Describe exactly where/how you want your story to begin."></textarea>
+            </div>
         </div>
 
-      </div>
+        <button class="primary-btn" onclick="createGame()">
+            BEGIN STORY
+        </button>
 
-      <label>Appearance</label>
-      <textarea
-        id="ocAppearance"
-        placeholder="Describe your character's appearance..."
-      ></textarea>
+        <button class="secondary-btn" onclick="showHome()">
+            BACK
+        </button>
 
-      <label>Personality</label>
-      <textarea
-        id="ocPersonality"
-        placeholder="How does your character behave?"
-      ></textarea>
-
-      <label>Background</label>
-      <textarea
-        id="ocBackground"
-        placeholder="Your character's history..."
-      ></textarea>
-
-      <label>Additional Details</label>
-      <textarea
-        id="ocDetails"
-        placeholder="Anything else the narrator should know..."
-      ></textarea>
+        <div id="creatorMessage" class="message"></div>
 
     </div>
+</section>
 
-
-    <div class="section">
-
-      <h3>STORY SETUP</h3>
-
-      <label>Book</label>
-
-      <select id="bookSelect">
-        <option value="Twilight">Twilight</option>
-        <option value="New Moon">New Moon</option>
-        <option value="Eclipse">Eclipse</option>
-        <option value="Breaking Dawn">Breaking Dawn</option>
-      </select>
-
-
-      <label>Starting Location</label>
-
-      <select id="locationSelect">
-
-        <option value="Forks High School">
-          Forks High School
-        </option>
-
-        <option value="Forks">
-          Forks
-        </option>
-
-        <option value="Home">
-          Home
-        </option>
-
-        <option value="La Push">
-          La Push
-        </option>
-
-        <option value="Other">
-          Other
-        </option>
-
-      </select>
-
-
-      <label>Starting Point</label>
-
-      <select id="timelineSelect">
-
-        <option value="Before Bella's arrival">
-          Before Bella's arrival
-        </option>
-
-        <option value="Early Twilight">
-          Early Twilight
-        </option>
-
-        <option value="Custom">
-          Custom
-        </option>
-
-      </select>
-
-
-      <label>Custom Situation</label>
-
-      <textarea
-        id="customSituation"
-        placeholder="Optional. Describe exactly where you want your story to begin."
-      ></textarea>
-
-    </div>
-
-
-    <div class="creator-actions">
-
-      <button class="primary" onclick="createNewGame()">
-        BEGIN STORY
-      </button>
-
-      <button class="primary" onclick="showHome()">
-        BACK
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- =====================================================
+<!-- =========================
      LOAD GAME
-===================================================== -->
+========================= -->
 
-<div id="loadScreen" class="screen center-screen hidden">
+<section id="loadScreen" class="screen load hidden">
+    <div class="load-container">
 
-  <div class="load-container">
+        <h1 class="page-title">LOAD GAME</h1>
+        <p class="page-description">
+            Continue exactly where you left off.
+        </p>
 
-    <div class="card">
+        <div id="saveList"></div>
 
-      <h1>Load Game</h1>
-
-      <p style="color:#888;">
-        Your saved stories are stored in your account and can be
-        continued on another device.
-      </p>
-
-      <div id="saveList" class="save-list">
-        Loading saves...
-      </div>
-
-      <button class="primary" onclick="showHome()">
-        BACK
-      </button>
+        <button class="secondary-btn" onclick="showHome()">
+            BACK
+        </button>
 
     </div>
+</section>
 
-  </div>
-
-</div>
-
-
-<!-- =====================================================
+<!-- =========================
      ROLEPLAY
-===================================================== -->
+========================= -->
 
-<div id="rpScreen" class="screen hidden">
-
-  <div class="rp-layout">
+<section id="rpScreen" class="screen rp hidden">
 
     <aside class="sidebar">
 
-      <div class="sidebar-title">
-        TWILIGHT
-      </div>
+        <div class="sidebar-title">TWILIGHT</div>
 
-      <div id="sidebarBook" class="sidebar-book">
-        BOOK
-      </div>
-
-
-      <div class="stat">
-
-        <div class="stat-label">
-          Character
+        <div class="sidebar-section">
+            <h4>CHARACTER</h4>
+            <p id="sideCharacter"></p>
+            <p id="sideAge"></p>
         </div>
 
-        <div id="sidebarCharacter" class="stat-value">
-          —
+        <div class="sidebar-section">
+            <h4>LOCATION</h4>
+            <p id="sideLocation"></p>
         </div>
 
-      </div>
-
-
-      <div class="stat">
-
-        <div class="stat-label">
-          Location
+        <div class="sidebar-section">
+            <h4>TIMELINE</h4>
+            <p id="sideTimeline"></p>
         </div>
 
-        <div id="sidebarLocation" class="stat-value">
-          —
+        <div class="sidebar-section">
+            <h4>MEMORY</h4>
+            <button class="small-btn" onclick="showMemory()">
+                VIEW MEMORY
+            </button>
         </div>
 
-      </div>
+        <div class="sidebar-section">
+            <button class="small-btn" onclick="saveGame(true)">
+                SAVE
+            </button>
 
+            <button class="small-btn" onclick="continueScene()">
+                CONTINUE SCENE
+            </button>
 
-      <div class="stat">
+            <button class="small-btn" onclick="retryNarration()">
+                RETRY
+            </button>
 
-        <div class="stat-label">
-          Timeline
+            <button class="small-btn" onclick="exitGame()">
+                EXIT
+            </button>
         </div>
-
-        <div id="sidebarTimeline" class="stat-value">
-          —
-        </div>
-
-      </div>
-
-
-      <div class="stat">
-
-        <div class="stat-label">
-          Words
-        </div>
-
-        <div id="wordCount" class="stat-value">
-          0
-        </div>
-
-      </div>
-
-
-      <div class="sidebar-buttons">
-
-        <button class="small" onclick="saveGame(true)">
-          SAVE
-        </button>
-
-        <button class="small" onclick="continueScene()">
-          CONTINUE SCENE
-        </button>
-
-        <button class="small" onclick="retryLastNarration()">
-          RETRY
-        </button>
-
-        <button class="small" onclick="showMemory()">
-          MEMORY
-        </button>
-
-        <button class="small" onclick="showLoad()">
-          LOAD GAME
-        </button>
-
-        <button class="small danger" onclick="exitGame()">
-          EXIT
-        </button>
-
-      </div>
 
     </aside>
 
+    <main class="story">
 
-    <main class="story-area">
+        <header class="story-header">
+            <div>
+                <div class="story-title" id="storyTitle">
+                    TWILIGHT
+                </div>
+                <div class="story-meta" id="storyMeta"></div>
+            </div>
 
-      <header class="story-header">
+            <div class="story-meta">
+                <span id="saveStatus">Saved</span>
+            </div>
+        </header>
 
-        <div>
-          <div id="storyLocation" class="story-location">
-            —
-          </div>
+        <div id="messages" class="messages"></div>
 
-          <div id="storyStatus" class="story-status">
-            Autosave enabled
-          </div>
-        </div>
+        <div class="composer">
 
-        <div id="saveStatus" class="story-status">
-          Saved
-        </div>
+            <div class="composer-inner">
 
-      </header>
+                <textarea
+                    id="playerInput"
+                    placeholder="What do you do or say?"
+                    oninput="updateWordCount()"
+                ></textarea>
 
+                <div class="word-count">
+                    <span id="wordCount">0</span> words
+                </div>
 
-      <section id="messages" class="messages">
-      </section>
+                <div class="composer-buttons">
+                    <button class="primary-btn" onclick="sendResponse()">
+                        SEND
+                    </button>
 
+                    <button class="secondary-btn" onclick="continueScene()">
+                        LET SCENE CONTINUE
+                    </button>
+                </div>
 
-      <footer class="composer">
-
-        <div class="composer-inner">
-
-          <textarea
-            id="playerInput"
-            placeholder="What do you do or say?"
-          ></textarea>
-
-          <div class="composer-row">
-
-            <button class="small" onclick="submitPlayerResponse()">
-              SEND
-            </button>
-
-            <button class="small" onclick="polishResponse()">
-              POLISH
-            </button>
-
-            <button class="small" onclick="continueScene()">
-              LET SCENE CONTINUE
-            </button>
-
-          </div>
+            </div>
 
         </div>
-
-      </footer>
 
     </main>
 
-  </div>
+</section>
 
-</div>
-
-
-<!-- =====================================================
+<!-- =========================
      MEMORY MODAL
-===================================================== -->
+========================= -->
 
-<div id="memoryModal" class="modal-backdrop hidden">
+<div id="memoryModal" class="modal-overlay hidden">
 
-  <div class="modal">
+    <div class="modal">
 
-    <h2>Story Memory</h2>
+        <button class="close-btn" onclick="closeMemory()">×</button>
 
-    <div id="memoryContent"></div>
+        <h2>MEMORY</h2>
 
-    <button
-      class="primary"
-      onclick="closeMemory()"
-    >
-      CLOSE
-    </button>
+        <div id="memoryContent"></div>
 
-  </div>
+    </div>
 
 </div>
-
-
-<div id="toast" class="toast"></div>
-
 
 <script>
 
-/* =========================================================
+/* ============================================================
    SUPABASE
-========================================================= */
+============================================================ */
 
 const SUPABASE_URL =
-  "https://aedijtklkqxzpgtixrte.supabase.co";
+    "https://aedijtklkqxzpgtixrte.supabase.co";
 
-const SUPABASE_ANON_KEY =
-  "sb_publishable_gREm1GLqj2ITLH4njYge1A_YLXaK70h";
+const SUPABASE_KEY =
+    "sb_publishable_gREm1GLqj2ITLH4njYge1A_YLXaK70h";
 
 const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
 
-/* =========================================================
+/* ============================================================
    GAME STATE
-========================================================= */
+============================================================ */
 
-let currentUser = null;
 let game = null;
+let currentUser = null;
 
 
-/* =========================================================
-   INITIALIZATION
-========================================================= */
-
-window.addEventListener("DOMContentLoaded", async () => {
-
-  const {
-    data: {
-      session
-    }
-  } = await supabaseClient.auth.getSession();
-
-  if (session) {
-
-    currentUser = session.user;
-
-    showHome();
-
-  } else {
-
-    showLogin();
-
-  }
-
-});
-
-
-supabaseClient.auth.onAuthStateChange(
-  async (event, session) => {
-
-    if (session) {
-
-      currentUser = session.user;
-
-    } else {
-
-      currentUser = null;
-      game = null;
-
-    }
-
-  }
-);
-
-
-/* =========================================================
+/* ============================================================
    SCREEN CONTROL
-========================================================= */
+============================================================ */
 
 function hideAllScreens() {
 
-  document
-    .querySelectorAll(".screen")
-    .forEach(screen => {
-      screen.classList.add("hidden");
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.add("hidden");
     });
 
 }
 
+function showScreen(id) {
 
-function showLogin() {
+    hideAllScreens();
 
-  hideAllScreens();
-
-  document
-    .getElementById("loginScreen")
-    .classList.remove("hidden");
+    document
+        .getElementById(id)
+        .classList.remove("hidden");
 
 }
-
 
 function showHome() {
 
-  hideAllScreens();
-
-  document
-    .getElementById("homeScreen")
-    .classList.remove("hidden");
+    showScreen("homeScreen");
 
 }
-
 
 function showCreator() {
 
-  hideAllScreens();
-
-  document
-    .getElementById("creatorScreen")
-    .classList.remove("hidden");
+    showScreen("creatorScreen");
 
 }
-
 
 async function showLoad() {
 
-  hideAllScreens();
+    showScreen("loadScreen");
 
-  document
-    .getElementById("loadScreen")
-    .classList.remove("hidden");
-
-  await loadSaveList();
+    await loadSaveList();
 
 }
 
 
-function showRP() {
+/* ============================================================
+   AUTH
+============================================================ */
 
-  hideAllScreens();
+async function createAccount() {
 
-  document
-    .getElementById("rpScreen")
-    .classList.remove("hidden");
+    const email =
+        document.getElementById("loginEmail").value.trim();
 
-  renderGame();
+    const password =
+        document.getElementById("loginPassword").value;
+
+    if (!email || !password) {
+
+        showAuthMessage(
+            "Enter an email and password."
+        );
+
+        return;
+    }
+
+    if (password.length < 6) {
+
+        showAuthMessage(
+            "Password must be at least 6 characters."
+        );
+
+        return;
+    }
+
+    showAuthMessage("Creating account...");
+
+    const { data, error } =
+        await supabaseClient.auth.signUp({
+            email,
+            password
+        });
+
+    if (error) {
+
+        showAuthMessage(error.message);
+
+        return;
+    }
+
+    if (data.session) {
+
+        currentUser = data.user;
+
+        showHome();
+
+    } else {
+
+        showAuthMessage(
+            "Account created. Check your email if confirmation is required, then log in."
+        );
+
+    }
 
 }
 
 
-/* =========================================================
-   AUTHENTICATION
-========================================================= */
+async function login() {
 
-function setAuthMessage(message, type = "") {
+    const email =
+        document.getElementById("loginEmail").value.trim();
 
-  const el =
-    document.getElementById("authMessage");
+    const password =
+        document.getElementById("loginPassword").value;
 
-  el.textContent = message;
+    if (!email || !password) {
 
-  el.className =
-    "auth-message " +
-    (type ? "auth-" + type : "");
+        showAuthMessage(
+            "Enter your email and password."
+        );
 
-}
+        return;
+    }
 
+    showAuthMessage("Logging in...");
 
-async function signUp() {
+    const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+            email,
+            password
+        });
 
-  const email =
-    document
-      .getElementById("emailInput")
-      .value
-      .trim();
+    if (error) {
 
-  const password =
-    document
-      .getElementById("passwordInput")
-      .value;
+        showAuthMessage(error.message);
 
-  if (!email || !password) {
+        return;
+    }
 
-    setAuthMessage(
-      "Enter an email and password."
-    );
+    currentUser = data.user;
 
-    return;
-
-  }
-
-  if (password.length < 6) {
-
-    setAuthMessage(
-      "Password must be at least 6 characters."
-    );
-
-    return;
-
-  }
-
-  setAuthMessage("Creating account...");
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient.auth.signUp({
-      email,
-      password
-    });
-
-  if (error) {
-
-    setAuthMessage(
-      error.message,
-      "error"
-    );
-
-    return;
-
-  }
-
-  currentUser = data.user;
-
-  setAuthMessage(
-    "Account created.",
-    "success"
-  );
-
-  setTimeout(() => {
     showHome();
-  }, 700);
 
 }
 
 
-async function signIn() {
+async function logout() {
 
-  const email =
-    document
-      .getElementById("emailInput")
-      .value
-      .trim();
+    await supabaseClient.auth.signOut();
 
-  const password =
-    document
-      .getElementById("passwordInput")
-      .value;
+    currentUser = null;
+    game = null;
 
-  if (!email || !password) {
-
-    setAuthMessage(
-      "Enter your email and password."
-    );
-
-    return;
-
-  }
-
-  setAuthMessage("Logging in...");
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient.auth.signInWithPassword({
-      email,
-      password
-    });
-
-  if (error) {
-
-    setAuthMessage(
-      error.message,
-      "error"
-    );
-
-    return;
-
-  }
-
-  currentUser = data.user;
-
-  showHome();
+    showScreen("loginScreen");
 
 }
 
 
-async function signOut() {
+function showAuthMessage(message) {
 
-  await supabaseClient.auth.signOut();
-
-  currentUser = null;
-  game = null;
-
-  showLogin();
+    document.getElementById(
+        "authMessage"
+    ).textContent = message;
 
 }
 
 
-/* =========================================================
+/* ============================================================
+   INITIAL SESSION
+============================================================ */
+
+async function initializeApp() {
+
+    const {
+        data: { session }
+    } = await supabaseClient.auth.getSession();
+
+    if (session) {
+
+        currentUser = session.user;
+
+        showHome();
+
+    } else {
+
+        showScreen("loginScreen");
+
+    }
+
+}
+
+
+initializeApp();
+
+
+/* ============================================================
    CREATE GAME
-========================================================= */
+============================================================ */
 
-async function createNewGame() {
+async function createGame() {
 
-  if (!currentUser) {
+    if (!currentUser) {
 
-    showLogin();
+        showCreatorMessage(
+            "You must be logged in."
+        );
 
-    return;
+        return;
+    }
 
-  }
+    const name =
+        document.getElementById("ocName").value.trim();
 
-  const name =
-    document
-      .getElementById("ocName")
-      .value
-      .trim();
+    const age =
+        document.getElementById("ocAge").value.trim();
 
-  if (!name) {
+    if (!name) {
 
-    alert("Please give your character a name.");
+        showCreatorMessage(
+            "Please enter your character's name."
+        );
 
-    return;
+        return;
+    }
 
-  }
+    const userId = currentUser.id;
 
+    game = {
 
-  game = {
+        id: crypto.randomUUID(),
 
-    id: crypto.randomUUID(),
+        user_id: userId,
 
-    name: name,
+        name: name,
 
-    book:
-      document
-        .getElementById("bookSelect")
-        .value,
+        book:
+            document.getElementById("book").value,
 
-    location:
-      document
-        .getElementById("locationSelect")
-        .value,
+        location:
+            document.getElementById("location").value,
 
-    timeline:
-      document
-        .getElementById("timelineSelect")
-        .value,
+        timeline:
+            document.getElementById("timeline").value,
 
-    createdAt:
-      new Date().toISOString(),
+        oc: {
 
-    updatedAt:
-      new Date().toISOString(),
+            name,
 
-    oc: {
+            age,
 
-      name,
+            appearance:
+                document.getElementById("ocAppearance").value,
 
-      age:
-        document
-          .getElementById("ocAge")
-          .value,
+            personality:
+                document.getElementById("ocPersonality").value,
 
-      pronouns:
-        document
-          .getElementById("ocPronouns")
-          .value,
+            background:
+                document.getElementById("ocBackground").value,
 
-      appearance:
-        document
-          .getElementById("ocAppearance")
-          .value,
+            details:
+                document.getElementById("ocDetails").value
 
-      personality:
-        document
-          .getElementById("ocPersonality")
-          .value,
+        },
 
-      background:
-        document
-          .getElementById("ocBackground")
-          .value,
+        memory: [],
 
-      details:
-        document
-          .getElementById("ocDetails")
-          .value
+        relationships: {},
 
-    },
+        inventory: [],
 
-    memory: [],
+        world_state: {},
 
-    relationships: {},
+        conversation: [],
 
-    inventory: [],
+        versions: [],
 
-    worldState: {
+        customSituation:
+            document.getElementById("customSituation").value,
 
-      currentLocation:
-        document
-          .getElementById("locationSelect")
-          .value,
+        created_at:
+            new Date().toISOString(),
 
-      timeline:
-        document
-          .getElementById("timelineSelect")
-          .value
+        updated_at:
+            new Date().toISOString()
 
-    },
+    };
 
-    conversation: [],
+    addNarratorMessage(
+        createOpeningNarration()
+    );
 
-    versions: []
+    const success =
+        await saveGame(false);
 
-  };
+    if (!success) {
 
+        return;
+    }
 
-  const customSituation =
-    document
-      .getElementById("customSituation")
-      .value
-      .trim();
+    renderGame();
 
-
-  let opening =
-    createOpeningNarration(customSituation);
-
-
-  game.conversation.push({
-
-    id: crypto.randomUUID(),
-
-    role: "narrator",
-
-    content: opening,
-
-    timestamp:
-      new Date().toISOString()
-
-  });
-
-
-  game.memory.push({
-
-    type: "character",
-
-    content:
-      `The player's character is ${name}.`
-
-  });
-
-
-  game.versions.push({
-
-    timestamp:
-      new Date().toISOString(),
-
-    conversation:
-      JSON.parse(
-        JSON.stringify(game.conversation)
-      )
-
-  });
-
-
-  await saveGame(false);
-
-  showRP();
+    showScreen("rpScreen");
 
 }
 
 
-/* =========================================================
-   OPENING NARRATION
-========================================================= */
+/* ============================================================
+   OPENING
+============================================================ */
 
-function createOpeningNarration(customSituation) {
+function createOpeningNarration() {
 
-  if (customSituation) {
+    const custom =
+        game.customSituation.trim();
 
-    return customSituation +
-      "\n\nThe story begins here.";
+    if (custom) {
 
-  }
+        return custom;
 
-
-  if (
-    game &&
-    game.timeline === "Before Bella's arrival"
-  ) {
+    }
 
     return `
-Forks is quiet in the way only Forks can be.
+The rain has settled over Forks again, turning the streets dark and reflective beneath the gray Washington sky.
 
-The sky hangs beneath a permanent veil of gray cloud, and the damp air carries the scent of rain through the trees.
+Everything feels ordinary at first.
 
-Your story begins before Bella Swan has arrived in Forks.
+Cars move through the wet roads. Students talk in the halls. Teachers carry on with their routines.
 
-Nothing has happened yet that your character has not personally experienced.
+But beneath the familiar rhythm of the town, something is beginning to change.
 
-Where you are, what you are doing, and what happens next are yours to decide.
-`.trim();
+You are here now.
 
-  }
+The story has not been written around you.
 
-
-  if (
-    game &&
-    game.timeline === "Early Twilight"
-  ) {
-
-    return `
-Rain has settled over Forks once again.
-
-The small town feels almost unchanged on the surface, but there is something different beneath the ordinary rhythm of school, roads, forests, and familiar faces.
-
-Your story begins here.
-
-You decide what your character notices, says, thinks, and does.
-`.trim();
-
-  }
-
-
-  return `
-The rain has just begun.
-
-Forks sits beneath a blanket of gray clouds, the surrounding forest disappearing into mist.
-
-Your story begins here.
-
-The world is already moving around you.
-
-What you do next is up to you.
+Your choices will become part of it.
 `.trim();
 
 }
 
 
-/* =========================================================
+/* ============================================================
    PLAYER RESPONSE
-========================================================= */
+============================================================ */
 
-async function submitPlayerResponse() {
+async function sendResponse() {
 
-  if (!game) return;
+    const input =
+        document.getElementById("playerInput");
 
-  const input =
-    document
-      .getElementById("playerInput");
+    const text =
+        input.value.trim();
 
-  const text =
-    input.value.trim();
+    if (!text) return;
 
-  if (!text) return;
-
-
-  /* OOC */
-
-  if (
-    text.startsWith("(") &&
-    text.endsWith(")")
-  ) {
-
-    await handleOOC(text);
+    if (!game) return;
 
     input.value = "";
 
-    return;
-
-  }
-
-
-  game.conversation.push({
-
-    id: crypto.randomUUID(),
-
-    role: "player",
-
-    content: text,
-
-    timestamp:
-      new Date().toISOString()
-
-  });
-
-
-  processPlayerAction(text);
-
-
-  input.value = "";
-
-
-  await saveGame(false);
-
-  renderGame();
-
-}
-
-
-/* =========================================================
-   PLAYER ACTION
-========================================================= */
-
-function processPlayerAction(text) {
-
-  const lower =
-    text.toLowerCase();
-
-
-  let response = "";
-
-
-  if (
-    lower.includes("look") ||
-    lower.includes("watch")
-  ) {
-
-    response =
-      `You take a moment to look around, paying attention to the details that might otherwise disappear into the background.\n\n${getAtmosphere()}`;
-
-  }
-
-  else if (
-    lower.includes("leave") ||
-    lower.includes("walk")
-  ) {
-
-    response =
-      `You decide to move on.\n\nThe world continues around you as you choose your next direction.`;
-
-  }
-
-  else if (
-    lower.includes("school")
-  ) {
-
-    game.location =
-      "Forks High School";
-
-    game.worldState.currentLocation =
-      "Forks High School";
-
-    response =
-      `Forks High School comes into view, surrounded by the familiar wet landscape of the town.`;
-
-  }
-
-  else if (
-    lower.includes("forest") ||
-    lower.includes("woods")
-  ) {
-
-    game.location =
-      "Forks Forest";
-
-    game.worldState.currentLocation =
-      "Forks Forest";
-
-    response =
-      `The forest closes around you, the sound of rain filtering through the canopy overhead.`;
-
-  }
-
-  else {
-
-    response =
-      `The moment unfolds naturally around you.\n\nThe world does not stop simply because you are deciding what to do next.`;
-
-  }
-
-
-  game.conversation.push({
-
-    id: crypto.randomUUID(),
-
-    role: "narrator",
-
-    content: response,
-
-    timestamp:
-      new Date().toISOString()
-
-  });
-
-}
-
-
-/* =========================================================
-   ATMOSPHERE
-========================================================= */
-
-function getAtmosphere() {
-
-  const locations = {
-
-    "Forks High School":
-      "The parking lot glistens with rain. Cars move slowly across the wet pavement while students disappear through the school doors.",
-
-    "Forks":
-      "Rain-darkened roads wind through the small town. Everything feels damp, green, and unusually quiet.",
-
-    "Home":
-      "The house is still around you, filled with the ordinary sounds of everyday life.",
-
-    "La Push":
-      "The coast is cold and damp, with the Pacific stretching beyond the dark shoreline.",
-
-    "Forks Forest":
-      "Tall trees surround you on every side. Wet earth, moss, and rain fill the air."
-
-  };
-
-  return (
-    locations[game.location] ||
-    "Rain falls softly around you."
-  );
-
-}
-
-
-/* =========================================================
-   CONTINUE SCENE
-========================================================= */
-
-async function continueScene() {
-
-  if (!game) return;
-
-
-  const continuation =
-    `The scene continues.\n\n${getAtmosphere()}\n\nFor a moment, nothing forces you to act. The world simply continues around your character, leaving you free to decide what happens next.`;
-
-
-  game.conversation.push({
-
-    id: crypto.randomUUID(),
-
-    role: "narrator",
-
-    content: continuation,
-
-    timestamp:
-      new Date().toISOString()
-
-  });
-
-
-  await saveGame(false);
-
-  renderGame();
-
-}
-
-
-/* =========================================================
-   OOC
-========================================================= */
-
-async function handleOOC(text) {
-
-  const instruction =
-    text
-      .slice(1, -1)
-      .trim()
-      .toLowerCase();
-
-
-  const retryWords = [
-    "retry",
-    "redo",
-    "fix",
-    "rewrite",
-    "change",
-    "again"
-  ];
-
-
-  const wantsRetry =
-    retryWords.some(
-      word =>
-        instruction.includes(word)
-    );
-
-
-  if (wantsRetry) {
-
-    for (
-      let i = game.conversation.length - 1;
-      i >= 0;
-      i--
-    ) {
-
-      if (
-        game.conversation[i].role ===
-        "narrator"
-      ) {
-
-        game.conversation.splice(i, 1);
-
-        break;
-
-      }
-
-    }
-
-
-    game.conversation.push({
-
-      id: crypto.randomUUID(),
-
-      role: "ooc",
-
-      content:
-        `OOC correction: ${text.slice(1,-1).trim()}`,
-
-      timestamp:
-        new Date().toISOString()
-
-    });
-
-
-    game.conversation.push({
-
-      id: crypto.randomUUID(),
-
-      role: "narrator",
-
-      content:
-        "The previous narration has been removed. The scene is ready to be continued from the corrected point.",
-
-      timestamp:
-        new Date().toISOString()
-
-    });
-
-  }
-
-  else {
-
-    game.conversation.push({
-
-      id: crypto.randomUUID(),
-
-      role: "ooc",
-
-      content:
-        text.slice(1,-1).trim(),
-
-      timestamp:
-        new Date().toISOString()
-
-    });
-
-  }
-
-
-  await saveGame(false);
-
-  renderGame();
-
-}
-
-
-/* =========================================================
-   RETRY
-========================================================= */
-
-async function retryLastNarration() {
-
-  if (!game) return;
-
-
-  for (
-    let i = game.conversation.length - 1;
-    i >= 0;
-    i--
-  ) {
+    updateWordCount();
 
     if (
-      game.conversation[i].role ===
-      "narrator"
+        text.startsWith("(") &&
+        text.endsWith(")")
     ) {
 
-      game.conversation.splice(i, 1);
+        handleOOC(text);
 
-      break;
-
+        return;
     }
 
-  }
+    addPlayerMessage(text);
 
-
-  game.conversation.push({
-
-    id: crypto.randomUUID(),
-
-    role: "narrator",
-
-    content:
-      "The previous narration has been removed. The scene can now be continued from the preceding moment.",
-
-    timestamp:
-      new Date().toISOString()
-
-  });
-
-
-  await saveGame(false);
-
-  renderGame();
-
-}
-
-
-/* =========================================================
-   POLISH
-========================================================= */
-
-function polishResponse() {
-
-  const input =
-    document
-      .getElementById("playerInput");
-
-  const text =
-    input.value.trim();
-
-  if (!text) return;
-
-
-  input.value =
-    text
-      .replace(/\s+/g, " ")
-      .trim();
-
-
-  showToast(
-    "Response polished. Review it before sending."
-  );
-
-}
-
-
-/* =========================================================
-   SAVE GAME
-========================================================= */
-
-async function saveGame(showMessage = true) {
-
-  if (!currentUser || !game) return;
-
-
-  game.updatedAt =
-    new Date().toISOString();
-
-
-  const row = {
-
-    id: game.id,
-
-    user_id: currentUser.id,
-
-    name: game.name,
-
-    book: game.book,
-
-    location: game.location,
-
-    timeline: game.timeline,
-
-    oc: game.oc,
-
-    memory: game.memory,
-
-    relationships:
-      game.relationships,
-
-    inventory:
-      game.inventory,
-
-    world_state:
-      game.worldState,
-
-    conversation:
-      game.conversation,
-
-    versions:
-      game.versions,
-
-    created_at:
-      game.createdAt,
-
-    updated_at:
-      game.updatedAt
-
-  };
-
-
-  const {
-    error
-  } =
-    await supabaseClient
-      .from("saved_games")
-      .upsert(
-        row,
-        {
-          onConflict: "id"
-        }
-      );
-
-
-  if (error) {
-
-    console.error(error);
-
-    showToast(
-      "Save failed: " + error.message
-    );
-
-    return;
-
-  }
-
-
-  if (showMessage) {
-
-    showToast("Game saved.");
-
-  }
-
-
-  const status =
-    document
-      .getElementById("saveStatus");
-
-  if (status) {
-
-    status.textContent =
-      "Saved just now";
-
-  }
-
-}
-
-
-/* =========================================================
-   LOAD SAVE LIST
-========================================================= */
-
-async function loadSaveList() {
-
-  if (!currentUser) return;
-
-
-  const list =
-    document
-      .getElementById("saveList");
-
-  list.innerHTML =
-    "Loading saves...";
-
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("saved_games")
-      .select("*")
-      .eq(
-        "user_id",
-        currentUser.id
-      )
-      .order(
-        "updated_at",
-        {
-          ascending: false
-        }
-      );
-
-
-  if (error) {
-
-    list.innerHTML =
-      `<p style="color:#e27777;">
-        Could not load saves.<br><br>
-        ${escapeHTML(error.message)}
-      </p>`;
-
-    return;
-
-  }
-
-
-  if (!data || data.length === 0) {
-
-    list.innerHTML =
-      `<p style="color:#777;">
-        No saved games yet.
-      </p>`;
-
-    return;
-
-  }
-
-
-  list.innerHTML = "";
-
-
-  data.forEach(save => {
-
-    const card =
-      document.createElement("div");
-
-    card.className =
-      "save-card";
-
-
-    const updated =
-      new Date(
-        save.updated_at
-      ).toLocaleString();
-
-
-    card.innerHTML = `
-
-      <div class="save-title">
-        ${escapeHTML(save.name)}
-      </div>
-
-      <div class="save-meta">
-
-        ${escapeHTML(save.book)}
-        ·
-        ${escapeHTML(save.location || "Unknown")}
-        <br>
-
-        Last saved:
-        ${escapeHTML(updated)}
-
-      </div>
-
-      <div class="save-actions">
-
-        <button
-          class="small"
-          onclick="loadGame('${save.id}')"
-        >
-          CONTINUE
-        </button>
-
-        <button
-          class="small danger"
-          onclick="deleteGame('${save.id}')"
-        >
-          DELETE
-        </button>
-
-      </div>
-
-    `;
-
-
-    list.appendChild(card);
-
-  });
-
-}
-
-
-/* =========================================================
-   LOAD GAME
-========================================================= */
-
-async function loadGame(id) {
-
-  if (!currentUser) return;
-
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("saved_games")
-      .select("*")
-      .eq("id", id)
-      .eq(
-        "user_id",
-        currentUser.id
-      )
-      .single();
-
-
-  if (error) {
-
-    alert(
-      "Could not load game: " +
-      error.message
-    );
-
-    return;
-
-  }
-
-
-  game = {
-
-    id:
-      data.id,
-
-    name:
-      data.name,
-
-    book:
-      data.book,
-
-    location:
-      data.location,
-
-    timeline:
-      data.timeline,
-
-    createdAt:
-      data.created_at,
-
-    updatedAt:
-      data.updated_at,
-
-    oc:
-      data.oc || {},
-
-    memory:
-      data.memory || [],
-
-    relationships:
-      data.relationships || {},
-
-    inventory:
-      data.inventory || [],
-
-    worldState:
-      data.world_state || {},
-
-    conversation:
-      data.conversation || [],
-
-    versions:
-      data.versions || []
-
-  };
-
-
-  showRP();
-
-}
-
-
-/* =========================================================
-   DELETE GAME
-========================================================= */
-
-async function deleteGame(id) {
-
-  if (!confirm(
-    "Delete this saved story permanently?"
-  )) {
-
-    return;
-
-  }
-
-
-  const {
-    error
-  } =
-    await supabaseClient
-      .from("saved_games")
-      .delete()
-      .eq("id", id)
-      .eq(
-        "user_id",
-        currentUser.id
-      );
-
-
-  if (error) {
-
-    alert(
-      "Could not delete save: " +
-      error.message
-    );
-
-    return;
-
-  }
-
-
-  await loadSaveList();
-
-}
-
-
-/* =========================================================
-   EXIT GAME
-========================================================= */
-
-async function exitGame() {
-
-  if (game) {
+    await processPlayerAction(text);
 
     await saveGame(false);
 
-  }
-
-  game = null;
-
-  showHome();
+    renderGame();
 
 }
 
 
-/* =========================================================
-   RENDER GAME
-========================================================= */
+function handleOOC(text) {
 
-function renderGame() {
+    const instruction =
+        text.slice(1, -1).trim().toLowerCase();
 
-  if (!game) return;
-
-
-  document
-    .getElementById("sidebarBook")
-    .textContent =
-    game.book;
-
-
-  document
-    .getElementById("sidebarCharacter")
-    .textContent =
-    game.oc.name ||
-    game.name;
-
-
-  document
-    .getElementById("sidebarLocation")
-    .textContent =
-    game.location;
-
-
-  document
-    .getElementById("sidebarTimeline")
-    .textContent =
-    game.timeline;
-
-
-  document
-    .getElementById("storyLocation")
-    .textContent =
-    game.location;
-
-
-  document
-    .getElementById("wordCount")
-    .textContent =
-    countWords();
-
-
-  const messages =
-    document
-      .getElementById("messages");
-
-
-  messages.innerHTML = "";
-
-
-  game.conversation.forEach(message => {
-
-    const wrapper =
-      document.createElement("div");
-
-
-    wrapper.className =
-      "message " +
-      message.role;
-
-
-    const role =
-      document.createElement("div");
-
-
-    role.className =
-      "message-role";
-
-
-    if (message.role === "player") {
-
-      role.textContent =
-        game.oc.name ||
-        "You";
-
-    }
-
-    else if (
-      message.role === "ooc"
+    if (
+        instruction.includes("retry") ||
+        instruction.includes("redo") ||
+        instruction.includes("fix") ||
+        instruction.includes("change")
     ) {
 
-      role.textContent =
-        "OOC";
+        removeLastNarratorMessage();
+
+        addNarratorMessage(
+            "The previous narration has been removed. The scene will be retried."
+        );
+
+    } else {
+
+        addNarratorMessage(
+            "OOC instruction received: " + instruction
+        );
 
     }
 
-    else {
+    saveGame(false);
 
-      role.textContent =
-        "Narrator";
-
-    }
-
-
-    const content =
-      document.createElement("div");
-
-
-    content.className =
-      "message-content";
-
-
-    content.textContent =
-      message.content;
-
-
-    wrapper.appendChild(role);
-
-    wrapper.appendChild(content);
-
-    messages.appendChild(wrapper);
-
-  });
-
-
-  requestAnimationFrame(() => {
-
-    messages.scrollTop =
-      messages.scrollHeight;
-
-  });
+    renderGame();
 
 }
 
 
-/* =========================================================
-   WORD COUNT
-========================================================= */
+/* ============================================================
+   CURRENT STORY ENGINE
+============================================================ */
 
-function countWords() {
+/*
+   This is intentionally structured so the actual AI engine
+   can be connected here later.
 
-  if (!game) return 0;
+   The save system, character system, conversation history,
+   memory and timeline are already separate from this function.
+*/
 
+async function processPlayerAction(text) {
 
-  return game.conversation
-    .map(message =>
-      message.content || ""
-    )
-    .join(" ")
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean)
-    .length;
+    const lower =
+        text.toLowerCase();
+
+    let response = "";
+
+    if (
+        lower.includes("school")
+    ) {
+
+        response =
+            "The school continues around you, filled with the ordinary sounds of students moving between classes.";
+
+    } else if (
+        lower.includes("cullen")
+    ) {
+
+        response =
+            "The name seems to carry a strange weight in the room. The Cullens are known around town, though most people know very little about them.";
+
+    } else if (
+        lower.includes("bella")
+    ) {
+
+        response =
+            "Bella Swan has become a noticeable presence in Forks. Her arrival has already begun changing the rhythm of the small town.";
+
+    } else {
+
+        response =
+            "The moment unfolds naturally around your choice. The world does not stop simply because you are deciding what to do next.";
+
+    }
+
+    addNarratorMessage(response);
 
 }
 
 
-/* =========================================================
-   MEMORY
-========================================================= */
+/* ============================================================
+   CONTINUE SCENE
+============================================================ */
 
-function showMemory() {
+async function continueScene() {
 
-  if (!game) return;
+    if (!game) return;
 
+    addNarratorMessage(
+        "The scene continues around you. The sounds, people and atmosphere of the moment carry forward while the world waits to see what you do next."
+    );
 
-  const content =
-    document
-      .getElementById("memoryContent");
+    await saveGame(false);
 
+    renderGame();
 
-  let html = "";
-
-
-  html += `
-    <h3>Character</h3>
-    <p>
-      ${escapeHTML(
-        game.oc.name || "Unnamed"
-      )}
-    </p>
-  `;
+}
 
 
-  html += `
-    <h3>Location</h3>
-    <p>
-      ${escapeHTML(
-        game.location || "Unknown"
-      )}
-    </p>
-  `;
+/* ============================================================
+   RETRY
+============================================================ */
+
+async function retryNarration() {
+
+    if (!game) return;
+
+    removeLastNarratorMessage();
+
+    addNarratorMessage(
+        "The scene rewinds to the previous moment, allowing the narration to unfold again."
+    );
+
+    await saveGame(false);
+
+    renderGame();
+
+}
 
 
-  html += `
-    <h3>Timeline</h3>
-    <p>
-      ${escapeHTML(
-        game.timeline || "Unknown"
-      )}
-    </p>
-  `;
+/* ============================================================
+   MESSAGES
+============================================================ */
 
+function addNarratorMessage(text) {
 
-  html += `
-    <h3>Stored Memories</h3>
-  `;
+    game.conversation.push({
 
+        role: "narrator",
 
-  if (
-    !game.memory ||
-    game.memory.length === 0
-  ) {
+        content: text,
 
-    html +=
-      `<p style="color:#777;">
-        No memories stored yet.
-      </p>`;
-
-  }
-
-  else {
-
-    html += "<ul>";
-
-    game.memory.forEach(memory => {
-
-      html +=
-        `<li>
-          ${escapeHTML(
-            memory.content || ""
-          )}
-        </li>`;
+        timestamp:
+            new Date().toISOString()
 
     });
 
-    html += "</ul>";
-
-  }
+}
 
 
-  content.innerHTML =
-    html;
+function addPlayerMessage(text) {
+
+    game.conversation.push({
+
+        role: "player",
+
+        content: text,
+
+        timestamp:
+            new Date().toISOString()
+
+    });
+
+}
 
 
-  document
-    .getElementById("memoryModal")
-    .classList.remove("hidden");
+function removeLastNarratorMessage() {
+
+    for (
+        let i = game.conversation.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        if (
+            game.conversation[i].role === "narrator"
+        ) {
+
+            game.conversation.splice(i, 1);
+
+            break;
+        }
+
+    }
+
+}
+
+
+/* ============================================================
+   RENDER
+============================================================ */
+
+function renderGame() {
+
+    if (!game) return;
+
+    document.getElementById(
+        "storyTitle"
+    ).textContent =
+        game.book.toUpperCase();
+
+    document.getElementById(
+        "storyMeta"
+    ).textContent =
+        `${game.location} • ${game.timeline}`;
+
+    document.getElementById(
+        "sideCharacter"
+    ).textContent =
+        game.oc.name;
+
+    document.getElementById(
+        "sideAge"
+    ).textContent =
+        game.oc.age
+            ? `Age ${game.oc.age}`
+            : "";
+
+    document.getElementById(
+        "sideLocation"
+    ).textContent =
+        game.location;
+
+    document.getElementById(
+        "sideTimeline"
+    ).textContent =
+        game.timeline;
+
+    const container =
+        document.getElementById("messages");
+
+    container.innerHTML = "";
+
+    game.conversation.forEach(message => {
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "message-row " +
+            message.role;
+
+        const author =
+            document.createElement("div");
+
+        author.className =
+            "message-author";
+
+        author.textContent =
+            message.role === "player"
+                ? game.oc.name
+                : "Narrator";
+
+        const content =
+            document.createElement("div");
+
+        content.className =
+            "message-content";
+
+        content.textContent =
+            message.content;
+
+        row.appendChild(author);
+        row.appendChild(content);
+
+        container.appendChild(row);
+
+    });
+
+    container.scrollTop =
+        container.scrollHeight;
+
+}
+
+
+/* ============================================================
+   SAVE GAME
+============================================================ */
+
+async function saveGame(manual = false) {
+
+    if (!game) return false;
+
+    if (!currentUser) {
+
+        setSaveStatus(
+            "Not logged in"
+        );
+
+        return false;
+    }
+
+    /*
+       IMPORTANT:
+       Always take the authenticated user's ID directly
+       from Supabase instead of trusting an old game object.
+    */
+
+    const {
+        data: { user },
+        error: userError
+    } = await supabaseClient.auth.getUser();
+
+    if (userError || !user) {
+
+        setSaveStatus(
+            "Session expired"
+        );
+
+        return false;
+    }
+
+    currentUser = user;
+
+    game.user_id = user.id;
+
+    game.updated_at =
+        new Date().toISOString();
+
+    const saveData = {
+
+        id: game.id,
+
+        user_id: user.id,
+
+        name: game.name,
+
+        book: game.book,
+
+        location: game.location,
+
+        timeline: game.timeline,
+
+        oc: game.oc,
+
+        memory: game.memory,
+
+        relationships:
+            game.relationships,
+
+        inventory:
+            game.inventory,
+
+        world_state:
+            game.world_state,
+
+        conversation:
+            game.conversation,
+
+        versions:
+            game.versions,
+
+        created_at:
+            game.created_at,
+
+        updated_at:
+            game.updated_at
+
+    };
+
+    setSaveStatus("Saving...");
+
+    const {
+        error
+    } = await supabaseClient
+        .from("saved_games")
+        .upsert(
+            saveData,
+            {
+                onConflict: "id"
+            }
+        );
+
+    if (error) {
+
+        console.error(
+            "SAVE ERROR:",
+            error
+        );
+
+        setSaveStatus(
+            "Save failed"
+        );
+
+        if (manual) {
+
+            alert(
+                "Save failed:\n\n" +
+                error.message
+            );
+
+        }
+
+        return false;
+    }
+
+    setSaveStatus(
+        manual
+            ? "Saved successfully"
+            : "Saved"
+    );
+
+    return true;
+
+}
+
+
+function setSaveStatus(text) {
+
+    const element =
+        document.getElementById(
+            "saveStatus"
+        );
+
+    if (element) {
+
+        element.textContent = text;
+
+    }
+
+}
+
+
+/* ============================================================
+   LOAD SAVE LIST
+============================================================ */
+
+async function loadSaveList() {
+
+    const list =
+        document.getElementById("saveList");
+
+    list.innerHTML =
+        "<p>Loading saves...</p>";
+
+    if (!currentUser) {
+
+        list.innerHTML =
+            "<p>You are not logged in.</p>";
+
+        return;
+    }
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("saved_games")
+        .select("*")
+        .eq(
+            "user_id",
+            currentUser.id
+        )
+        .order(
+            "updated_at",
+            {
+                ascending: false
+            }
+        );
+
+    if (error) {
+
+        console.error(error);
+
+        list.innerHTML =
+            `<p>Could not load saves: ${escapeHtml(error.message)}</p>`;
+
+        return;
+    }
+
+    if (!data || data.length === 0) {
+
+        list.innerHTML =
+            "<p>No saved games yet.</p>";
+
+        return;
+    }
+
+    list.innerHTML = "";
+
+    data.forEach(save => {
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "save-card";
+
+        const info =
+            document.createElement("div");
+
+        info.className =
+            "save-info";
+
+        const title =
+            document.createElement("h3");
+
+        title.textContent =
+            save.name || "Unnamed Character";
+
+        const book =
+            document.createElement("p");
+
+        book.textContent =
+            save.book;
+
+        const date =
+            document.createElement("p");
+
+        date.textContent =
+            "Last saved: " +
+            new Date(
+                save.updated_at
+            ).toLocaleString();
+
+        info.appendChild(title);
+        info.appendChild(book);
+        info.appendChild(date);
+
+        const actions =
+            document.createElement("div");
+
+        actions.className =
+            "save-actions";
+
+        const loadButton =
+            document.createElement("button");
+
+        loadButton.className =
+            "small-btn";
+
+        loadButton.textContent =
+            "LOAD";
+
+        loadButton.onclick =
+            () => loadGame(save.id);
+
+        const deleteButton =
+            document.createElement("button");
+
+        deleteButton.className =
+            "small-btn";
+
+        deleteButton.textContent =
+            "DELETE";
+
+        deleteButton.onclick =
+            () => deleteGame(save.id);
+
+        actions.appendChild(loadButton);
+        actions.appendChild(deleteButton);
+
+        card.appendChild(info);
+        card.appendChild(actions);
+
+        list.appendChild(card);
+
+    });
+
+}
+
+
+/* ============================================================
+   LOAD GAME
+============================================================ */
+
+async function loadGame(id) {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("saved_games")
+        .select("*")
+        .eq(
+            "id",
+            id
+        )
+        .eq(
+            "user_id",
+            currentUser.id
+        )
+        .single();
+
+    if (error) {
+
+        alert(
+            "Could not load game:\n\n" +
+            error.message
+        );
+
+        return;
+    }
+
+    game = {
+
+        id: data.id,
+
+        user_id: data.user_id,
+
+        name: data.name,
+
+        book: data.book,
+
+        location: data.location,
+
+        timeline: data.timeline,
+
+        oc: data.oc || {},
+
+        memory: data.memory || [],
+
+        relationships:
+            data.relationships || {},
+
+        inventory:
+            data.inventory || [],
+
+        world_state:
+            data.world_state || {},
+
+        conversation:
+            data.conversation || [],
+
+        versions:
+            data.versions || [],
+
+        created_at:
+            data.created_at,
+
+        updated_at:
+            data.updated_at
+
+    };
+
+    renderGame();
+
+    showScreen("rpScreen");
+
+}
+
+
+/* ============================================================
+   DELETE GAME
+============================================================ */
+
+async function deleteGame(id) {
+
+    const confirmed =
+        confirm(
+            "Delete this saved game permanently?"
+        );
+
+    if (!confirmed) return;
+
+    const {
+        error
+    } = await supabaseClient
+        .from("saved_games")
+        .delete()
+        .eq(
+            "id",
+            id
+        )
+        .eq(
+            "user_id",
+            currentUser.id
+        );
+
+    if (error) {
+
+        alert(
+            "Could not delete save:\n\n" +
+            error.message
+        );
+
+        return;
+    }
+
+    await loadSaveList();
+
+}
+
+
+/* ============================================================
+   MEMORY
+============================================================ */
+
+function showMemory() {
+
+    if (!game) return;
+
+    const content =
+        document.getElementById(
+            "memoryContent"
+        );
+
+    if (
+        !game.memory ||
+        game.memory.length === 0
+    ) {
+
+        content.innerHTML =
+            "<p>No important memories have been recorded yet.</p>";
+
+    } else {
+
+        content.innerHTML =
+            game.memory
+                .map(item =>
+                    `<p>${escapeHtml(item)}</p>`
+                )
+                .join("");
+
+    }
+
+    document
+        .getElementById("memoryModal")
+        .classList.remove("hidden");
 
 }
 
 
 function closeMemory() {
 
-  document
-    .getElementById("memoryModal")
-    .classList.add("hidden");
+    document
+        .getElementById("memoryModal")
+        .classList.add("hidden");
 
 }
 
 
-/* =========================================================
-   AUTO SAVE
-========================================================= */
+/* ============================================================
+   WORD COUNT
+============================================================ */
+
+function updateWordCount() {
+
+    const text =
+        document.getElementById(
+            "playerInput"
+        ).value.trim();
+
+    const count =
+        text
+            ? text.split(/\s+/).length
+            : 0;
+
+    document.getElementById(
+        "wordCount"
+    ).textContent = count;
+
+}
+
+
+/* ============================================================
+   EXIT
+============================================================ */
+
+async function exitGame() {
+
+    if (game) {
+
+        await saveGame(false);
+
+    }
+
+    game = null;
+
+    showHome();
+
+}
+
+
+/* ============================================================
+   HELPERS
+============================================================ */
+
+function showCreatorMessage(message) {
+
+    document.getElementById(
+        "creatorMessage"
+    ).textContent = message;
+
+}
+
+
+function escapeHtml(text) {
+
+    return String(text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
+
+
+/* ============================================================
+   AUTOSAVE
+============================================================ */
 
 setInterval(
-  async () => {
+    async () => {
 
-    if (
-      currentUser &&
-      game &&
-      !document
-        .getElementById("rpScreen")
-        .classList
-        .contains("hidden")
-    ) {
+        if (
+            game &&
+            currentUser &&
+            !document
+                .getElementById("rpScreen")
+                .classList
+                .contains("hidden")
+        ) {
 
-      await saveGame(false);
+            await saveGame(false);
 
-    }
+        }
 
-  },
-  30000
+    },
+    30000
 );
 
 
-/* =========================================================
-   UTILITIES
-========================================================= */
-
-function escapeHTML(value) {
-
-  return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-
-}
-
-
-function showToast(message) {
-
-  const toast =
-    document
-      .getElementById("toast");
-
-
-  toast.textContent =
-    message;
-
-
-  toast.classList.add("show");
-
-
-  setTimeout(() => {
-
-    toast.classList.remove("show");
-
-  }, 2500);
-
-}
-
-
-/* =========================================================
+/* ============================================================
    KEYBOARD
-========================================================= */
+============================================================ */
 
-document.addEventListener(
-  "keydown",
-  event => {
+document
+    .getElementById("playerInput")
+    .addEventListener(
+        "keydown",
+        event => {
 
-    if (
-      event.key === "Enter" &&
-      event.ctrlKey
-    ) {
+            if (
+                event.key === "Enter" &&
+                event.ctrlKey
+            ) {
 
-      const active =
-        document.activeElement;
+                event.preventDefault();
 
+                sendResponse();
 
-      if (
-        active &&
-        active.id ===
-        "playerInput"
-      ) {
+            }
 
-        submitPlayerResponse();
-
-      }
-
-    }
-
-  }
-);
+        }
+    );
 
 </script>
 
