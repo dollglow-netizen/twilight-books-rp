@@ -2445,11 +2445,7 @@ async function loadSave(id){
 
   }
 
-  currentSaveId=data.id;
-
-  const payload=data.data;
-
-  if(!payload){
+  if(!data || !data.data){
 
     showToast(
       "This save contains no game data.",
@@ -2459,6 +2455,10 @@ async function loadSave(id){
     return;
 
   }
+
+  currentSaveId=data.id;
+
+  const payload=data.data;
 
   creatorData=payload.oc || createDefaultOC();
 
@@ -2471,11 +2471,13 @@ async function loadSave(id){
     versions:[]
   };
 
-  setScreen("rp");}
-window.loadSave = loadSave;
-  
+  setScreen("rp");
 
-  
+}
+
+window.loadSave=loadSave;
+
+
 async function deleteSave(id){
 
   if(!session) return;
