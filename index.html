@@ -2424,6 +2424,7 @@ async function getSaves(){
 async function loadSave(id){
 
   if(!session){
+    showToast("Please sign in first.","error");
     return;
   }
 
@@ -2436,13 +2437,14 @@ async function loadSave(id){
 
   if(error){
 
+    console.error("LOAD ERROR:",error);
+
     showToast(
-      error.message,
+      "Load failed: " + error.message,
       "error"
     );
 
     return;
-
   }
 
   if(!data || !data.data){
@@ -2453,8 +2455,9 @@ async function loadSave(id){
     );
 
     return;
-
   }
+
+  console.log("LOADED SAVE:",data);
 
   currentSaveId=data.id;
 
@@ -2462,19 +2465,44 @@ async function loadSave(id){
 
   creatorData=payload.oc || createDefaultOC();
 
-  currentGame=payload.game || {
-    book:"Twilight",
-    chapter:"Opening",
-    timeline:"Beginning of Twilight",
-    conversation:[],
-    memory:[],
-    versions:[]
-  };
+  currentGame=payload.game;
 
-  setScreen("rp");
+  if(!currentGame){
 
+    showToast(
+      "The saved game data is incomplete.",
+      "error"
+    );
+
+    return;
+  }
+
+  /*
+   * Make sure required arrays exist.
+   */
+
+  if(!Array.isArray(currentGame.conversation)){
+    currentGame.conversation=[];
+  }
+
+  if(!Array.isArray(currentGame.memory)){
+    currentGame.memory=[];
+  }
+
+  if(!Array.isArray(currentGame.versions)){
+    currentGame.versions=[];
+  }
+
+  /*
+   * Switch to RP screen.
+   */
+
+  currentScreen="rp";
+
+  render();
+
+  console.log("GAME LOADED SUCCESSFULLY");
 }
-
 window.loadSave=loadSave;
 
 
