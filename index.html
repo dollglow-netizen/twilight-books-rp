@@ -4304,28 +4304,380 @@ async function restoreVersion(index){
    LOAD SAVES
 ============================================================ */
 
-async function getSaves(){
+async function loadSave(id){
 
-  if(!session) return [];
+  if(!session){
 
-  const {data,error}=await supabaseClient
-    .from("saved_games")
-    .select("*")
-    .eq("user_id",session.user.id)
-    .order("updated_at",{ascending:false});
+    showToast(
+      "Please sign in first.",
+      "error"
+    );
 
-  if(error){
-
-    showToast(error.message,"error");
-    return [];
+    return;
 
   }
 
-  return data || [];
+  if(!id){
+
+    showToast(
+      "No save ID was provided.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  try{
+
+    const {data,error}=await supabaseClient
+
+      .from("saved_games")
+
+      .select("*")
+
+      .eq("id",id)
+
+      .eq("user_id",session.user.id)
+
+      .single();
+
+
+    if(error){
+
+      console.error(
+        "LOAD ERROR:",
+        error
+      );
+
+      showToast(
+        "Load failed: " +
+        error.message,
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    if(!data || !data.data){
+
+      showToast(
+        "This save contains no game data.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    console.log(
+      "LOADED SAVE:",
+      data
+    );
+
+
+    let payload=data.data;
+
+
+    /*
+     * Some older saves may have the JSON
+     * stored as a string.
+     */
+
+    if(typeof payload==="string"){
+
+      try{
+
+        payload=JSON.parse(payload);
+
+      }catch(error){
+
+        console.error(
+          "SAVE JSON ERROR:",
+          error
+        );
+
+        showToast(
+          "This save contains invalid JSON.",
+          "error"
+        );
+
+        return;
+
+      }
+
+    }
+
+
+    if(
+      !payload ||
+      typeof payload!=="object"
+    ){
+
+      showToast(
+        "This save has an invalid format.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    currentSaveId=data.id;
+
+
+    creatorData=
+      payload.oc ||
+      createDefaultOC();
+
+
+    currentGame=
+      payload.game ||
+      null;
+
+
+    if(!currentGame){
+
+      showToast(
+        "The saved game data is incomplete.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    /*
+     * Restore required game structures.
+     */
+
+    if(
+      !Array.isArray(
+        currentGame.conversation
+      )
+    ){
+
+      currentGame.conversation=[];
+
+    }
+
+
+    if(
+      !currentGame.memory ||
+      typeof currentGame.memory!=="object" ||
+      Array.isArray(currentGame.memory)
+    ){
+
+      currentGame.memory={};
+
+    }
+
+
+    if(
+      !Array.isArray(
+        currentGame.memory.importantEvents
+      )
+    ){
+
+      currentGame.memory.importantEvents=[];
+
+    }
+
+
+    if(
+      !Array.isArray(
+        currentGame.memory.knownSecrets
+      )
+    ){
+
+      currentGame.memory.knownSecrets=[];
+
+    }
+
+
+    if(
+      !Array.isArray(
+        currentGame.memory.discoveredFacts
+      )
+    ){
+
+      currentGame.memory.discoveredFacts=[];
+
+    }
+
+
+    if(
+      !Array.isArray(
+        currentGame.memory.inventory
+      )
+    ){
+
+      currentGame.memory.inventory=[];
+
+    }
+
+
+    if(
+      !Array.isArray(
+        currentGame.memory.worldChanges
+      )
+    ){
+
+      currentGame.memory.worldChanges=[];
+
+    }
+
+
+    if(
+      !Array.isArray(
+        currentGame.memory.currentGoals
+      )
+    ){
+
+      currentGame.memory.currentGoals=[];
+
+    }
+
+
+    if(
+      !Array.isArray(
+        currentGame.memory.unresolvedThreads
+      )
+    ){
+
+      currentGame.memory.unresolvedThreads=[];
+
+    }
+
+
+    if(
+      !Array.isArray(
+        currentGame.memory.consequences
+      )
+    ){
+
+      currentGame.memory.consequences=[];
+
+    }
+
+
+    if(
+      !currentGame.memory.relationships ||
+      typeof currentGame.memory.relationships!=="object"
+    ){
+
+      currentGame.memory.relationships={};
+
+    }
+
+
+    if(
+      !currentGame.memory.characters ||
+      typeof currentGame.memory.characters!=="object"
+    ){
+
+      currentGame.memory.characters={};
+
+    }
+
+
+    if(
+      !currentGame.memory.locations ||
+      typeof currentGame.memory.locations!=="object"
+    ){
+
+      currentGame.memory.locations={};
+
+    }
+
+
+    if(
+      !Array.isArray(
+        currentGame.versions
+      )
+    ){
+
+      currentGame.versions=[];
+
+    }
+
+
+    /*
+     * Restore multiplayer structure
+     * for older saves.
+     */
+
+    if(
+      !currentGame.multiplayer ||
+      typeof currentGame.multiplayer!=="object"
+    ){
+
+      currentGame.multiplayer={
+
+        enabled:false,
+
+        roomId:null,
+
+        roomCode:null,
+
+        hostId:null,
+
+        players:[],
+
+        activeScenes:{},
+
+        pendingResponses:{},
+
+        sharedEvents:[],
+
+        lastActivity:null
+
+      };
+
+    }
+
+
+    currentScreen="rp";
+
+
+    render();
+
+
+    console.log(
+      "GAME LOADED SUCCESSFULLY"
+    );
+
+
+    showToast(
+      "Game loaded.",
+      "success"
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "LOAD CRASH:",
+      error
+    );
+
+    showToast(
+      "Load failed: " +
+      error.message,
+      "error"
+    );
+
+  }
 
 }
 
 
+window.loadSave=loadSave;
 async function loadSave(id){
 
   if(!session){
