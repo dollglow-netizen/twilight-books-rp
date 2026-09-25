@@ -5928,12 +5928,14 @@ function render(){
 
   }
 
+
   if(currentScreen==="auth"){
 
     app.innerHTML=renderAuth();
     return;
 
   }
+
 
   if(currentScreen==="creator"){
 
@@ -5942,12 +5944,31 @@ function render(){
 
   }
 
+
+  if(currentScreen==="load"){
+
+    renderLoad();
+    return;
+
+  }
+
+
+  if(currentScreen==="multiplayer"){
+
+    renderMultiplayer();
+    return;
+
+  }
+
+
   if(currentScreen==="rp"){
 
     if(!currentGame){
 
       currentScreen="home";
+
       render();
+
       return;
 
     }
@@ -5958,13 +5979,6 @@ function render(){
 
     scrollConversationToBottom();
 
-    return;
-
-  }
-
-  if(currentScreen==="load"){
-
-    renderLoad();
     return;
 
   }
