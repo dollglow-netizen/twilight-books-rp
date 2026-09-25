@@ -2423,126 +2423,55 @@ async function getSaves(){
 
 async function loadSave(id){
 
-  console.log("LOAD STARTED:", id);
-
   if(!session){
-    alert("You are not signed in.");
     return;
   }
 
-  try{
+  const {data,error}=await supabaseClient
+    .from("saved_games")
+    .select("*")
+    .eq("id",id)
+    .eq("user_id",session.user.id)
+    .single();
 
-    const { data, error } = await supabaseClient
-      .from("saved_games")
-      .select("*")
-      .eq("id", id)
-      .eq("user_id", session.user.id)
-      .single();
+  if(error){
 
-    console.log("SUPABASE DATA:", data);
-    console.log("SUPABASE ERROR:", error);
-
-    if(error){
-      alert("Supabase error: " + error.message);
-      return;
-    }
-
-    if(!data){
-      alert("No save was returned.");
-      return;
-    }
-
-    if(!data.data){
-      alert("The save contains no game data.");
-      return;
-    }
-
-    const payload = data.data;
-
-    console.log("SAVE PAYLOAD:", payload);
-
-    currentSaveId = data.id;
-
-    /*
-     * Restore the OC
-     */
-    if(payload.oc){
-
-      creatorData = {
-        ...createDefaultOC(),
-        ...payload.oc
-      };
-
-    }else{
-
-      creatorData = createDefaultOC();
-
-    }
-
-    /*
-     * Restore the game
-     */
-    if(payload.game){
-
-      currentGame = {
-        ...currentGame,
-        ...payload.game
-      };
-
-    }
-
-    /*
-     * Make sure important game arrays exist.
-     */
-    if(!Array.isArray(currentGame.conversation)){
-      currentGame.conversation = [];
-    }
-
-    if(!Array.isArray(currentGame.memory)){
-      currentGame.memory = [];
-    }
-
-    if(!Array.isArray(currentGame.versions)){
-      currentGame.versions = [];
-    }
-
-    /*
-     * Make sure the OC has the fields
-     * the RP interface expects.
-     */
-    const defaultOC = createDefaultOC();
-
-    Object.keys(defaultOC).forEach(key => {
-
-      if(
-        creatorData[key] === undefined ||
-        creatorData[key] === null
-      ){
-
-        creatorData[key] = defaultOC[key];
-
-      }
-
-    });
-
-    console.log("RESTORED OC:", creatorData);
-    console.log("RESTORED GAME:", currentGame);
-
-    /*
-     * Go to the roleplay screen.
-     */
-    setScreen("rp");
-
-  }catch(error){
-
-    console.error("LOAD CRASH:", error);
-
-    alert(
-      "Load crashed: " +
-      (error.message || error)
+    showToast(
+      error.message,
+      "error"
     );
 
+    return;
+
   }
+
+  currentSaveId=data.id;
+
+  const payload=data.data;
+
+  if(!payload){
+
+    showToast(
+      "This save contains no game data.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  creatorData=payload.oc || createDefaultOC();
+
+  currentGame=payload.game || {
+    book:"Twilight",
+    chapter:"Opening",
+    timeline:"Beginning of Twilight",
+    conversation:[],
+    memory:[],
+    versions:[]
+  };
+
+  setScreen("rp");
 
 }
 
