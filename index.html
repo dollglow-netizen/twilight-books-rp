@@ -2423,34 +2423,113 @@ async function getSaves(){
 
 async function loadSave(id){
 
-  if(!session) return;
+  if(!session){
 
-  const {data,error}=await supabaseClient
-    .from("saved_games")
-    .select("*")
-    .eq("id",id)
-    .eq("user_id",session.user.id)
-    .single();
+    showToast(
+      "You must be signed in to load a game.",
+      "error"
+    );
 
-  if(error){
-
-    showToast(error.message,"error");
     return;
 
   }
 
-  currentSaveId=data.id;
+  try{
 
-  const payload=data.data;
+    const {data,error}=await supabaseClient
+      .from("saved_games")
+      .select("*")
+      .eq("id",id)
+      .eq("user_id",session.user.id)
+      .single();
 
-  creatorData=payload.oc;
+    if(error){
 
-  currentGame=payload.game;
+      console.error(
+        "LOAD ERROR:",
+        error
+      );
 
-  setScreen("rp");
+      showToast(
+        error.message ||
+        "Could not load the saved game.",
+        "error"
+      );
+
+      return;
+
+    }
+
+    if(!data){
+
+      showToast(
+        "Saved game could not be found.",
+        "error"
+      );
+
+      return;
+
+    }
+
+    if(!data.data){
+
+      showToast(
+        "This save does not contain any game data.",
+        "error"
+      );
+
+      return;
+
+    }
+
+    console.log(
+      "LOADED SAVE:",
+      data
+    );
+
+    currentSaveId=data.id;
+
+    const payload=data.data;
+
+    if(payload.oc){
+
+      creatorData=payload.oc;
+
+    }
+
+    if(payload.game){
+
+      currentGame=payload.game;
+
+    }
+
+    currentScreen="rp";
+
+    setScreen("rp");
+
+    render(true);
+
+    showToast(
+      "Game loaded.",
+      "success"
+    );
+
+  }catch(error){
+
+    console.error(
+      "LOAD EXCEPTION:",
+      error
+    );
+
+    showToast(
+      error.message ||
+      "Could not load the saved game.",
+      "error"
+    );
+
+  }
 
 }
-
 
 async function deleteSave(id){
 
