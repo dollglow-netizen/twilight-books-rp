@@ -1081,19 +1081,280 @@ function createNewGame(){
 
     conversation:[],
 
+    /*
+    ==========================================
+    PERSISTENT STORY MEMORY
+    ==========================================
+    */
+
     memory:{
+
+      /*
+      Major events that permanently happened
+      in this version of the story.
+      */
       importantEvents:[],
+
+      /*
+      Relationships between the OC and
+      canon characters / other players.
+      */
       relationships:{},
+
+      /*
+      Secrets that have been discovered.
+      */
       knownSecrets:[],
+
+      /*
+      Facts learned during the roleplay.
+      */
       discoveredFacts:[],
+
+      /*
+      Items currently possessed.
+      */
       inventory:[],
+
+      /*
+      General reputation of the OC.
+      */
       reputation:"",
+
+      /*
+      Reputation of the OC's family.
+      */
       familyReputation:"",
+
+      /*
+      Current state of the pet.
+      */
       petStatus:"",
+
+      /*
+      Changes to the world caused by
+      player actions.
+      */
       worldChanges:[],
+
+      /*
+      Current goals or unresolved objectives.
+      */
       currentGoals:[],
-      canonTimelinePosition:"Beginning of Twilight"
+
+      /*
+      Exact canon position.
+      */
+      canonTimelinePosition:"Beginning of Twilight",
+
+      /*
+      ========================================
+      CHARACTER MEMORY
+      ========================================
+      */
+
+      characters:{},
+
+      /*
+      Example:
+
+      characters:{
+        "Edward Cullen":{
+          relationship:"",
+          opinion:"",
+          knows:[],
+          witnessed:[],
+          secrets:[],
+          promises:[],
+          lastLocation:"",
+          lastInteraction:""
+        }
+      }
+      */
+
+      /*
+      ========================================
+      LOCATION MEMORY
+      ========================================
+      */
+
+      locations:{},
+
+      /*
+      Tracks what has happened at important
+      locations.
+      */
+      /*
+      Example:
+
+      locations:{
+        "Forks High School":{
+          events:[],
+          charactersPresent:[],
+          playersPresent:[]
+        }
+      }
+      */
+
+      /*
+      ========================================
+      PLAYER KNOWLEDGE
+      ========================================
+      */
+
+      playerKnowledge:{
+
+        /*
+        Single-player uses "player".
+        Multiplayer will eventually use
+        individual player IDs.
+        */
+
+        player:{
+          knownFacts:[],
+          knownSecrets:[],
+          witnessedEvents:[],
+          discoveredCharacters:[]
+        }
+
+      },
+
+      /*
+      ========================================
+      ACTIVE SCENES
+      ========================================
+      */
+
+      activeScenes:{},
+
+      /*
+      Each scene will eventually track:
+
+      - players
+      - location
+      - characters
+      - scene status
+      - whether players are waiting
+      - recent actions
+      */
+
+      /*
+      ========================================
+      UNRESOLVED THREADS
+      ========================================
+      */
+
+      unresolvedThreads:[],
+
+      /*
+      Promises, arguments, mysteries,
+      unfinished conversations, etc.
+      */
+
+      /*
+      ========================================
+      CONSEQUENCES
+      ========================================
+      */
+
+      consequences:[],
+
+      /*
+      Permanent or temporary consequences
+      caused by player actions.
+      */
+
+      /*
+      ========================================
+      WORLD STATE
+      ========================================
+      */
+
+      worldState:{
+
+        timeOfDay:"",
+
+        weather:"",
+
+        date:"",
+
+        currentEvents:[],
+
+        canonEventsChanged:[],
+
+        supernaturalActivity:[],
+
+        importantNPCsPresent:[]
+
+      }
+
     },
+
+    /*
+    ==========================================
+    MULTIPLAYER FOUNDATION
+    ==========================================
+    */
+
+    multiplayer:{
+
+      enabled:false,
+
+      roomId:null,
+
+      roomCode:null,
+
+      hostId:null,
+
+      players:[],
+
+      /*
+      Example future player:
+
+      {
+        id:"",
+        name:"",
+        ocId:"",
+        location:"",
+        sceneId:"",
+        online:false,
+        ready:false
+      }
+      */
+
+      activeScenes:{},
+
+      /*
+      Tracks which players are together
+      and which are separated.
+      */
+
+      pendingResponses:{},
+
+      /*
+      Used later for:
+
+      "Waiting for Sarah..."
+
+      when both players are in the same
+      meaningful scene.
+      */
+
+      sharedEvents:[],
+
+      /*
+      Events that affect everyone in the room.
+      */
+
+      lastActivity:null
+
+    },
+
+    /*
+    ==========================================
+    VERSION HISTORY
+    ==========================================
+    */
 
     versions:[],
 
@@ -1102,7 +1363,6 @@ function createNewGame(){
   };
 
 }
-
 
 /* ============================================================
    UTILITY
