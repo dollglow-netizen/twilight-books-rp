@@ -2,42 +2,53 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Twilight: The Story</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Twilight Books RP</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
-  --bg:#120f11;
-  --panel:#1c1719;
-  --panel2:#241e21;
-  --panel3:#30282b;
-  --text:#f4edf0;
-  --muted:#aaa0a5;
-  --accent:#bda9b2;
-  --accent2:#e1d2d8;
-  --danger:#9d626c;
-  --border:rgba(255,255,255,.10);
-  --shadow:0 18px 50px rgba(0,0,0,.35);
+  --bg:#0d0b0c;
+  --panel:#151113;
+  --panel2:#1b1618;
+  --panel3:#211b1d;
+  --border:#3a3033;
+  --text:#f1e9eb;
+  --muted:#a99da1;
+  --accent:#b89aa7;
+  --accent2:#765d68;
+  --danger:#9d606b;
+  --success:#76947d;
+  --shadow:0 20px 60px rgba(0,0,0,.45);
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
-html,body{
+html,
+body{
   margin:0;
+  padding:0;
+  width:100%;
   min-height:100%;
   background:
-    radial-gradient(circle at top,#33282e 0,#120f11 42%);
+    radial-gradient(circle at 50% -10%,rgba(116,91,103,.2),transparent 35%),
+    var(--bg);
   color:var(--text);
   font-family:Georgia,"Times New Roman",serif;
 }
 
 body{
-  min-height:100vh;
+  min-height:100dvh;
 }
 
-button,input,textarea,select{
+button,
+input,
+textarea,
+select{
   font:inherit;
 }
 
@@ -45,416 +56,445 @@ button{
   cursor:pointer;
 }
 
-.hidden{display:none!important}
-
-.app{
-  min-height:100vh;
-}
-
-.screen{
-  min-height:100vh;
-  padding:24px;
-}
-
-.center{
-  max-width:1100px;
-  margin:auto;
-}
-
-.card{
-  background:rgba(28,23,25,.94);
-  border:1px solid var(--border);
-  border-radius:18px;
-  box-shadow:var(--shadow);
-}
-
-button.primary,
-button.secondary,
-button.danger,
-button.ghost{
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:12px 18px;
-  color:var(--text);
-  transition:.2s;
-}
-
-button.primary{
-  background:var(--accent);
-  color:#171214;
-  border-color:transparent;
-}
-
-button.secondary{
-  background:var(--panel3);
-}
-
-button.ghost{
-  background:transparent;
-}
-
-button.danger{
-  background:#5d3038;
-}
-
-button:hover{
-  transform:translateY(-1px);
-  filter:brightness(1.08);
-}
-
-button:disabled{
-  opacity:.45;
-  cursor:not-allowed;
-  transform:none;
-}
-
-input,textarea,select{
+input,
+textarea,
+select{
   width:100%;
-  background:#151214;
+  background:#100d0f;
   color:var(--text);
   border:1px solid var(--border);
-  border-radius:10px;
-  padding:12px;
+  border-radius:8px;
+  padding:11px 12px;
   outline:none;
 }
 
-textarea{
-  min-height:110px;
-  resize:vertical;
-}
-
-input:focus,textarea:focus,select:focus{
+input:focus,
+textarea:focus,
+select:focus{
   border-color:var(--accent);
 }
 
-label{
-  display:block;
-  color:var(--muted);
-  margin-bottom:7px;
-  font-size:.9rem;
+textarea{
+  resize:vertical;
 }
 
-h1,h2,h3{
-  margin-top:0;
+button{
+  border:1px solid var(--border);
+  background:#211a1d;
+  color:var(--text);
+  border-radius:8px;
+  padding:10px 14px;
+  transition:.15s ease;
+}
+
+button:hover{
+  background:#30262a;
+  border-color:#66535c;
+}
+
+button.primary{
+  background:linear-gradient(135deg,#826875,#b29aa5);
+  color:#100d0f;
+  border-color:#bda8b0;
+  font-weight:bold;
+}
+
+button.primary:hover{
+  filter:brightness(1.08);
+}
+
+button.danger{
+  border-color:#70444c;
+  color:#e4aeb7;
+}
+
+button.success{
+  border-color:#4d6755;
+  color:#b5d0bb;
+}
+
+.hidden{
+  display:none !important;
 }
 
 .muted{
   color:var(--muted);
 }
 
+.small{
+  font-size:.82rem;
+}
+
+.app{
+  min-height:100dvh;
+}
+
+.screen{
+  min-height:100dvh;
+}
+
+/* ==============================
+   HOME
+============================== */
+
 .home{
+  min-height:100dvh;
   display:flex;
   align-items:center;
   justify-content:center;
+  padding:25px;
 }
 
 .home-card{
-  width:min(720px,100%);
-  padding:48px;
+  width:min(850px,100%);
+  padding:50px;
+  background:rgba(21,17,19,.96);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
   text-align:center;
 }
 
 .logo{
-  font-size:clamp(2.5rem,7vw,5.5rem);
+  font-size:clamp(2.5rem,7vw,5rem);
   letter-spacing:.08em;
-  font-weight:normal;
+  text-transform:uppercase;
   margin-bottom:8px;
 }
 
 .subtitle{
   color:var(--muted);
   font-style:italic;
-  margin-bottom:38px;
+  margin-bottom:40px;
 }
 
 .home-actions{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:14px;
+  gap:12px;
 }
 
-.auth{
-  width:min(430px,100%);
+.home-actions button{
+  min-height:58px;
+}
+
+/* ==============================
+   AUTH
+============================== */
+
+.auth-box{
+  width:min(460px,100%);
   margin:auto;
-  padding:28px;
+  padding:30px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
 }
 
-.auth-tabs{
-  display:flex;
-  gap:8px;
-  margin-bottom:20px;
+.auth-box h2{
+  margin-top:0;
 }
 
-.auth-tabs button{
-  flex:1;
-}
-
-.form-row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-  margin-bottom:14px;
-}
-
-.field{
+.form-group{
   margin-bottom:16px;
 }
 
-.topbar{
-  max-width:1400px;
-  margin:auto;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  margin-bottom:18px;
+.form-group label{
+  display:block;
+  margin-bottom:6px;
+  color:#d9ced2;
+  font-size:.9rem;
 }
 
-.topbar-title{
-  font-size:1.6rem;
-}
-
-.oc-layout{
-  max-width:1250px;
-  margin:auto;
+.auth-actions{
   display:grid;
-  grid-template-columns:280px 1fr;
-  gap:18px;
+  gap:8px;
 }
 
-.oc-nav{
-  padding:14px;
+/* ==============================
+   CREATOR
+============================== */
+
+.creator{
+  min-height:100dvh;
+  padding:20px;
+}
+
+.creator-inner{
+  width:min(1100px,100%);
+  margin:auto;
+}
+
+.creator-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.creator-header h1{
+  margin:0;
+}
+
+.creator-grid{
+  display:grid;
+  grid-template-columns:220px minmax(0,1fr);
+  gap:20px;
+}
+
+.creator-nav{
+  background:var(--panel);
+  border:1px solid var(--border);
+  padding:10px;
+  height:max-content;
   position:sticky;
   top:20px;
-  height:max-content;
 }
 
-.oc-nav button{
+.creator-nav button{
   display:block;
   width:100%;
   text-align:left;
-  background:transparent;
-  color:var(--muted);
-  border:0;
-  padding:13px;
-  border-radius:10px;
-  margin-bottom:3px;
+  margin-bottom:5px;
 }
 
-.oc-nav button.active{
-  background:var(--panel3);
-  color:var(--text);
+.creator-nav button.active{
+  background:#30252a;
+  border-color:#705d66;
 }
 
-.oc-content{
-  padding:26px;
-}
-
-.section{
-  display:none;
-}
-
-.section.active{
-  display:block;
+.creator-content{
+  background:var(--panel);
+  border:1px solid var(--border);
+  padding:25px;
 }
 
 .section-title{
-  margin-bottom:5px;
+  margin-top:0;
+  font-size:1.55rem;
 }
 
 .section-description{
   color:var(--muted);
-  margin-top:0;
-  margin-bottom:25px;
-}
-
-.option-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
-  gap:10px;
-}
-
-.option{
-  padding:13px;
-  border:1px solid var(--border);
-  background:#171315;
-  color:var(--text);
-  border-radius:11px;
-  text-align:left;
-}
-
-.option.selected{
-  border-color:var(--accent);
-  background:#30282b;
-}
-
-.option small{
-  display:block;
-  color:var(--muted);
-  margin-top:4px;
-}
-
-.species-card{
-  padding:18px;
-  margin-bottom:15px;
-  background:#171315;
-  border:1px solid var(--border);
-  border-radius:14px;
-}
-
-.species-card h3{
-  margin-bottom:5px;
-}
-
-.family-info{
-  background:#171315;
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:15px;
-  margin-top:16px;
-  color:var(--muted);
   line-height:1.6;
 }
 
-.pet-box{
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:18px;
-  background:#171315;
-}
-
-.toggle{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  padding:14px;
-  background:#171315;
-  border:1px solid var(--border);
-  border-radius:12px;
-  margin-bottom:18px;
-}
-
-.toggle input{
-  width:20px;
-  height:20px;
-}
-
-.creator-footer{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  margin-top:25px;
-  padding-top:20px;
-  border-top:1px solid var(--border);
-}
-
-.review{
-  background:#151214;
-  padding:20px;
-  border-radius:14px;
-  line-height:1.65;
-}
-
-.save-list{
+.card-grid{
   display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
   gap:12px;
 }
 
+.option-card{
+  padding:15px;
+  border:1px solid var(--border);
+  background:var(--panel2);
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.option-card:hover{
+  border-color:#68565f;
+}
+
+.option-card.selected{
+  border-color:var(--accent);
+  background:#292126;
+}
+
+.option-card strong{
+  display:block;
+  margin-bottom:5px;
+}
+
+.option-card span{
+  color:var(--muted);
+  font-size:.88rem;
+  line-height:1.4;
+}
+
+.suggestion-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:8px;
+  margin-bottom:15px;
+}
+
+.suggestion{
+  font-size:.78rem;
+  padding:7px 9px;
+}
+
+.creator-footer{
+  margin-top:20px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+
+/* ==============================
+   LOAD
+============================== */
+
+.load-screen{
+  min-height:100dvh;
+  padding:25px;
+}
+
+.load-inner{
+  width:min(1000px,100%);
+  margin:auto;
+}
+
 .save-card{
-  padding:18px;
   background:var(--panel);
   border:1px solid var(--border);
-  border-radius:14px;
+  padding:18px;
+  margin-bottom:10px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:15px;
+  border-radius:10px;
+}
+
+.save-info strong{
+  display:block;
+  margin-bottom:5px;
+}
+
+.save-info span{
+  color:var(--muted);
+  font-size:.82rem;
 }
 
 .save-actions{
   display:flex;
-  gap:8px;
+  gap:7px;
   flex-wrap:wrap;
 }
 
+/* ==============================
+   RP LAYOUT
+============================== */
+
 .rp-layout{
-  min-height:100vh;
+  width:100%;
+  height:100dvh;
+  min-height:100dvh;
   display:grid;
   grid-template-columns:290px minmax(0,1fr);
+  overflow:hidden;
 }
 
 .rp-sidebar{
+  height:100dvh;
   background:#151214;
   border-right:1px solid var(--border);
   padding:20px;
-  overflow:auto;
+  overflow-y:auto;
+  z-index:50;
+}
+
+.rp-sidebar h3{
+  margin-top:0;
 }
 
 .sidebar-section{
-  margin-bottom:25px;
+  border-top:1px solid var(--border);
+  padding-top:15px;
+  margin-top:15px;
 }
 
-.sidebar-title{
+.sidebar-stat{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:5px 0;
+  font-size:.86rem;
+}
+
+.sidebar-stat span:last-child{
   color:var(--muted);
-  font-size:.78rem;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  margin-bottom:9px;
-}
-
-.sidebar-value{
-  line-height:1.5;
-  white-space:pre-wrap;
+  text-align:right;
 }
 
 .rp-main{
   min-width:0;
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
+  min-height:0;
+  height:100dvh;
+  display:grid;
+  grid-template-rows:auto minmax(0,1fr) auto;
+  overflow:hidden;
 }
 
 .rp-header{
-  padding:16px 22px;
+  min-height:64px;
+  padding:12px 22px;
   border-bottom:1px solid var(--border);
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:12px;
-  background:rgba(18,15,17,.92);
+  background:rgba(18,15,17,.97);
   backdrop-filter:blur(12px);
-  position:sticky;
-  top:0;
-  z-index:5;
+  z-index:20;
 }
 
-.mobile-menu{
-  display:none;
+.rp-title{
+  min-width:0;
+}
+
+.rp-title strong{
+  display:block;
+}
+
+.rp-title span{
+  color:var(--muted);
+  font-size:.78rem;
+}
+
+.rp-header-actions{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
 }
 
 .conversation{
-  flex:1;
+  min-height:0;
+  width:100%;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding:30px 22px;
+  -webkit-overflow-scrolling:touch;
+}
+
+.conversation-inner{
   width:min(950px,100%);
   margin:auto;
-  padding:30px 22px 170px;
 }
 
 .message{
-  margin-bottom:25px;
+  margin-bottom:28px;
 }
 
 .message-role{
   color:var(--muted);
-  font-size:.76rem;
-  letter-spacing:.1em;
+  font-size:.73rem;
+  letter-spacing:.12em;
   text-transform:uppercase;
   margin-bottom:7px;
 }
 
 .message-body{
-  line-height:1.75;
+  line-height:1.8;
   white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+.message.narrator .message-body{
+  font-size:1.02rem;
 }
 
 .message.player .message-body{
@@ -464,14 +504,18 @@ h1,h2,h3{
   border-radius:4px 12px 12px 4px;
 }
 
+.message.system .message-body{
+  color:var(--muted);
+  font-size:.85rem;
+  font-style:italic;
+}
+
 .composer{
-  position:fixed;
-  bottom:0;
-  left:290px;
-  right:0;
-  background:linear-gradient(transparent,#120f11 20%);
-  padding:25px 22px 18px;
-  z-index:4;
+  width:100%;
+  background:#120f11;
+  border-top:1px solid var(--border);
+  padding:12px 22px calc(12px + env(safe-area-inset-bottom,0px));
+  z-index:30;
 }
 
 .composer-inner{
@@ -480,16 +524,23 @@ h1,h2,h3{
 }
 
 .composer textarea{
-  min-height:95px;
+  display:block;
+  width:100%;
+  min-height:82px;
   max-height:220px;
+  resize:vertical;
   background:#1b1719;
-  box-shadow:0 8px 35px rgba(0,0,0,.35);
+  border:1px solid var(--border);
+  color:var(--text);
+  border-radius:12px;
+  padding:13px;
+  font-size:16px;
 }
 
 .composer-actions{
   display:flex;
-  gap:8px;
   align-items:center;
+  gap:7px;
   flex-wrap:wrap;
   margin-top:9px;
 }
@@ -500,92 +551,132 @@ h1,h2,h3{
   font-size:.82rem;
 }
 
-.loading{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  color:var(--muted);
+.mobile-menu{
+  display:none;
 }
 
-.dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--accent);
-  animation:pulse 1s infinite alternate;
-}
+/* ==============================
+   MODALS
+============================== */
 
-@keyframes pulse{
-  from{opacity:.25}
-  to{opacity:1}
-}
-
-.modal-backdrop{
+.modal-overlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.72);
-  z-index:100;
+  background:rgba(0,0,0,.75);
   display:flex;
   align-items:center;
   justify-content:center;
   padding:20px;
+  z-index:1000;
 }
 
 .modal{
-  width:min(750px,100%);
-  max-height:90vh;
-  overflow:auto;
+  width:min(700px,100%);
+  max-height:min(85dvh,800px);
+  overflow-y:auto;
+  background:var(--panel);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
   padding:25px;
 }
 
-.toast{
-  position:fixed;
-  bottom:25px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#292326;
-  border:1px solid var(--border);
-  padding:12px 18px;
-  border-radius:10px;
-  z-index:200;
-  box-shadow:var(--shadow);
+.modal h2{
+  margin-top:0;
 }
 
+.modal-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:18px;
+}
+
+/* ==============================
+   TOAST
+============================== */
+
+.toast{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  max-width:360px;
+  padding:12px 15px;
+  background:#211b1d;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  z-index:2000;
+}
+
+.toast.error{
+  border-color:#70444c;
+}
+
+.toast.success{
+  border-color:#4d6755;
+}
+
+/* ==============================
+   MOBILE
+============================== */
+
 @media(max-width:850px){
-  .screen{
-    padding:12px;
+
+  .home{
+    padding:15px;
   }
 
   .home-card{
-    padding:28px 20px;
+    padding:30px 20px;
   }
 
   .home-actions{
     grid-template-columns:1fr;
   }
 
-  .oc-layout{
+  .creator{
+    padding:10px;
+  }
+
+  .creator-grid{
     grid-template-columns:1fr;
   }
 
-  .oc-nav{
+  .creator-nav{
     position:static;
-  }
-
-  .oc-nav{
     display:flex;
     overflow-x:auto;
     gap:5px;
+    padding:6px;
   }
 
-  .oc-nav button{
-    flex:0 0 auto;
-    width:auto;
+  .creator-nav button{
     white-space:nowrap;
+    width:auto;
+    margin:0;
+  }
+
+  .creator-content{
+    padding:18px;
+  }
+
+  .card-grid{
+    grid-template-columns:1fr;
   }
 
   .rp-layout{
     display:block;
+    width:100%;
+    height:100dvh;
+    min-height:100dvh;
+    overflow:hidden;
+  }
+
+  .rp-main{
+    width:100%;
+    height:100dvh;
+    min-height:100dvh;
+    display:grid;
+    grid-template-rows:auto minmax(0,1fr) auto;
   }
 
   .rp-sidebar{
@@ -594,8 +685,8 @@ h1,h2,h3{
     bottom:0;
     left:-310px;
     width:290px;
-    z-index:50;
-    transition:left .25s;
+    height:100dvh;
+    transition:left .25s ease;
     box-shadow:var(--shadow);
   }
 
@@ -605,219 +696,484 @@ h1,h2,h3{
 
   .mobile-menu{
     display:block;
-  }
-
-  .composer{
-    left:0;
-    padding:15px 10px calc(10px + env(safe-area-inset-bottom));
-  }
-
-  .conversation{
-    padding:22px 12px 190px;
+    flex-shrink:0;
   }
 
   .rp-header{
-    padding:12px;
+    min-height:58px;
+    padding:10px;
   }
 
-  .form-row{
-    grid-template-columns:1fr;
+  .rp-header-actions{
+    gap:4px;
   }
 
-  .creator-footer{
-    position:sticky;
-    bottom:0;
-    background:#1c1719;
-    margin-left:-26px;
-    margin-right:-26px;
-    padding:12px 20px;
-    z-index:5;
-  }
-}
-
-@media(max-width:500px){
-  .oc-content{
-    padding:18px;
+  .rp-header-actions button{
+    padding:8px 9px;
   }
 
-  .option-grid{
+  .conversation{
+    padding:20px 12px;
+  }
+
+  .composer{
+    padding:
+      8px
+      8px
+      calc(8px + env(safe-area-inset-bottom,0px));
+  }
+
+  .composer textarea{
+    min-height:76px;
+    max-height:180px;
+    font-size:16px;
+  }
+
+  .composer-actions{
+    display:grid;
     grid-template-columns:1fr 1fr;
+    gap:6px;
   }
 
   .composer-actions button{
-    flex:1;
+    width:100%;
+    min-height:44px;
   }
 
   .word-count{
+    grid-column:1 / -1;
     width:100%;
-    margin-left:0;
+    margin:0;
     text-align:right;
   }
 
   .save-card{
-    align-items:flex-start;
     flex-direction:column;
+    align-items:flex-start;
+  }
+}
+
+@media(max-width:500px){
+
+  .rp-header{
+    gap:7px;
+  }
+
+  .rp-title{
+    max-width:50%;
+  }
+
+  .rp-header-actions button{
+    padding:7px 8px;
+    font-size:.75rem;
+  }
+
+  .conversation{
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+  .composer textarea{
+    min-height:72px;
+  }
+
+  .message-body{
+    font-size:.98rem;
+  }
+
+  .creator-footer{
+    flex-direction:column;
+  }
+
+  .creator-footer button{
+    width:100%;
   }
 }
 </style>
 </head>
 
 <body>
-<div id="app"></div>
+
+<div id="app" class="app"></div>
+<div id="modalRoot"></div>
+<div id="toastRoot"></div>
 
 <script>
 /* ============================================================
    CONFIGURATION
 ============================================================ */
 
-const SUPABASE_URL = "https://aedijtklkqxzpgtixrte.supabase.co";
+const SUPABASE_URL =
+  "https://aedijtklkqxzpgtixrte.supabase.co";
 
-/*
-  Use your Supabase publishable/anon key here.
-  NEVER put a Supabase service_role key in this file.
-*/
-const SUPABASE_KEY = "YOUR_SUPABASE_PUBLISHABLE_KEY";
+const SUPABASE_KEY =
+  "sb_publishable_gREm1GLqj2ITLH4njYge1A_YLXaK70h";
 
 const AI_URL =
   "https://twilight-books-rp.mvujas30.workers.dev/api/ai";
 
 const supabaseClient =
-  window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
 /* ============================================================
    GLOBAL STATE
 ============================================================ */
 
-let currentUser = null;
-let game = null;
+let session = null;
+let currentScreen = "home";
 let creatorStep = 0;
-let authMode = "login";
+let creatorData = createDefaultOC();
+let currentGame = null;
+let currentSaveId = null;
 let generating = false;
-let currentPolished = "";
-let sidebarOpen = false;
+let autosaveTimer = null;
+let versionTimer = null;
 
-const CREATOR_STEPS = [
-  "identity",
-  "species",
-  "family",
-  "appearance",
-  "personality",
-  "abilities",
-  "background",
-  "relationships",
-  "pet",
-  "preferences",
-  "review"
-];
 
-const defaultOC = {
-  name:"",
-  age:"",
-  pronouns:"",
-  birthday:"",
-  species:"",
-  family:"",
-  familyType:"",
-  familyReputation:"",
-  appearance:"",
-  personality:"",
-  personalityTraits:[],
-  abilities:[],
-  gift:{
-    name:"",
-    description:"",
-    range:"",
-    limitations:"",
-    cannot:""
+/* ============================================================
+   BOOK CANON DATA
+============================================================ */
+
+const SPECIES = {
+
+  human:{
+    name:"Human",
+    description:"A normal human being living in the Twilight universe.",
+    abilities:[
+      "Observation",
+      "Social intuition",
+      "Research",
+      "Survival",
+      "First aid",
+      "Driving",
+      "Academic knowledge",
+      "Deception"
+    ]
   },
-  background:"",
-  relationships:"",
-  preferences:{
-    likes:"",
-    dislikes:"",
-    fears:"",
-    goals:"",
-    skills:""
+
+  giftedHuman:{
+    name:"Gifted Human",
+    description:"A human with an unusual supernatural-adjacent ability.",
+    abilities:[
+      "Enhanced intuition",
+      "Mental resistance",
+      "Premonition",
+      "Empathic perception",
+      "Exceptional memory",
+      "Influence resistance",
+      "Unusual perception",
+      "Custom ability"
+    ]
   },
-  pet:{
-    hasPet:false,
-    animal:"",
-    name:"",
-    breed:"",
-    appearance:"",
-    personality:"",
-    bond:"",
-    habits:"",
-    likes:"",
-    dislikes:""
+
+  vampire:{
+    name:"Vampire",
+    description:"An immortal vampire with the physical traits and limitations established in the books.",
+    abilities:[
+      "Superhuman strength",
+      "Superhuman speed",
+      "Enhanced senses",
+      "Exceptional memory",
+      "Immortality",
+      "Tracking",
+      "Combat",
+      "Vampire gift"
+    ]
+  },
+
+  shapeshifter:{
+    name:"Quileute Shapeshifter",
+    description:"A Quileute shapeshifter following the supernatural rules established in the books.",
+    abilities:[
+      "Transformation",
+      "Enhanced strength",
+      "Enhanced speed",
+      "Enhanced senses",
+      "Rapid healing",
+      "Pack telepathy",
+      "Temperature resistance",
+      "Tracking"
+    ]
+  },
+
+  werewolf:{
+    name:"True Werewolf / Child of the Moon",
+    description:"A true werewolf, distinct from the Quileute shapeshifters.",
+    abilities:[
+      "Transformation",
+      "Enhanced strength",
+      "Enhanced speed",
+      "Enhanced senses",
+      "Rapid healing",
+      "Predatory instincts",
+      "Tracking",
+      "Pack behavior"
+    ]
   }
+
 };
 
-function newGameObject(){
+
+const FAMILIES = [
+
+  ["cullen","Cullen / Olympic Coven","Vampire family associated with Carlisle Cullen and the Olympic territory."],
+
+  ["denali","Denali Coven","Vampire coven connected to the Cullens and the northern territories."],
+
+  ["volturi","Volturi","The ancient vampire authority centered in Volterra."],
+
+  ["egyptian","Egyptian Coven","An ancient vampire coven with its own traditions and history."],
+
+  ["amazon","Amazon Coven","A vampire coven with deep ties to ancient supernatural history."],
+
+  ["irish","Irish Coven","A vampire coven with its own distinct family history."],
+
+  ["romanian","Romanian Coven","An ancient vampire lineage with historical significance."],
+
+  ["swan","Swan Family","A human family associated with Forks and Washington."],
+
+  ["black","Black Family","A Quileute family connected to the shapeshifter storyline."],
+
+  ["clearwater","Clearwater Family","A Quileute family connected to the Forks supernatural community."],
+
+  ["uley","Uley Family","A Quileute family connected to the shapeshifter community."],
+
+  ["ateara","Ateara Family","A Quileute family with historical pack connections."],
+
+  ["nomad","Nomadic / Unaffiliated","A character without a permanent canonical family allegiance."],
+
+  ["custom","Custom Family / Bloodline","Create your own family while remaining consistent with the chosen species."],
+
+  ["none","No Known Family","The character has no known family or bloodline."],
+
+];
+
+
+const PERSONALITY_SUGGESTIONS = [
+  "Reserved",
+  "Warm",
+  "Sarcastic",
+  "Curious",
+  "Protective",
+  "Ambitious",
+  "Independent",
+  "Romantic",
+  "Suspicious",
+  "Impulsive",
+  "Patient",
+  "Observant",
+  "Stubborn",
+  "Compassionate",
+  "Secretive",
+  "Playful"
+];
+
+
+const VAMPIRE_GIFTS = [
+  ["Mental Shield","Creates resistance against mental gifts.","Strong against mental intrusion but does not make the vampire physically stronger."],
+  ["Emotional Influence","Can influence a specific emotional state.","Requires concentration and becomes harder to maintain with multiple targets."],
+  ["Memory Manipulation","Can interfere with or alter memories.","Must be used deliberately and cannot casually rewrite an entire life."],
+  ["Illusion","Creates convincing sensory perceptions.","Does not physically alter reality."],
+  ["Pain Projection","Creates an overwhelming perception of pain.","Requires line-of-effect and concentration."],
+  ["Fear Inducement","Can intensify fear in another person.","Less reliable against strong mental resistance."],
+  ["Future Perception","Receives fragmented possible outcomes.","Visions depend on choices and can change."],
+  ["Enhanced Tracking","Can follow an individual's supernatural or physical trail.","Requires a meaningful connection to the target."],
+  ["Custom Gift","Create your own gift.","You must define its limitations."]
+];
+
+
+/* ============================================================
+   DEFAULT OC
+============================================================ */
+
+function createDefaultOC(){
+
   return {
-    id:crypto.randomUUID(),
-    user_id:currentUser?.id || null,
+
     name:"",
-    book:"Twilight",
-    location:"Forks, Washington",
-    timeline:"Beginning of Twilight",
-    oc:structuredClone(defaultOC),
-    memory:"",
+    pronouns:"",
+    age:"",
+    birthday:"",
+    hometown:"",
+    currentLocation:"Forks, Washington",
+
+    species:"human",
+
+    family:{
+      id:"none",
+      name:"No Known Family",
+      reputation:"",
+      customName:"",
+      customDescription:""
+    },
+
+    appearance:"",
+    personality:"",
+    personalityTraits:[],
+
+    background:"",
+    education:"",
+    occupation:"",
+
+    abilities:[],
+    customAbilities:"",
+
+    vampireGift:{
+      enabled:false,
+      name:"",
+      description:"",
+      limitations:""
+    },
+
     relationships:"",
-    inventory:"",
-    world_state:"",
-    conversation:[],
-    versions:[],
-    customSituation:"",
-    created_at:new Date().toISOString(),
-    updated_at:new Date().toISOString()
+
+    pet:{
+      enabled:false,
+      animal:"",
+      name:"",
+      breed:"",
+      appearance:"",
+      personality:"",
+      bond:"",
+      habits:"",
+      likes:"",
+      dislikes:""
+    },
+
+    preferences:{
+      romance:"",
+      violence:"",
+      narration:"",
+      intimacy:"",
+      canonStrictness:"strict"
+    }
+
   };
+
 }
 
 
 /* ============================================================
-   HELPERS
+   GAME STATE
 ============================================================ */
 
-function esc(value){
+function createNewGame(){
+
+  return {
+
+    id:crypto.randomUUID(),
+
+    createdAt:new Date().toISOString(),
+
+    book:"Twilight",
+
+    chapter:"Opening",
+
+    timeline:"Beginning of Twilight",
+
+    location:"Forks, Washington",
+
+    currentScene:"",
+
+    conversation:[],
+
+    memory:{
+      importantEvents:[],
+      relationships:{},
+      knownSecrets:[],
+      discoveredFacts:[],
+      inventory:[],
+      reputation:"",
+      familyReputation:"",
+      petStatus:"",
+      worldChanges:[],
+      currentGoals:[],
+      canonTimelinePosition:"Beginning of Twilight"
+    },
+
+    versions:[],
+
+    lastSaved:null
+
+  };
+
+}
+
+
+/* ============================================================
+   UTILITY
+============================================================ */
+
+function escapeHtml(value){
+
   return String(value ?? "")
     .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
     .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;");
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
 }
 
-function toast(message){
-  const old=document.querySelector(".toast");
-  if(old) old.remove();
 
-  const el=document.createElement("div");
-  el.className="toast";
-  el.textContent=message;
-  document.body.appendChild(el);
+function formatDate(date){
 
-  setTimeout(()=>el.remove(),3000);
+  if(!date) return "";
+
+  return new Date(date).toLocaleString();
+
 }
 
-function selectedArray(array,value){
-  return array.includes(value) ? "selected" : "";
+
+function showToast(message,type=""){
+
+  const root=document.getElementById("toastRoot");
+
+  root.innerHTML=
+    `<div class="toast ${type}">
+      ${escapeHtml(message)}
+    </div>`;
+
+  setTimeout(()=>{
+    root.innerHTML="";
+  },3500);
+
 }
 
-function toggleArrayValue(array,value){
-  const i=array.indexOf(value);
-  if(i>=0) array.splice(i,1);
-  else array.push(value);
+
+function setScreen(screen){
+
+  currentScreen=screen;
+  render();
 }
 
-function wordCount(text){
-  return String(text||"").trim()
-    ? String(text).trim().split(/\s+/).length
-    : 0;
+
+function getSpecies(){
+
+  return SPECIES[creatorData.species] || SPECIES.human;
+
 }
 
-function clone(obj){
-  return JSON.parse(JSON.stringify(obj));
+
+function getFamily(){
+
+  return FAMILIES.find(x=>x[0]===creatorData.family.id) || FAMILIES[FAMILIES.length-1];
+
+}
+
+
+function countWords(text){
+
+  return String(text||"")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .length;
+
 }
 
 
@@ -825,1260 +1181,505 @@ function clone(obj){
    AUTH
 ============================================================ */
 
-async function checkSession(){
-  const {data} = await supabaseClient.auth.getSession();
-  currentUser=data.session?.user || null;
-  renderHome();
+async function initializeAuth(){
+
+  const result=await supabaseClient.auth.getSession();
+
+  session=result.data.session;
+
+  supabaseClient.auth.onAuthStateChange((_event,newSession)=>{
+
+    session=newSession;
+
+    if(!session){
+      currentGame=null;
+      currentSaveId=null;
+      setScreen("home");
+    }
+
+  });
+
+  render();
+
 }
 
-async function loginOrSignup(){
+
+async function signUp(){
+
   const email=document.getElementById("authEmail").value.trim();
   const password=document.getElementById("authPassword").value;
 
   if(!email || !password){
-    toast("Enter your email and password.");
+
+    showToast("Enter an email and password.","error");
     return;
+
   }
 
-  let result;
+  const {error}=await supabaseClient.auth.signUp({
+    email,
+    password
+  });
 
-  if(authMode==="login"){
-    result=await supabaseClient.auth.signInWithPassword({
-      email,password
-    });
-  }else{
-    result=await supabaseClient.auth.signUp({
-      email,password
-    });
-  }
+  if(error){
 
-  if(result.error){
-    toast(result.error.message);
+    showToast(error.message,"error");
     return;
+
   }
 
-  if(authMode==="signup"){
-    toast("Account created. Check your email if confirmation is required.");
-  }
+  showToast(
+    "Account created. Check your email if confirmation is required.",
+    "success"
+  );
 
-  currentUser=result.data.user;
-  renderHome();
 }
 
-async function logout(){
+
+async function signIn(){
+
+  const email=document.getElementById("authEmail").value.trim();
+  const password=document.getElementById("authPassword").value;
+
+  const {error}=await supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if(error){
+
+    showToast(error.message,"error");
+    return;
+
+  }
+
+  showToast("Signed in.","success");
+
+}
+
+
+async function signOut(){
+
   await supabaseClient.auth.signOut();
-  currentUser=null;
-  game=null;
-  renderHome();
+
 }
-
-
-/* ============================================================
-   HOME
-============================================================ */
-
-function renderHome(){
-  const app=document.getElementById("app");
-
-  if(!currentUser){
-    app.innerHTML=`
-      <div class="screen home">
-        <div class="card auth">
-          <div class="logo" style="font-size:2.5rem">Twilight</div>
-          <p class="subtitle">The Story</p>
-
-          <div class="auth-tabs">
-            <button class="secondary" onclick="setAuthMode('login')">Log In</button>
-            <button class="secondary" onclick="setAuthMode('signup')">Create Account</button>
-          </div>
-
-          <div class="field">
-            <label>Email</label>
-            <input id="authEmail" type="email" autocomplete="email">
-          </div>
-
-          <div class="field">
-            <label>Password</label>
-            <input id="authPassword" type="password" autocomplete="current-password">
-          </div>
-
-          <button class="primary" style="width:100%" onclick="loginOrSignup()">
-            ${authMode==="login"?"Enter the Story":"Create Account"}
-          </button>
-        </div>
-      </div>
-    `;
-    return;
-  }
-
-  app.innerHTML=`
-    <div class="screen home">
-      <div class="card home-card">
-        <div class="logo">Twilight</div>
-        <div class="subtitle">An interactive book-canon roleplaying story</div>
-
-        <div class="home-actions">
-          <button class="primary" onclick="startNewGame()">New Game</button>
-          <button class="secondary" onclick="showSaves()">Load Game</button>
-        </div>
-
-        <div style="margin-top:20px">
-          <button class="ghost" onclick="logout()">Log Out</button>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function setAuthMode(mode){
-  authMode=mode;
-  renderHome();
-}
-
-
-/* ============================================================
-   NEW GAME
-============================================================ */
-
-function startNewGame(){
-  game=newGameObject();
-  creatorStep=0;
-  renderCreator();
-}
-
-
-/* ============================================================
-   CREATOR DATA
-============================================================ */
-
-const speciesData={
-  "Human":{
-    description:"A completely human character with no supernatural species abilities.",
-    abilities:[
-      ["Athletics","Physical training, endurance and coordination."],
-      ["Combat","Training in a human fighting discipline."],
-      ["Medicine","Medical or first-aid knowledge."],
-      ["Survival","Outdoor and survival skills."],
-      ["Academics","Strong academic ability."],
-      ["Music","Musical talent."],
-      ["Art","Artistic ability."],
-      ["Technology","Computers and technology."],
-      ["Social","Strong interpersonal skills."],
-      ["Driving","Advanced driving ability."]
-    ]
-  },
-
-  "Gifted Human":{
-    description:"A human with an unusual supernatural-like mental or intuitive gift.",
-    abilities:[
-      ["Intuition","Unusually strong intuitive perception."],
-      ["Empathy","Strong perception of emotions."],
-      ["Premonition","Limited impressions rather than unrestricted future knowledge."],
-      ["Mental Perception","Unusual awareness of thoughts or intentions."],
-      ["Custom Gift","Create a completely original gift."]
-    ]
-  },
-
-  "Vampire":{
-    description:"A Twilight vampire with the standard vampire physiology and an optional individual gift.",
-    abilities:[
-      ["Superhuman Strength","Extreme physical strength."],
-      ["Superhuman Speed","Extreme speed and reflexes."],
-      ["Enhanced Senses","Heightened sight, hearing and smell."],
-      ["Durability","Extremely difficult to physically injure."],
-      ["Immortality","Does not age normally."],
-      ["Perfect Memory","Exceptional memory."],
-      ["Venom","Vampire venom."],
-      ["Rapid Healing","Extremely rapid recovery."]
-    ]
-  },
-
-  "Quileute Shapeshifter":{
-    description:"A Quileute shapeshifter capable of phasing into a giant wolf form.",
-    abilities:[
-      ["Phasing","Transform into wolf form."],
-      ["Enhanced Strength","Supernatural physical strength."],
-      ["Enhanced Speed","Supernatural speed."],
-      ["Enhanced Senses","Heightened senses."],
-      ["Regeneration","Rapid healing."],
-      ["Pack Telepathy","Communication with pack members."],
-      ["Wolf Form","Customize wolf appearance."],
-      ["Pack Coordination","Enhanced coordination with pack members."]
-    ]
-  },
-
-  "True Werewolf":{
-    description:"A separate supernatural werewolf category. Do not give this character Quileute pack mechanics automatically.",
-    abilities:[
-      ["Enhanced Strength","Supernatural physical strength."],
-      ["Enhanced Speed","Supernatural speed."],
-      ["Enhanced Senses","Heightened senses."],
-      ["Regeneration","Rapid healing."],
-      ["Transformation","Werewolf transformation."],
-      ["Night Vision","Enhanced low-light vision."],
-      ["Tracking","Supernatural tracking ability."]
-    ]
-  }
-};
-
-const families={
-  "Cullen / Olympic Coven":{
-    reputation:"A vegetarian vampire family associated with the Olympic Peninsula. Their reputation, alliances and relationships must follow the current book timeline."
-  },
-  "Denali Coven":{
-    reputation:"An established vampire coven with its own history and relationships."
-  },
-  "Volturi":{
-    reputation:"The powerful ruling vampire authority. Their reputation and political significance must follow the current timeline."
-  },
-  "Egyptian Coven":{
-    reputation:"An ancient vampire coven with its own history."
-  },
-  "Amazon Coven":{
-    reputation:"An ancient vampire coven with its own traditions and relationships."
-  },
-  "Irish Coven":{
-    reputation:"An established vampire coven with its own members and history."
-  },
-  "Romanian Coven":{
-    reputation:"An ancient vampire group with a significant historical reputation among vampires."
-  },
-  "Nomad":{
-    reputation:"An independent vampire without a fixed coven."
-  },
-  "Swan Family":{
-    reputation:"A human family connection associated with Charlie Swan and Bella Swan."
-  },
-  "Black Family":{
-    reputation:"A Quileute family with established relationships within the tribe."
-  },
-  "Clearwater Family":{
-    reputation:"A Quileute family with established relationships within the tribe."
-  },
-  "Uley Family":{
-    reputation:"A Quileute family with established relationships within the tribe."
-  },
-  "Ateara Family":{
-    reputation:"A Quileute family connected to the established shapeshifter community."
-  },
-  "Custom Family":{
-    reputation:"A completely custom family. The player defines its history and reputation."
-  },
-  "No Known Family":{
-    reputation:"The character has no established canon family affiliation."
-  }
-};
-
-const personalitySuggestions=[
-  "Quiet","Outgoing","Protective","Sarcastic","Shy","Confident",
-  "Reckless","Intelligent","Suspicious","Compassionate","Stubborn",
-  "Playful","Reserved","Ambitious","Observant","Loyal","Independent",
-  "Cautious","Curious","Impulsive"
-];
-
-const giftSuggestions=[
-  ["Echo","Perceive emotional impressions left in a place or object."],
-  ["Thread","Sense unusually strong emotional connections between people."],
-  ["Stillness","Temporarily interfere with another person's impulse to move."],
-  ["Mirror","Reflect an existing emotional state back toward another person."],
-  ["Hollow","Make the user's presence unusually difficult for a target to mentally notice."],
-  ["Anchor","Help another gifted supernatural being maintain concentration."],
-  ["Pulse","Detect sudden emotional changes within a limited range."],
-  ["Veil","Obscure a specific thought or memory from supernatural perception."],
-  ["Resonance","Amplify an emotion that already exists."],
-  ["Recall","Cause someone to vividly re-experience a memory they already possess."],
-  ["Distortion","Alter how a target mentally interprets something they perceive."],
-  ["Foresense","Receive limited intuitive impressions of immediate possibilities."]
-];
 
 
 /* ============================================================
    CREATOR
 ============================================================ */
 
-function renderCreator(){
-  const app=document.getElementById("app");
-  const current=CREATOR_STEPS[creatorStep];
-
-  app.innerHTML=`
-    <div class="screen">
-      <div class="topbar">
-        <div>
-          <div class="topbar-title">Create Your Character</div>
-          <div class="muted">Twilight Book Universe</div>
-        </div>
-        <button class="ghost" onclick="renderHome()">Exit</button>
-      </div>
-
-      <div class="oc-layout">
-        <aside class="card oc-nav">
-          ${CREATOR_STEPS.map((step,i)=>`
-            <button
-              class="${i===creatorStep?"active":""}"
-              onclick="creatorGo(${i})">
-              ${i+1}. ${formatStep(step)}
-            </button>
-          `).join("")}
-        </aside>
-
-        <main class="card oc-content">
-          ${creatorSection(current)}
-
-          <div class="creator-footer">
-            <button class="secondary"
-              ${creatorStep===0?"disabled":""}
-              onclick="creatorGo(${creatorStep-1})">
-              Back
-            </button>
-
-            ${
-              creatorStep<CREATOR_STEPS.length-1
-              ? `<button class="primary" onclick="creatorGo(${creatorStep+1})">Next</button>`
-              : `<button class="primary" onclick="finishCharacter()">Enter Twilight</button>`
-            }
-          </div>
-        </main>
-      </div>
-    </div>
-  `;
-}
-
-function formatStep(s){
-  return s.charAt(0).toUpperCase()+s.slice(1);
-}
-
-function creatorGo(i){
-  if(i<0 || i>=CREATOR_STEPS.length)return;
-  collectCreatorInputs();
-  creatorStep=i;
-  renderCreator();
-}
-
-function field(id,label,value,placeholder=""){
-  return `
-    <div class="field">
-      <label>${label}</label>
-      <input id="${id}" value="${esc(value)}" placeholder="${esc(placeholder)}">
-    </div>
-  `;
-}
-
-function area(id,label,value,placeholder=""){
-  return `
-    <div class="field">
-      <label>${label}</label>
-      <textarea id="${id}" placeholder="${esc(placeholder)}">${esc(value)}</textarea>
-    </div>
-  `;
-}
-
-function creatorSection(step){
-
-  if(step==="identity"){
-    return `
-      <h2 class="section-title">Identity</h2>
-      <p class="section-description">
-        Start with the basics. Everything here becomes permanent character data.
-      </p>
-
-      ${field("ocName","Character name",game.oc.name,"Bella Swan")}
-      <div class="form-row">
-        ${field("ocAge","Age",game.oc.age,"17")}
-        ${field("ocPronouns","Pronouns",game.oc.pronouns,"she/her")}
-      </div>
-      ${field("ocBirthday","Birthday",game.oc.birthday,"Optional")}
-    `;
-  }
-
-  if(step==="species"){
-    return `
-      <h2 class="section-title">Species</h2>
-      <p class="section-description">
-        Choose exactly one species. There is intentionally no hybrid option.
-      </p>
-
-      <div class="option-grid">
-        ${Object.entries(speciesData).map(([name,data])=>`
-          <button
-            class="option ${game.oc.species===name?"selected":""}"
-            onclick="chooseSpecies('${esc(name)}')">
-            <strong>${esc(name)}</strong>
-            <small>${esc(data.description)}</small>
-          </button>
-        `).join("")}
-      </div>
-
-      ${
-        game.oc.species
-        ? `<div class="family-info">
-          <strong>Selected:</strong> ${esc(game.oc.species)}
-          <br>${esc(speciesData[game.oc.species].description)}
-        </div>`
-        : ""
-      }
-    `;
-  }
-
-  if(step==="family"){
-    return `
-      <h2 class="section-title">Family / Bloodline</h2>
-      <p class="section-description">
-        A canon family connection affects reputation, relationships, alliances,
-        history and how other characters react to your OC.
-      </p>
-
-      <div class="option-grid">
-        ${Object.entries(families).map(([name,data])=>`
-          <button
-            class="option ${game.oc.family===name?"selected":""}"
-            onclick="chooseFamily('${esc(name)}')">
-            <strong>${esc(name)}</strong>
-            <small>${esc(data.reputation)}</small>
-          </button>
-        `).join("")}
-      </div>
-
-      ${field(
-        "familyCustom",
-        "Custom family / bloodline details",
-        game.oc.familyType,
-        "Describe your exact family connection..."
-      )}
-
-      ${area(
-        "familyRep",
-        "Family reputation / history",
-        game.oc.familyReputation,
-        "Describe anything additional about your family's reputation..."
-      )}
-
-      <div class="family-info">
-        <strong>Persistent bloodline rule:</strong><br>
-        The selected family and its established reputation follow your OC
-        throughout the entire saved story. The AI must consider this when
-        determining how canon characters react to your character.
-      </div>
-    `;
-  }
-
-  if(step==="appearance"){
-    return `
-      <h2 class="section-title">Appearance</h2>
-      <p class="section-description">
-        Use suggestions if you want inspiration, then write anything you want.
-      </p>
-
-      <div class="option-grid">
-        ${[
-          "Pale","Warm complexion","Dark hair","Light hair","Long hair",
-          "Short hair","Curly hair","Straight hair","Tall","Petite",
-          "Athletic","Delicate","Distinctive eyes","Freckles","Scar"
-        ].map(x=>`
-          <button class="option"
-            onclick="appendToField('appearanceText','${esc(x)}')">
-            ${esc(x)}
-          </button>
-        `).join("")}
-      </div>
-
-      <br>
-      ${area(
-        "appearanceText",
-        "Full appearance",
-        game.oc.appearance,
-        "Write your OC's complete appearance..."
-      )}
-    `;
-  }
-
-  if(step==="personality"){
-    return `
-      <h2 class="section-title">Personality</h2>
-      <p class="section-description">
-        Select as many suggestions as you want, then describe your character
-        in your own words.
-      </p>
-
-      <div class="option-grid">
-        ${personalitySuggestions.map(x=>`
-          <button
-            class="option ${selectedArray(game.oc.personalityTraits,x)}"
-            onclick="toggleTrait('${esc(x)}')">
-            ${esc(x)}
-          </button>
-        `).join("")}
-      </div>
-
-      <br>
-
-      ${area(
-        "personalityText",
-        "Custom personality",
-        game.oc.personality,
-        "Describe how your character actually thinks, behaves and reacts..."
-      )}
-    `;
-  }
-
-  if(step==="abilities"){
-    const data=speciesData[game.oc.species];
-
-    if(!data){
-      return `
-        <h2 class="section-title">Abilities</h2>
-        <p class="section-description">
-          Choose a species first.
-        </p>
-      `;
-    }
-
-    return `
-      <h2 class="section-title">Abilities</h2>
-      <p class="section-description">
-        ${esc(game.oc.species)} abilities.
-      </p>
-
-      <div class="option-grid">
-        ${data.abilities.map(([name,desc])=>`
-          <button
-            class="option ${selectedArray(game.oc.abilities,name)}"
-            onclick="toggleAbility('${esc(name)}')">
-            <strong>${esc(name)}</strong>
-            <small>${esc(desc)}</small>
-          </button>
-        `).join("")}
-      </div>
-
-      ${
-        game.oc.species==="Vampire" || game.oc.species==="Gifted Human"
-        ? `
-          <hr style="border-color:var(--border);margin:28px 0">
-
-          <h3>Special Gift</h3>
-
-          <div class="option-grid">
-            ${giftSuggestions.map(([name,desc])=>`
-              <button class="option"
-                onclick="useGiftSuggestion('${esc(name)}','${esc(desc)}')">
-                <strong>${esc(name)}</strong>
-                <small>${esc(desc)}</small>
-              </button>
-            `).join("")}
-          </div>
-
-          <br>
-
-          ${field("giftName","Gift name",game.oc.gift.name,"Create your own...")}
-          ${area("giftDescription","Gift description",game.oc.gift.description)}
-          
-          <div class="form-row">
-            ${field("giftRange","Range",game.oc.gift.range,"Touch / 10 meters / line of sight...")}
-            ${field("giftCannot","Cannot affect",game.oc.gift.cannot,"What is impossible for this gift?")}
-          </div>
-
-          ${area(
-            "giftLimitations",
-            "Limitations",
-            game.oc.gift.limitations,
-            "Give the ability meaningful boundaries..."
-          )}
-        `
-        : ""
-      }
-
-      ${area(
-        "extraAbilities",
-        "Additional custom abilities / skills",
-        game.oc.preferences.skills,
-        "Anything else your character knows how to do..."
-      )}
-    `;
-  }
-
-  if(step==="background"){
-    return `
-      <h2 class="section-title">Background</h2>
-      <p class="section-description">
-        Your entire backstory can be written freely.
-      </p>
-
-      ${area(
-        "backgroundText",
-        "Backstory",
-        game.oc.background,
-        "Where were they born? What happened before the story? What brought them to their current life?"
-      )}
-
-      ${area(
-        "situationText",
-        "Starting situation",
-        game.customSituation,
-        "Describe anything specific you want happening when the story begins..."
-      )}
-    `;
-  }
-
-  if(step==="relationships"){
-    return `
-      <h2 class="section-title">Relationships</h2>
-      <p class="section-description">
-        You can describe existing canon connections or create completely
-        original relationships.
-      </p>
-
-      ${area(
-        "relationshipsText",
-        "Relationships",
-        game.oc.relationships,
-        "Family, friends, enemies, romantic relationships, acquaintances..."
-      )}
-    `;
-  }
-
-  if(step==="pet"){
-    const p=game.oc.pet;
-
-    return `
-      <h2 class="section-title">Pet</h2>
-      <p class="section-description">
-        Your pet becomes persistent story data. The AI will portray its
-        personality and behavior naturally whenever the pet is present.
-      </p>
-
-      <div class="toggle">
-        <div>
-          <strong>Does your OC have a pet?</strong>
-          <div class="muted">The pet is part of the saved character.</div>
-        </div>
-
-        <input
-          type="checkbox"
-          ${p.hasPet?"checked":""}
-          onchange="game.oc.pet.hasPet=this.checked;renderCreator()">
-      </div>
-
-      ${
-        p.hasPet
-        ? `
-          <div class="pet-box">
-            ${field("petAnimal","Animal",p.animal,"Dog")}
-            ${field("petName","Name",p.name,"Luna")}
-            ${field("petBreed","Breed / type",p.breed,"Australian Shepherd")}
-
-            ${area(
-              "petAppearance",
-              "Appearance",
-              p.appearance,
-              "Describe how the pet looks..."
-            )}
-
-            ${area(
-              "petPersonality",
-              "Personality",
-              p.personality,
-              "Affectionate, suspicious of strangers, energetic..."
-            )}
-
-            ${area(
-              "petBond",
-              "Bond with your OC",
-              p.bond,
-              "How does this pet relate to your character?"
-            )}
-
-            ${area(
-              "petHabits",
-              "Habits",
-              p.habits,
-              "Things the pet naturally does..."
-            )}
-
-            <div class="form-row">
-              ${area("petLikes","Likes",p.likes)}
-              ${area("petDislikes","Dislikes",p.dislikes)}
-            </div>
-          </div>
-        `
-        : `
-          <div class="family-info">
-            No pet selected.
-          </div>
-        `
-      }
-    `;
-  }
-
-  if(step==="preferences"){
-    return `
-      <h2 class="section-title">Preferences & Goals</h2>
-      <p class="section-description">
-        These help the AI portray your OC consistently without taking control
-        away from you.
-      </p>
-
-      ${area("likes","Likes",game.oc.preferences.likes)}
-      ${area("dislikes","Dislikes",game.oc.preferences.dislikes)}
-      ${area("fears","Fears",game.oc.preferences.fears)}
-      ${area("goals","Goals",game.oc.preferences.goals)}
-    `;
-  }
-
-  if(step==="review"){
-    collectCreatorInputs();
-
-    return `
-      <h2 class="section-title">Final Review</h2>
-      <p class="section-description">
-        Review your character before entering the story.
-      </p>
-
-      <div class="review">
-        <h3>${esc(game.oc.name || "Unnamed Character")}</h3>
-
-        <strong>Species</strong><br>
-        ${esc(game.oc.species || "Not selected")}<br><br>
-
-        <strong>Family / Bloodline</strong><br>
-        ${esc(game.oc.family || "None")}<br><br>
-
-        <strong>Appearance</strong><br>
-        ${esc(game.oc.appearance || "Not specified")}<br><br>
-
-        <strong>Personality</strong><br>
-        ${esc(game.oc.personality || "Not specified")}<br><br>
-
-        <strong>Abilities</strong><br>
-        ${esc(game.oc.abilities.join(", ") || "None")}<br><br>
-
-        ${
-          game.oc.gift.name
-          ? `<strong>Gift</strong><br>
-             ${esc(game.oc.gift.name)} — ${esc(game.oc.gift.description)}<br><br>`
-          : ""
-        }
-
-        <strong>Pet</strong><br>
-        ${
-          game.oc.pet.hasPet
-          ? `${esc(game.oc.pet.name)} (${esc(game.oc.pet.animal)}) — ${esc(game.oc.pet.personality)}`
-          : "None"
-        }
-      </div>
-    `;
-  }
-
-  return "";
-}
-
-
-/* ============================================================
-   CREATOR INPUT COLLECTION
-============================================================ */
-
-function val(id){
-  const el=document.getElementById(id);
-  return el ? el.value : null;
-}
-
-function collectCreatorInputs(){
-
-  if(!game)return;
-
-  game.oc.name=val("ocName") ?? game.oc.name;
-  game.oc.age=val("ocAge") ?? game.oc.age;
-  game.oc.pronouns=val("ocPronouns") ?? game.oc.pronouns;
-  game.oc.birthday=val("ocBirthday") ?? game.oc.birthday;
-
-  game.oc.familyType=val("familyCustom") ?? game.oc.familyType;
-  game.oc.familyReputation=val("familyRep") ?? game.oc.familyReputation;
-
-  game.oc.appearance=val("appearanceText") ?? game.oc.appearance;
-  game.oc.personality=val("personalityText") ?? game.oc.personality;
-
-  game.oc.gift.name=val("giftName") ?? game.oc.gift.name;
-  game.oc.gift.description=val("giftDescription") ?? game.oc.gift.description;
-  game.oc.gift.range=val("giftRange") ?? game.oc.gift.range;
-  game.oc.gift.cannot=val("giftCannot") ?? game.oc.gift.cannot;
-  game.oc.gift.limitations=val("giftLimitations") ?? game.oc.gift.limitations;
-
-  game.oc.background=val("backgroundText") ?? game.oc.background;
-  game.customSituation=val("situationText") ?? game.customSituation;
-
-  game.oc.relationships=val("relationshipsText") ?? game.oc.relationships;
-
-  game.oc.preferences.skills=val("extraAbilities") ?? game.oc.preferences.skills;
-  game.oc.preferences.likes=val("likes") ?? game.oc.preferences.likes;
-  game.oc.preferences.dislikes=val("dislikes") ?? game.oc.preferences.dislikes;
-  game.oc.preferences.fears=val("fears") ?? game.oc.preferences.fears;
-  game.oc.preferences.goals=val("goals") ?? game.oc.preferences.goals;
-
-  game.oc.pet.animal=val("petAnimal") ?? game.oc.pet.animal;
-  game.oc.pet.name=val("petName") ?? game.oc.pet.name;
-  game.oc.pet.breed=val("petBreed") ?? game.oc.pet.breed;
-  game.oc.pet.appearance=val("petAppearance") ?? game.oc.pet.appearance;
-  game.oc.pet.personality=val("petPersonality") ?? game.oc.pet.personality;
-  game.oc.pet.bond=val("petBond") ?? game.oc.pet.bond;
-  game.oc.pet.habits=val("petHabits") ?? game.oc.pet.habits;
-  game.oc.pet.likes=val("petLikes") ?? game.oc.pet.likes;
-  game.oc.pet.dislikes=val("petDislikes") ?? game.oc.pet.dislikes;
-}
-
-function chooseSpecies(species){
-  collectCreatorInputs();
-  game.oc.species=species;
-
-  // Species-specific reset prevents incompatible abilities.
-  game.oc.abilities=[];
-  game.oc.gift={
-    name:"",
-    description:"",
-    range:"",
-    limitations:"",
-    cannot:""
-  };
-
-  renderCreator();
-}
-
-function chooseFamily(family){
-  collectCreatorInputs();
-  game.oc.family=family;
-
-  if(families[family]){
-    game.oc.familyReputation=families[family].reputation;
-  }
-
-  renderCreator();
-}
-
-function toggleTrait(value){
-  collectCreatorInputs();
-  toggleArrayValue(game.oc.personalityTraits,value);
-  renderCreator();
-}
-
-function toggleAbility(value){
-  collectCreatorInputs();
-  toggleArrayValue(game.oc.abilities,value);
-  renderCreator();
-}
-
-function appendToField(id,text){
-  const el=document.getElementById(id);
-  if(!el)return;
-
-  const current=el.value.trim();
-  el.value=current ? current+", "+text : text;
-  collectCreatorInputs();
-}
-
-function useGiftSuggestion(name,description){
-  collectCreatorInputs();
-  game.oc.gift.name=name;
-  game.oc.gift.description=description;
-  renderCreator();
-}
-
-
-/* ============================================================
-   FINISH CHARACTER
-============================================================ */
-
-async function finishCharacter(){
-  collectCreatorInputs();
-
-  if(!game.oc.name.trim()){
-    toast("Give your character a name.");
+const CREATOR_STEPS = [
+  "Identity",
+  "Species",
+  "Family",
+  "Appearance",
+  "Personality",
+  "Abilities",
+  "Background",
+  "Relationships",
+  "Pet",
+  "Preferences",
+  "Review"
+];
+
+
+function validateCreator(){
+
+  if(!creatorData.name.trim()){
+
+    showToast("Your OC needs a name.","error");
     creatorStep=0;
-    renderCreator();
-    return;
+    render();
+    return false;
+
   }
 
-  if(!game.oc.species){
-    toast("Choose a species.");
-    creatorStep=1;
-    renderCreator();
-    return;
+  if(!creatorData.appearance.trim()){
+
+    showToast("Describe your OC's appearance.","error");
+    creatorStep=3;
+    render();
+    return false;
+
   }
 
-  game.name=game.oc.name;
-  game.created_at=new Date().toISOString();
-  game.updated_at=new Date().toISOString();
+  if(!creatorData.personality.trim()){
 
-  game.conversation=[
+    showToast("Describe your OC's personality.","error");
+    creatorStep=4;
+    render();
+    return false;
+
+  }
+
+  return true;
+
+}
+
+
+function selectSpecies(id){
+
+  creatorData.species=id;
+
+  if(id!=="vampire"){
+
+    creatorData.vampireGift={
+      enabled:false,
+      name:"",
+      description:"",
+      limitations:""
+    };
+
+  }
+
+  render();
+
+}
+
+
+function selectFamily(id){
+
+  const family=FAMILIES.find(x=>x[0]===id);
+
+  creatorData.family.id=id;
+  creatorData.family.name=family ? family[1] : "";
+  creatorData.family.reputation=
+    family ? family[2] : "";
+
+  render();
+
+}
+
+
+function toggleAbility(ability){
+
+  if(creatorData.abilities.includes(ability)){
+
+    creatorData.abilities=
+      creatorData.abilities.filter(x=>x!==ability);
+
+  }else{
+
+    creatorData.abilities.push(ability);
+
+  }
+
+  render();
+
+}
+
+
+function toggleTrait(trait){
+
+  if(creatorData.personalityTraits.includes(trait)){
+
+    creatorData.personalityTraits=
+      creatorData.personalityTraits.filter(x=>x!==trait);
+
+  }else{
+
+    creatorData.personalityTraits.push(trait);
+
+  }
+
+  render();
+
+}
+
+
+function createGameFromOC(){
+
+  if(!validateCreator()) return;
+
+  currentGame=createNewGame();
+
+  currentGame.oc=structuredClone(creatorData);
+
+  currentGame.memory.familyReputation=
+    creatorData.family.reputation;
+
+  currentGame.memory.currentGoals=[
+    "Begin the story naturally.",
+    "Stay consistent with the current book timeline."
+  ];
+
+  currentGame.conversation=[
     {
-      role:"narrator",
+      role:"system",
       content:
-`The story begins.
-
-${game.oc.name} has entered the world of Twilight.
-
-The narrator will now follow the book timeline, preserve canon character knowledge, and allow the world to continue naturally around the player.`
+        `The roleplay begins fresh. The player's OC is ${creatorData.name}. `+
+        `Do not reveal future canon information. Begin at the opening of Twilight `+
+        `unless the player specifies a different valid starting point.`
     }
   ];
 
-  await saveGame(true);
-  renderRP();
+  currentSaveId=null;
+
+  setScreen("rp");
+
+  setTimeout(()=>{
+    startOpeningScene();
+  },100);
+
 }
 
 
 /* ============================================================
-   SUPABASE SAVES
-============================================================ */
-
-async function saveGame(silent=false){
-
-  if(!currentUser || !game)return false;
-
-  collectCreatorInputs();
-
-  game.user_id=currentUser.id;
-  game.updated_at=new Date().toISOString();
-
-  const payload={
-    ...game,
-    user_id:currentUser.id
-  };
-
-  const {error}=await supabaseClient
-    .from("saved_games")
-    .upsert(payload,{onConflict:"id"});
-
-  if(error){
-    console.error(error);
-    if(!silent) toast("Save failed: "+error.message);
-    return false;
-  }
-
-  if(!silent)toast("Game saved.");
-  return true;
-}
-
-async function showSaves(){
-
-  if(!currentUser){
-    renderHome();
-    return;
-  }
-
-  const app=document.getElementById("app");
-
-  app.innerHTML=`
-    <div class="screen">
-      <div class="topbar">
-        <div>
-          <div class="topbar-title">Load Game</div>
-          <div class="muted">Your saved Twilight stories</div>
-        </div>
-        <button class="ghost" onclick="renderHome()">Back</button>
-      </div>
-
-      <div class="center">
-        <div class="card" style="padding:22px">
-          <div id="saveList" class="save-list">
-            <div class="loading">
-              <span class="dot"></span>
-              Loading saves...
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  const {data,error}=await supabaseClient
-    .from("saved_games")
-    .select("*")
-    .eq("user_id",currentUser.id)
-    .order("updated_at",{ascending:false});
-
-  const list=document.getElementById("saveList");
-
-  if(error){
-    list.innerHTML=`<p class="muted">${esc(error.message)}</p>`;
-    return;
-  }
-
-  if(!data.length){
-    list.innerHTML=`<p class="muted">No saved games yet.</p>`;
-    return;
-  }
-
-  list.innerHTML=data.map(save=>`
-    <div class="save-card">
-      <div>
-        <h3>${esc(save.name || save.oc?.name || "Untitled")}</h3>
-        <div class="muted">
-          ${esc(save.book || "Twilight")} ·
-          ${esc(save.location || "")}
-        </div>
-        <small class="muted">
-          ${new Date(save.updated_at).toLocaleString()}
-        </small>
-      </div>
-
-      <div class="save-actions">
-        <button class="primary"
-          onclick='loadGame(${JSON.stringify(save).replace(/'/g,"&#39;")})'>
-          Load
-        </button>
-
-        <button class="danger"
-          onclick="deleteGame('${esc(save.id)}')">
-          Delete
-        </button>
-      </div>
-    </div>
-  `).join("");
-}
-
-function loadGame(saved){
-  game=saved;
-  game.oc=game.oc || clone(defaultOC);
-  game.conversation=game.conversation || [];
-  game.versions=game.versions || [];
-  game.memory=game.memory || "";
-  game.relationships=game.relationships || "";
-  game.inventory=game.inventory || "";
-  game.world_state=game.world_state || "";
-  game.oc.pet=game.oc.pet || clone(defaultOC.pet);
-  game.oc.gift=game.oc.gift || clone(defaultOC.gift);
-  game.oc.preferences=game.oc.preferences || clone(defaultOC.preferences);
-  renderRP();
-}
-
-async function deleteGame(id){
-  if(!confirm("Delete this saved game?"))return;
-
-  const {error}=await supabaseClient
-    .from("saved_games")
-    .delete()
-    .eq("id",id)
-    .eq("user_id",currentUser.id);
-
-  if(error){
-    toast(error.message);
-    return;
-  }
-
-  showSaves();
-}
-
-
-/* ============================================================
-   AI PROMPT
+   AI
 ============================================================ */
 
 function buildSystemPrompt(){
 
-  const species=game.oc.species;
-  const family=game.oc.family;
+  const oc=currentGame.oc;
 
   return `
-You are the narrative engine for an immersive Twilight Saga BOOK roleplaying game.
+You are the narrative engine for an interactive roleplaying game based ONLY on the TWILIGHT SAGA BOOKS by Stephenie Meyer.
 
-CANON:
-Use the Twilight Saga novels only:
+CANON SOURCE:
 Twilight
 New Moon
 Eclipse
 Breaking Dawn
 
-Do NOT use movie-only details.
+BOOK CANON ONLY:
+Do not use movie-only characterization, scenes, dialogue, costumes, locations, visual details, or plot changes unless they also exist in the books.
 
-CURRENT BOOK:
-${game.book}
+TIMELINE:
+The current timeline is:
+${currentGame.memory.canonTimelinePosition}
 
-CURRENT TIMELINE:
-${game.timeline}
+The current book is:
+${currentGame.book}
 
-CURRENT LOCATION:
-${game.location}
+The current chapter/scene is:
+${currentGame.chapter}
 
-PLAYER CHARACTER:
-Name: ${game.oc.name}
-Age: ${game.oc.age}
-Pronouns: ${game.oc.pronouns}
-Birthday: ${game.oc.birthday}
+Current location:
+${currentGame.location}
 
-SPECIES:
-${species}
+PLAYER OC:
 
-FAMILY / BLOODLINE:
-${family}
+Name:
+${oc.name}
 
-FAMILY REPUTATION:
-${game.oc.familyReputation}
+Pronouns:
+${oc.pronouns}
 
-CUSTOM FAMILY DETAILS:
-${game.oc.familyType}
+Age:
+${oc.age}
 
-APPEARANCE:
-${game.oc.appearance}
+Species:
+${SPECIES[oc.species]?.name || oc.species}
 
-PERSONALITY:
-${game.oc.personality}
+Family:
+${oc.family.name}
 
-PERSONALITY TRAITS:
-${game.oc.personalityTraits.join(", ")}
+Family reputation:
+${oc.family.reputation}
 
-ABILITIES:
-${game.oc.abilities.join(", ")}
+Custom family details:
+${oc.family.customDescription}
 
-CUSTOM SKILLS:
-${game.oc.preferences.skills}
+Appearance:
+${oc.appearance}
 
-SPECIAL GIFT:
-Name: ${game.oc.gift.name}
-Description: ${game.oc.gift.description}
-Range: ${game.oc.gift.range}
-Limitations: ${game.oc.gift.limitations}
-Cannot affect: ${game.oc.gift.cannot}
+Personality:
+${oc.personality}
 
-BACKGROUND:
-${game.oc.background}
+Personality traits:
+${oc.personalityTraits.join(", ")}
 
-RELATIONSHIPS:
-${game.oc.relationships}
+Background:
+${oc.background}
 
-PREFERENCES:
-Likes: ${game.oc.preferences.likes}
-Dislikes: ${game.oc.preferences.dislikes}
-Fears: ${game.oc.preferences.fears}
-Goals: ${game.oc.preferences.goals}
+Education:
+${oc.education}
+
+Occupation:
+${oc.occupation}
+
+Abilities:
+${oc.abilities.join(", ")}
+
+Custom abilities:
+${oc.customAbilities}
+
+Vampire gift:
+${oc.vampireGift.enabled ? oc.vampireGift.name : "None"}
+
+Gift description:
+${oc.vampireGift.description}
+
+Gift limitations:
+${oc.vampireGift.limitations}
+
+Relationships:
+${oc.relationships}
 
 PET:
-Has pet: ${game.oc.pet.hasPet}
-Animal: ${game.oc.pet.animal}
-Name: ${game.oc.pet.name}
-Breed: ${game.oc.pet.breed}
-Appearance: ${game.oc.pet.appearance}
-Personality: ${game.oc.pet.personality}
-Bond: ${game.oc.pet.bond}
-Habits: ${game.oc.pet.habits}
-Likes: ${game.oc.pet.likes}
-Dislikes: ${game.oc.pet.dislikes}
+Enabled:
+${oc.pet.enabled}
 
-STORY MEMORY:
-${game.memory}
+Animal:
+${oc.pet.animal}
 
-WORLD STATE:
-${game.world_state}
+Name:
+${oc.pet.name}
 
-INVENTORY:
-${game.inventory}
+Breed/type:
+${oc.pet.breed}
 
-RELATIONSHIP MEMORY:
-${game.relationships}
+Appearance:
+${oc.pet.appearance}
 
-CUSTOM STARTING SITUATION:
-${game.customSituation}
+Personality:
+${oc.pet.personality}
 
-IMPORTANT WORLD RULES:
+Bond:
+${oc.pet.bond}
 
-1. The player controls their OC only.
+Habits:
+${oc.pet.habits}
 
-2. Never decide what the player's OC thinks, feels, says or does unless the player explicitly requested it.
+Likes:
+${oc.pet.likes}
+
+Dislikes:
+${oc.pet.dislikes}
+
+IMPORTANT RULES:
+
+1. The player controls ONLY their OC.
+
+2. Never decide the player's OC's thoughts, feelings, decisions, dialogue, physical actions, movements, reactions, or choices unless the player explicitly asks you to.
 
 3. Canon characters are independent people.
 
-4. Canon characters have their own thoughts, motivations, knowledge and reactions.
+4. Canon characters have their own:
+- thoughts
+- motives
+- emotions
+- opinions
+- relationships
+- secrets
+- fears
+- goals
+- memories
+- reactions
 
-5. Canon characters do not automatically like the OC.
+5. Canon characters must not become puppets that automatically agree with the OC.
 
-6. Canon characters can act without waiting for the player.
+6. They can disagree with the OC.
 
-7. Characters only know information that they could reasonably know at this exact point in the book timeline.
+7. They can distrust the OC.
 
-8. Never reveal future canon information early.
+8. They can misunderstand the OC.
 
-9. Do not use knowledge from later books unless the timeline has reached it.
+9. They can leave.
 
-10. Maintain continuity with every previous event.
+10. They can refuse.
 
-11. The OC's family/bloodline reputation follows the OC throughout the story.
+11. They can become curious.
 
-12. Do not confuse family reputation with personal reputation.
+12. They can form relationships naturally.
 
-13. Species abilities must remain consistent with Twilight book lore.
+13. Do not force romance.
 
-14. Do not give vampires shapeshifter abilities.
+14. Do not reveal information that the character could not reasonably know at this point in the timeline.
 
-15. Do not give Quileute shapeshifters vampire abilities.
+15. Do not give future knowledge to characters.
 
-16. There is NO player-created hybrid species.
+16. Preserve established canon events unless the player's actions logically alter them.
 
-17. A pet is a real recurring part of the story when physically present.
+17. If the player's actions create a divergence, continue from the new reality instead of forcing canon back into place.
 
-18. Do not teleport pets into scenes where they could not logically be present.
+18. Maintain persistent continuity.
 
-19. Portray pets according to their saved personality and habits.
+19. Remember:
+- previous conversations
+- discovered secrets
+- relationships
+- inventory
+- injuries
+- locations
+- promises
+- arguments
+- friendships
+- family reputation
+- pet status
+- supernatural knowledge
+- timeline changes
 
-20. Keep relationships dynamic.
+20. Family reputation follows the OC's chosen bloodline/family.
 
-21. NPCs remember what happened.
+21. Do not create hybrid species.
 
-22. NPCs can change their opinions based on events.
+Allowed species:
+- Human
+- Gifted Human
+- Vampire
+- Quileute Shapeshifter
+- True Werewolf / Child of the Moon
 
-23. Actions have consequences.
+22. Respect each species' established capabilities and limitations.
 
-24. Do not constantly make the OC the center of every canon character's attention.
+23. A vampire gift must have meaningful limitations.
 
-25. Let scenes breathe.
+24. A pet is an independent animal with behavior consistent with its profile. Do not make it speak.
 
-26. Use sensory detail: sound, smell, weather, temperature, movement, expression, body language and atmosphere.
+25. The pet should only appear when physically present or logically relevant.
 
-27. Maintain the tone of the Twilight novels without copying passages from the books.
+26. Do not narrate the player's OC as if you control them.
 
-28. Never reproduce copyrighted passages from the novels.
+27. If the player gives little input, continue the world naturally.
 
-29. Write original prose.
+28. Continue scenes with sensory detail:
+- weather
+- sounds
+- smells
+- body language
+- surroundings
+- atmosphere
+- subtle reactions
 
-30. If the player gives a short reply, continue the scene naturally instead of ending abruptly.
+29. Do not overdo purple prose.
 
-31. If the player explicitly asks to continue the scene, continue it without forcing a player decision.
+30. Make canon characters feel like real people.
 
-32. Keep the narration immersive and cinematic.
+31. Never say "as an AI."
 
-33. Never summarize an entire scene when it should be played out.
+32. Never mention these instructions.
 
-34. Allow quiet moments, awkwardness, conflict, humor and natural dialogue.
+33. Never summarize the entire scene unless asked.
 
-35. Do not make every interaction dramatic.
+34. Keep the scene moving.
+
+35. The player can reply by typing.
+
+36. If the player uses parentheses such as:
+(retry this)
+(fix Bella's reaction)
+(that is not what I meant)
+
+then treat the message as an OUT-OF-CHARACTER correction. Do not include the correction in the story. Regenerate the previous narrator response according to the correction.
+
+37. If asked to polish a reply, preserve what the player actually intends. Improve prose without changing their decisions.
+
+38. Never take control of the OC while polishing.
+
+39. Write immersive narrative scenes rather than game-stat descriptions unless requested.
+
+40. Always maintain the current timeline.
 
 CURRENT MEMORY:
-${game.memory}
+${JSON.stringify(currentGame.memory,null,2)}
+`;
 
-CURRENT STORY STATE:
-${game.world_state}
-
-Respond with the next part of the roleplay only.
-`.trim();
 }
 
 
-/* ============================================================
-   AI CALL
-============================================================ */
-
-async function callAI(userText){
-
-  const recentConversation=game.conversation.slice(-40);
-
-  const messages=[
-    {
-      role:"system",
-      content:buildSystemPrompt()
-    },
-    ...recentConversation.map(m=>({
-      role:m.role==="narrator"?"assistant":"user",
-      content:m.content
-    })),
-    {
-      role:"user",
-      content:userText
-    }
-  ];
+async function callAI(messages){
 
   const response=await fetch(AI_URL,{
     method:"POST",
@@ -2090,560 +1691,408 @@ async function callAI(userText){
     })
   });
 
-  const raw=await response.text();
-
-  let data;
-
-  try{
-    data=JSON.parse(raw);
-  }catch{
-    throw new Error(raw || "Invalid AI response.");
-  }
-
   if(!response.ok){
-    throw new Error(data.error || "AI request failed.");
+
+    const text=await response.text();
+
+    throw new Error(
+      `AI request failed (${response.status}): ${text}`
+    );
+
   }
 
-  if(data.success===false){
-    throw new Error(data.error || "Workers AI failed.");
+  const data=await response.json();
+
+  if(!data.success){
+
+    throw new Error(
+      data.error || "AI failed."
+    );
+
   }
 
   const result=data.result;
 
-  if(typeof result==="string")return result;
+  return (
+    result?.response ||
+    result?.result ||
+    result?.text ||
+    result?.output ||
+    ""
+  );
 
-  if(result?.response)return result.response;
-
-  if(result?.choices?.[0]?.message?.content){
-    return result.choices[0].message.content;
-  }
-
-  if(result?.result)return result.result;
-
-  throw new Error("The AI returned no usable response.");
 }
 
 
 /* ============================================================
-   RP UI
+   RP
 ============================================================ */
 
-function renderRP(){
+async function startOpeningScene(){
 
-  const app=document.getElementById("app");
-
-  app.innerHTML=`
-    <div class="rp-layout">
-
-      <aside id="rpSidebar" class="rp-sidebar">
-        ${renderSidebar()}
-      </aside>
-
-      <main class="rp-main">
-
-        <header class="rp-header">
-          <button class="secondary mobile-menu"
-            onclick="toggleSidebar()">
-            ☰
-          </button>
-
-          <div>
-            <strong>${esc(game.oc.name)}</strong>
-            <div class="muted">${esc(game.book)} · ${esc(game.location)}</div>
-          </div>
-
-          <div style="display:flex;gap:7px;flex-wrap:wrap">
-            <button class="secondary" onclick="saveGame()">Save</button>
-            <button class="ghost" onclick="renderHome()">Exit</button>
-          </div>
-        </header>
-
-        <section id="conversation" class="conversation">
-          ${renderConversation()}
-        </section>
-
-        <div class="composer">
-          <div class="composer-inner">
-
-            <textarea
-              id="playerInput"
-              placeholder="What does your character say or do?"
-              oninput="updateWordCount()"
-              onkeydown="handleComposerKey(event)"
-            ></textarea>
-
-            <div class="composer-actions">
-
-              <button class="secondary"
-                onclick="polishReply()"
-                ${generating?"disabled":""}>
-                Polish Reply
-              </button>
-
-              <button class="secondary"
-                onclick="rewriteReply()"
-                ${generating?"disabled":""}>
-                Rewrite
-              </button>
-
-              <button class="secondary"
-                onclick="continueScene()"
-                ${generating?"disabled":""}>
-                Continue Scene
-              </button>
-
-              <button class="primary"
-                onclick="sendReply()"
-                ${generating?"disabled":""}>
-                Send
-              </button>
-
-              <span id="wordCount" class="word-count">0 words</span>
-            </div>
-
-            ${
-              generating
-              ? `
-                <div class="loading" style="margin-top:8px">
-                  <span class="dot"></span>
-                  The story is continuing...
-                </div>
-              `
-              : ""
-            }
-
-          </div>
-        </div>
-
-      </main>
-    </div>
-  `;
-
-  scrollConversationToBottom();
-}
-
-function renderSidebar(){
-
-  return `
-    <div style="margin-bottom:25px">
-      <h2>${esc(game.oc.name)}</h2>
-      <div class="muted">${esc(game.oc.species)}</div>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="sidebar-title">Family</div>
-      <div class="sidebar-value">
-        ${esc(game.oc.family || "None")}
-      </div>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="sidebar-title">Family Reputation</div>
-      <div class="sidebar-value">
-        ${esc(game.oc.familyReputation || "None")}
-      </div>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="sidebar-title">Abilities</div>
-      <div class="sidebar-value">
-        ${esc(game.oc.abilities.join(", ") || "None")}
-      </div>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="sidebar-title">Pet</div>
-      <div class="sidebar-value">
-        ${
-          game.oc.pet.hasPet
-          ? `${esc(game.oc.pet.name)} — ${esc(game.oc.pet.personality)}`
-          : "None"
-        }
-      </div>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="sidebar-title">Memory</div>
-      <div class="sidebar-value">
-        ${esc(game.memory || "No additional memory recorded.")}
-      </div>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="sidebar-title">World State</div>
-      <div class="sidebar-value">
-        ${esc(game.world_state || "No additional world state recorded.")}
-      </div>
-    </div>
-  `;
-}
-
-function renderConversation(){
-
-  if(!game.conversation.length){
-    return `<p class="muted">The story has not begun.</p>`;
-  }
-
-  return game.conversation.map((message,index)=>{
-
-    const player=message.role==="player";
-
-    return `
-      <article class="message ${player?"player":"narrator"}">
-        <div class="message-role">
-          ${player ? esc(game.oc.name) : "Narrator"}
-        </div>
-
-        <div class="message-body">
-          ${esc(message.content)}
-        </div>
-      </article>
-    `;
-  }).join("");
-}
-
-
-/* ============================================================
-   PLAYER ACTIONS
-============================================================ */
-
-async function sendReply(){
-
-  if(generating)return;
-
-  const input=document.getElementById("playerInput");
-  const text=input?.value.trim();
-
-  if(!text)return;
-
-  // Parentheses mean OOC correction/retry.
-  if(text.startsWith("(") && text.endsWith(")")){
-    await retryWithCorrection(text.slice(1,-1).trim());
-    return;
-  }
-
-  await executePlayerAction(text);
-}
-
-async function executePlayerAction(text){
+  if(!currentGame) return;
 
   generating=true;
-  renderRP();
+  render();
 
   try{
 
-    game.conversation.push({
-      role:"player",
-      content:text
+    const messages=[
+      {
+        role:"system",
+        content:buildSystemPrompt()
+      },
+      {
+        role:"user",
+        content:
+          `Begin the roleplay now. Start naturally at the beginning of the Twilight timeline. `+
+          `Do not control the player's OC. Establish the setting and give the player a clear `+
+          `opportunity to act.`
+      }
+    ];
+
+    const answer=await callAI(messages);
+
+    currentGame.currentScene=answer;
+
+    currentGame.conversation.push({
+      role:"assistant",
+      content:answer
     });
-
-    const reply=await callAI(text);
-
-    game.conversation.push({
-      role:"narrator",
-      content:reply
-    });
-
-    updateAutomaticMemory();
 
     await saveGame(true);
 
   }catch(error){
 
-    console.error(error);
-
-    game.conversation.push({
-      role:"narrator",
-      content:
-`[AI ERROR]
-
-${error.message}
-
-Your previous action has been preserved. You can try again.`
-    });
+    showToast(error.message,"error");
 
   }finally{
 
     generating=false;
-    renderRP();
+    render();
+
   }
+
 }
+
+
+async function executePlayerAction(){
+
+  if(generating || !currentGame) return;
+
+  const textarea=document.getElementById("replyInput");
+
+  if(!textarea) return;
+
+  const text=textarea.value.trim();
+
+  if(!text) return;
+
+  generating=true;
+
+  currentGame.conversation.push({
+    role:"user",
+    content:text
+  });
+
+  textarea.value="";
+
+  render();
+
+  try{
+
+    const messages=[
+      {
+        role:"system",
+        content:buildSystemPrompt()
+      },
+
+      ...currentGame.conversation
+        .filter(m=>m.role!=="system")
+        .slice(-30)
+
+    ];
+
+    const answer=await callAI(messages);
+
+    currentGame.currentScene=answer;
+
+    currentGame.conversation.push({
+      role:"assistant",
+      content:answer
+    });
+
+    updateMemory();
+
+    await saveGame(true);
+
+  }catch(error){
+
+    showToast(error.message,"error");
+
+  }finally{
+
+    generating=false;
+    render();
+
+  }
+
+}
+
 
 async function continueScene(){
 
-  if(generating)return;
+  if(generating || !currentGame) return;
 
   generating=true;
-  renderRP();
+  render();
 
   try{
 
-    const instruction=
-`Continue the current scene naturally.
+    const messages=[
+      {
+        role:"system",
+        content:buildSystemPrompt()
+      },
 
-Do not control the player's OC.
+      ...currentGame.conversation
+        .filter(m=>m.role!=="system")
+        .slice(-30),
 
-Let canon characters and the environment act independently.
+      {
+        role:"user",
+        content:
+          "Continue the scene naturally. The player has not made a new decision. "+
+          "Let the world and canon characters act independently while preserving the "+
+          "player OC's agency."
+      }
+    ];
 
-If the scene has unresolved tension, develop it naturally.
+    const answer=await callAI(messages);
 
-Do not ask the player what happens next unless the scene genuinely requires their decision.`;
-
-    const reply=await callAI(instruction);
-
-    game.conversation.push({
-      role:"narrator",
-      content:reply
+    currentGame.conversation.push({
+      role:"assistant",
+      content:answer
     });
 
-    updateAutomaticMemory();
+    currentGame.currentScene=answer;
+
+    updateMemory();
+
     await saveGame(true);
 
   }catch(error){
 
-    toast(error.message);
+    showToast(error.message,"error");
 
   }finally{
 
     generating=false;
-    renderRP();
+    render();
+
   }
+
+}
+
+
+async function retryWithCorrection(){
+
+  if(generating || !currentGame) return;
+
+  const textarea=document.getElementById("replyInput");
+
+  const correction=textarea?.value.trim();
+
+  if(!correction) return;
+
+  if(!correction.startsWith("(")){
+
+    showToast("Use parentheses for an OOC correction.","error");
+    return;
+
+  }
+
+  generating=true;
+
+  if(
+    currentGame.conversation.length &&
+    currentGame.conversation.at(-1).role==="assistant"
+  ){
+
+    currentGame.conversation.pop();
+
+  }
+
+  currentGame.conversation.push({
+    role:"user",
+    content:
+      `[OOC CORRECTION — DO NOT INCLUDE THIS IN THE STORY]\n${correction}`
+  });
+
+  render();
+
+  try{
+
+    const messages=[
+      {
+        role:"system",
+        content:buildSystemPrompt()
+      },
+
+      ...currentGame.conversation
+        .filter(m=>m.role!=="system")
+        .slice(-30),
+
+      {
+        role:"user",
+        content:
+          "Regenerate the previous narrator response according to the OOC correction. "+
+          "Do not mention the correction in the story."
+      }
+
+    ];
+
+    const answer=await callAI(messages);
+
+    currentGame.conversation.pop();
+
+    currentGame.conversation.push({
+      role:"assistant",
+      content:answer
+    });
+
+    updateMemory();
+
+    await saveGame(true);
+
+  }catch(error){
+
+    showToast(error.message,"error");
+
+  }finally{
+
+    generating=false;
+    render();
+
+  }
+
 }
 
 
 /* ============================================================
-   POLISH REPLY
+   POLISH / REWRITE
 ============================================================ */
 
 async function polishReply(){
 
-  if(generating)return;
+  const textarea=document.getElementById("replyInput");
 
-  const input=document.getElementById("playerInput");
-  const text=input?.value.trim();
+  if(!textarea) return;
+
+  const text=textarea.value.trim();
 
   if(!text){
-    toast("Write a reply first.");
+
+    showToast("Write your reply first.","error");
     return;
+
   }
 
   generating=true;
-  renderRP();
 
   try{
 
-    const prompt=`
-POLISH THE PLAYER'S ROLEPLAY REPLY.
+    const answer=await callAI([
 
-Original reply:
-${text}
+      {
+        role:"system",
+        content:
+          `You are a writing editor for a Twilight book-canon roleplay.
 
-Rewrite it with stronger prose, natural dialogue, sensory detail,
-body language and emotional nuance.
+Polish the player's roleplay reply.
 
-CRITICAL RULES:
+Do NOT:
+- change their decision
+- change their meaning
+- add actions they did not intend
+- control their OC
+- add dialogue they did not imply
+- change the outcome
 
-- Do NOT change what the player's character actually did.
-- Do NOT add major actions.
-- Do NOT make decisions for the player's character.
-- Do NOT change the intended meaning.
-- Do NOT add supernatural abilities.
-- Do NOT change dialogue meaning.
-- Preserve first-person or third-person perspective if used.
-- Return ONLY the polished reply.
-`;
+Improve:
+- prose
+- natural dialogue
+- sensory detail
+- flow
+- grammar
+- immersion
 
-    const polished=await callAI(prompt);
+Return ONLY the polished player reply.`
+      },
 
-    currentPolished=polished;
+      {
+        role:"user",
+        content:text
+      }
 
-    showPolishModal(text,polished);
+    ]);
+
+    showTextModal(
+      "Polished Reply",
+      answer,
+      ()=>{
+        const box=document.getElementById("replyInput");
+
+        if(box){
+          box.value=answer;
+          updateWordCount();
+        }
+      }
+    );
 
   }catch(error){
 
-    toast(error.message);
+    showToast(error.message,"error");
 
   }finally{
 
     generating=false;
-    renderRP();
-  }
-}
+    render(false);
 
-function showPolishModal(original,polished){
-
-  const backdrop=document.createElement("div");
-  backdrop.className="modal-backdrop";
-
-  backdrop.innerHTML=`
-    <div class="card modal">
-      <h2>Polish Reply</h2>
-
-      <div class="field">
-        <label>Your original</label>
-        <textarea readonly>${esc(original)}</textarea>
-      </div>
-
-      <div class="field">
-        <label>Polished version</label>
-        <textarea id="polishedText">${esc(polished)}</textarea>
-      </div>
-
-      <div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap">
-        <button class="ghost" onclick="this.closest('.modal-backdrop').remove()">
-          Cancel
-        </button>
-
-        <button class="secondary"
-          onclick="replaceWithPolished()">
-          Use This
-        </button>
-
-        <button class="primary"
-          onclick="replaceAndSendPolished()">
-          Use & Send
-        </button>
-      </div>
-    </div>
-  `;
-
-  document.body.appendChild(backdrop);
-}
-
-function replaceWithPolished(){
-
-  const text=document.getElementById("polishedText")?.value || "";
-
-  const input=document.getElementById("playerInput");
-
-  if(input){
-    input.value=text;
-    updateWordCount();
   }
 
-  document.querySelector(".modal-backdrop")?.remove();
 }
 
-async function replaceAndSendPolished(){
-
-  const text=document.getElementById("polishedText")?.value.trim();
-
-  document.querySelector(".modal-backdrop")?.remove();
-
-  if(text){
-    await executePlayerAction(text);
-  }
-}
 
 async function rewriteReply(){
 
-  const input=document.getElementById("playerInput");
-  const text=input?.value.trim();
+  const textarea=document.getElementById("replyInput");
+
+  if(!textarea) return;
+
+  const text=textarea.value.trim();
 
   if(!text){
-    toast("Write a reply first.");
+
+    showToast("Write your reply first.","error");
     return;
+
   }
 
-  generating=true;
-  renderRP();
+  showTextModal(
+    "Rewrite Reply",
+    text,
+    ()=>{
+      const box=document.getElementById("replyInput");
 
-  try{
+      if(box){
+        box.value=text;
+        updateWordCount();
+      }
+    },
+    true
+  );
 
-    const prompt=`
-Rewrite the following player roleplay reply in a different way while
-preserving the exact intended action, meaning and character decision.
-
-Do not control the player's character beyond what the original reply already says.
-
-Original:
-${text}
-
-Return only the rewritten reply.
-`;
-
-    const rewritten=await callAI(prompt);
-
-    showPolishModal(text,rewritten);
-
-  }catch(error){
-
-    toast(error.message);
-
-  }finally{
-
-    generating=false;
-    renderRP();
-  }
-}
-
-
-/* ============================================================
-   OOC RETRY
-============================================================ */
-
-async function retryWithCorrection(correction){
-
-  if(generating)return;
-
-  if(game.conversation.length===0)return;
-
-  const lastNarratorIndex=
-    [...game.conversation]
-      .map((x,i)=>({x,i}))
-      .reverse()
-      .find(o=>o.x.role==="narrator")?.i;
-
-  if(lastNarratorIndex===undefined){
-    toast("There is no narrator response to retry.");
-    return;
-  }
-
-  // Remove the previous narrator response.
-  game.conversation.splice(lastNarratorIndex,1);
-
-  generating=true;
-  renderRP();
-
-  try{
-
-    const prompt=`
-The player has issued an out-of-character correction.
-
-Correction:
-${correction}
-
-DELETE the previous narrator response conceptually and regenerate that
-response from the same point in the scene.
-
-Follow the correction.
-
-Do not treat the correction as something the characters said.
-
-Do not control the player's OC.
-
-Return ONLY the corrected continuation.
-`;
-
-    const reply=await callAI(prompt);
-
-    game.conversation.push({
-      role:"narrator",
-      content:reply
-    });
-
-    updateAutomaticMemory();
-    await saveGame(true);
-
-  }catch(error){
-
-    toast(error.message);
-
-  }finally{
-
-    generating=false;
-    renderRP();
-  }
 }
 
 
@@ -2651,107 +2100,1771 @@ Return ONLY the corrected continuation.
    MEMORY
 ============================================================ */
 
-function updateAutomaticMemory(){
+function updateMemory(){
 
-  const recent=game.conversation
-    .slice(-12)
-    .map(x=>`${x.role}: ${x.content}`)
-    .join("\n");
+  if(!currentGame) return;
 
-  game.memory=
-`Persistent character:
-${game.oc.name}, ${game.oc.species}, family: ${game.oc.family}.
+  const recent=currentGame.conversation
+    .filter(x=>x.role==="assistant" || x.role==="user")
+    .slice(-12);
 
-Recent story continuity:
-${recent}
+  currentGame.memory.recentConversation=recent;
 
-Important rule:
-All previous events remain part of the story unless explicitly retconned
-through an OOC correction.`;
+  currentGame.memory.canonTimelinePosition=
+    currentGame.timeline || currentGame.memory.canonTimelinePosition;
+
 }
 
 
 /* ============================================================
-   UI UTILITIES
+   SAVING
+============================================================ */
+
+function getSavePayload(){
+
+  return {
+
+    oc:currentGame.oc,
+
+    game:{
+      id:currentGame.id,
+      createdAt:currentGame.createdAt,
+      book:currentGame.book,
+      chapter:currentGame.chapter,
+      timeline:currentGame.timeline,
+      location:currentGame.location,
+      currentScene:currentGame.currentScene,
+      conversation:currentGame.conversation,
+      memory:currentGame.memory,
+      versions:currentGame.versions || [],
+      lastSaved:new Date().toISOString()
+    }
+
+  };
+
+}
+
+
+async function saveGame(silent=false){
+
+  if(!session || !currentGame) return;
+
+  updateMemory();
+
+  const payload=getSavePayload();
+
+  const name=
+    currentGame.oc?.name
+      ? `${currentGame.oc.name} — ${currentGame.book}`
+      : `Twilight RP — ${currentGame.book}`;
+
+  let result;
+
+  if(currentSaveId){
+
+    result=await supabaseClient
+      .from("saved_games")
+      .update({
+        name,
+        data:payload,
+        updated_at:new Date().toISOString()
+      })
+      .eq("id",currentSaveId)
+      .eq("user_id",session.user.id);
+
+  }else{
+
+    result=await supabaseClient
+      .from("saved_games")
+      .insert({
+        user_id:session.user.id,
+        name,
+        data:payload
+      })
+      .select()
+      .single();
+
+    if(!result.error){
+
+      currentSaveId=result.data.id;
+
+    }
+
+  }
+
+  if(result.error){
+
+    console.error(result.error);
+
+    if(!silent){
+
+      showToast(
+        "Save failed: "+result.error.message,
+        "error"
+      );
+
+    }
+
+    return;
+
+  }
+
+  currentGame.lastSaved=new Date().toISOString();
+
+  if(!silent){
+
+    showToast("Game saved.","success");
+
+  }
+
+}
+
+
+function startAutosave(){
+
+  clearInterval(autosaveTimer);
+
+  autosaveTimer=setInterval(()=>{
+
+    if(
+      currentScreen==="rp" &&
+      currentGame &&
+      session
+    ){
+
+      saveGame(true);
+
+    }
+
+  },30000);
+
+}
+
+
+/* ============================================================
+   VERSION HISTORY
+============================================================ */
+
+async function createVersion(){
+
+  if(!currentGame || !session) return;
+
+  const snapshot=structuredClone({
+    timestamp:new Date().toISOString(),
+    book:currentGame.book,
+    chapter:currentGame.chapter,
+    location:currentGame.location,
+    conversation:currentGame.conversation,
+    memory:currentGame.memory
+  });
+
+  currentGame.versions=currentGame.versions || [];
+
+  currentGame.versions.unshift(snapshot);
+
+  currentGame.versions=
+    currentGame.versions.slice(0,20);
+
+  await saveGame(true);
+
+  showToast("Version created.","success");
+
+}
+
+
+function showVersions(){
+
+  if(!currentGame) return;
+
+  const versions=currentGame.versions || [];
+
+  const html=versions.length
+    ? versions.map((v,i)=>`
+        <div class="save-card">
+          <div class="save-info">
+            <strong>Version ${versions.length-i}</strong>
+            <span>${escapeHtml(formatDate(v.timestamp))}</span>
+          </div>
+
+          <button
+            onclick="restoreVersion(${i})"
+          >
+            Restore
+          </button>
+        </div>
+      `).join("")
+    : `<p class="muted">No versions have been created yet.</p>`;
+
+  document.getElementById("modalRoot").innerHTML=`
+    <div class="modal-overlay" onclick="closeModal(event)">
+      <div class="modal" onclick="event.stopPropagation()">
+
+        <h2>Version History</h2>
+
+        ${html}
+
+        <div class="modal-actions">
+          <button onclick="closeModal()">Close</button>
+        </div>
+
+      </div>
+    </div>
+  `;
+
+}
+
+
+async function restoreVersion(index){
+
+  const version=currentGame.versions?.[index];
+
+  if(!version) return;
+
+  currentGame.book=version.book;
+  currentGame.chapter=version.chapter;
+  currentGame.location=version.location;
+  currentGame.conversation=
+    structuredClone(version.conversation);
+  currentGame.memory=
+    structuredClone(version.memory);
+
+  closeModal();
+
+  await saveGame();
+
+  render();
+
+}
+
+
+/* ============================================================
+   LOAD SAVES
+============================================================ */
+
+async function getSaves(){
+
+  if(!session) return [];
+
+  const {data,error}=await supabaseClient
+    .from("saved_games")
+    .select("*")
+    .eq("user_id",session.user.id)
+    .order("updated_at",{ascending:false});
+
+  if(error){
+
+    showToast(error.message,"error");
+    return [];
+
+  }
+
+  return data || [];
+
+}
+
+
+async function loadSave(id){
+
+  if(!session) return;
+
+  const {data,error}=await supabaseClient
+    .from("saved_games")
+    .select("*")
+    .eq("id",id)
+    .eq("user_id",session.user.id)
+    .single();
+
+  if(error){
+
+    showToast(error.message,"error");
+    return;
+
+  }
+
+  currentSaveId=data.id;
+
+  const payload=data.data;
+
+  creatorData=payload.oc;
+
+  currentGame=payload.game;
+
+  setScreen("rp");
+
+}
+
+
+async function deleteSave(id){
+
+  if(!session) return;
+
+  if(!confirm("Delete this saved game permanently?")) return;
+
+  const {error}=await supabaseClient
+    .from("saved_games")
+    .delete()
+    .eq("id",id)
+    .eq("user_id",session.user.id);
+
+  if(error){
+
+    showToast(error.message,"error");
+    return;
+
+  }
+
+  showToast("Save deleted.","success");
+
+  render();
+
+}
+
+
+/* ============================================================
+   UI HELPERS
 ============================================================ */
 
 function updateWordCount(){
 
-  const input=document.getElementById("playerInput");
+  const textarea=document.getElementById("replyInput");
   const counter=document.getElementById("wordCount");
 
-  if(!input || !counter)return;
-
-  const count=wordCount(input.value);
+  if(!textarea || !counter) return;
 
   counter.textContent=
-    `${count} word${count===1?"":"s"}`;
+    `${countWords(textarea.value)} words`;
+
 }
 
-function handleComposerKey(event){
-
-  if(event.key==="Enter" && (event.ctrlKey || event.metaKey)){
-    event.preventDefault();
-    sendReply();
-  }
-}
 
 function scrollConversationToBottom(){
 
   setTimeout(()=>{
+
     const el=document.getElementById("conversation");
 
     if(el){
+
       el.scrollTop=el.scrollHeight;
-      window.scrollTo({
-        top:document.body.scrollHeight,
-        behavior:"smooth"
-      });
+
     }
+
   },50);
+
 }
+
 
 function toggleSidebar(){
 
   const sidebar=document.getElementById("rpSidebar");
 
-  if(!sidebar)return;
+  if(sidebar){
 
-  sidebar.classList.toggle("open");
+    sidebar.classList.toggle("open");
+
+  }
+
+}
+
+
+function closeModal(event){
+
+  if(event && event.target!==event.currentTarget) return;
+
+  document.getElementById("modalRoot").innerHTML="";
+
+}
+
+
+function showTextModal(title,text,onUse,editable=false){
+
+  document.getElementById("modalRoot").innerHTML=`
+    <div class="modal-overlay" onclick="closeModal(event)">
+      <div class="modal" onclick="event.stopPropagation()">
+
+        <h2>${escapeHtml(title)}</h2>
+
+        ${
+          editable
+          ? `
+            <textarea
+              id="modalText"
+              style="min-height:260px"
+            >${escapeHtml(text)}</textarea>
+          `
+          : `
+            <div class="message-body">
+              ${escapeHtml(text)}
+            </div>
+          `
+        }
+
+        <div class="modal-actions">
+
+          <button onclick="closeModal()">
+            Cancel
+          </button>
+
+          <button
+            class="primary"
+            onclick="
+              ${
+                editable
+                ? `
+                  const value=document.getElementById('modalText').value;
+                  closeModal();
+                  window.__modalUse(value);
+                `
+                : `
+                  closeModal();
+                  window.__modalUse();
+                `
+              }
+            "
+          >
+            Use
+          </button>
+
+        </div>
+
+      </div>
+    </div>
+  `;
+
+  window.__modalUse=
+    editable
+    ? (value)=>{
+
+        const box=document.getElementById("replyInput");
+
+        if(box){
+
+          box.value=value;
+          updateWordCount();
+
+        }
+
+      }
+    : onUse;
+
 }
 
 
 /* ============================================================
-   AUTOSAVE
+   RENDER HOME
 ============================================================ */
 
-setInterval(async()=>{
+function renderHome(){
 
-  if(currentUser && game && !generating){
-    try{
-      await saveGame(true);
-    }catch(e){
-      console.error("Autosave:",e);
-    }
+  if(session){
+
+    return `
+      <section class="home">
+        <div class="home-card">
+
+          <div class="logo">
+            TWILIGHT
+          </div>
+
+          <div class="subtitle">
+            Books · Interactive Roleplay
+          </div>
+
+          <p class="muted">
+            Book-canon interactive storytelling with persistent
+            characters, relationships, memories and saves.
+          </p>
+
+          <div class="home-actions">
+
+            <button
+              class="primary"
+              onclick="
+                creatorData=createDefaultOC();
+                creatorStep=0;
+                setScreen('creator');
+              "
+            >
+              New Game
+            </button>
+
+            <button
+              onclick="setScreen('load')"
+            >
+              Load Game
+            </button>
+
+            <button
+              onclick="setScreen('auth')"
+            >
+              Account
+            </button>
+
+            <button
+              onclick="signOut()"
+            >
+              Sign Out
+            </button>
+
+          </div>
+
+        </div>
+      </section>
+    `;
+
   }
 
-},30000);
+  return `
+    <section class="home">
+      <div class="home-card">
+
+        <div class="logo">
+          TWILIGHT
+        </div>
+
+        <div class="subtitle">
+          Books · Interactive Roleplay
+        </div>
+
+        <p class="muted">
+          Create your own character and enter the world of
+          the Twilight Saga books.
+        </p>
+
+        <div class="home-actions">
+
+          <button
+            class="primary"
+            onclick="setScreen('auth')"
+          >
+            Sign In / Create Account
+          </button>
+
+        </div>
+
+      </div>
+    </section>
+  `;
+
+}
 
 
 /* ============================================================
-   START
+   RENDER AUTH
 ============================================================ */
 
-supabaseClient.auth.onAuthStateChange((_event,session)=>{
-  currentUser=session?.user || null;
+function renderAuth(){
 
-  if(!game){
-    renderHome();
+  return `
+    <section class="home">
+
+      <div class="auth-box">
+
+        <h2>Account</h2>
+
+        <p class="muted">
+          Sign in to keep your roleplays saved in the cloud.
+        </p>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input
+            id="authEmail"
+            type="email"
+            autocomplete="email"
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input
+            id="authPassword"
+            type="password"
+            autocomplete="current-password"
+          >
+        </div>
+
+        <div class="auth-actions">
+
+          <button
+            class="primary"
+            onclick="signIn()"
+          >
+            Sign In
+          </button>
+
+          <button
+            onclick="signUp()"
+          >
+            Create Account
+          </button>
+
+          <button
+            onclick="setScreen('home')"
+          >
+            Back
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+  `;
+
+}
+
+
+/* ============================================================
+   RENDER CREATOR
+============================================================ */
+
+function renderCreator(){
+
+  const step=creatorStep;
+
+  let content="";
+
+  if(step===0) content=creatorIdentity();
+  if(step===1) content=creatorSpecies();
+  if(step===2) content=creatorFamily();
+  if(step===3) content=creatorAppearance();
+  if(step===4) content=creatorPersonality();
+  if(step===5) content=creatorAbilities();
+  if(step===6) content=creatorBackground();
+  if(step===7) content=creatorRelationships();
+  if(step===8) content=creatorPet();
+  if(step===9) content=creatorPreferences();
+  if(step===10) content=creatorReview();
+
+  return `
+    <section class="creator">
+
+      <div class="creator-inner">
+
+        <div class="creator-header">
+
+          <div>
+            <h1>Create Your Character</h1>
+            <div class="muted">
+              ${step+1} / ${CREATOR_STEPS.length}
+            </div>
+          </div>
+
+          <button onclick="setScreen('home')">
+            Exit
+          </button>
+
+        </div>
+
+        <div class="creator-grid">
+
+          <nav class="creator-nav">
+
+            ${CREATOR_STEPS.map((name,i)=>`
+              <button
+                class="${i===step?'active':''}"
+                onclick="creatorStep=${i};render()"
+              >
+                ${i+1}. ${name}
+              </button>
+            `).join("")}
+
+          </nav>
+
+          <main class="creator-content">
+
+            ${content}
+
+            <div class="creator-footer">
+
+              <button
+                ${step===0?'disabled':''}
+                onclick="creatorStep=Math.max(0,creatorStep-1);render()"
+              >
+                Back
+              </button>
+
+              ${
+                step<CREATOR_STEPS.length-1
+                ? `
+                  <button
+                    class="primary"
+                    onclick="
+                      if(creatorStep===CREATOR_STEPS.length-2 && !validateCreator()) return;
+                      creatorStep++;
+                      render();
+                    "
+                  >
+                    Continue
+                  </button>
+                `
+                : `
+                  <button
+                    class="primary"
+                    onclick="createGameFromOC()"
+                  >
+                    Begin Twilight
+                  </button>
+                `
+              }
+
+            </div>
+
+          </main>
+
+        </div>
+
+      </div>
+
+    </section>
+  `;
+
+}
+
+
+/* ============================================================
+   CREATOR SECTIONS
+============================================================ */
+
+function creatorIdentity(){
+
+  return `
+    <h2 class="section-title">Identity</h2>
+
+    <p class="section-description">
+      Start with the basics of your original character.
+    </p>
+
+    <div class="form-group">
+      <label>Name *</label>
+      <input
+        value="${escapeHtml(creatorData.name)}"
+        oninput="creatorData.name=this.value"
+      >
+    </div>
+
+    <div class="card-grid">
+
+      <div class="form-group">
+        <label>Pronouns</label>
+        <input
+          value="${escapeHtml(creatorData.pronouns)}"
+          oninput="creatorData.pronouns=this.value"
+          placeholder="she/her, he/him, they/them..."
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Age</label>
+        <input
+          value="${escapeHtml(creatorData.age)}"
+          oninput="creatorData.age=this.value"
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Birthday</label>
+        <input
+          value="${escapeHtml(creatorData.birthday)}"
+          oninput="creatorData.birthday=this.value"
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Hometown</label>
+        <input
+          value="${escapeHtml(creatorData.hometown)}"
+          oninput="creatorData.hometown=this.value"
+        >
+      </div>
+
+    </div>
+
+    <div class="form-group">
+      <label>Current Location</label>
+      <input
+        value="${escapeHtml(creatorData.currentLocation)}"
+        oninput="creatorData.currentLocation=this.value"
+      >
+    </div>
+  `;
+
+}
+
+
+function creatorSpecies(){
+
+  return `
+    <h2 class="section-title">Species</h2>
+
+    <p class="section-description">
+      Choose exactly one species. Hybrid species are not available.
+      Each species has its own abilities and limitations.
+    </p>
+
+    <div class="card-grid">
+
+      ${Object.entries(SPECIES).map(([id,s])=>`
+
+        <div
+          class="option-card ${creatorData.species===id?'selected':''}"
+          onclick="selectSpecies('${id}')"
+        >
+
+          <strong>${escapeHtml(s.name)}</strong>
+
+          <span>
+            ${escapeHtml(s.description)}
+          </span>
+
+        </div>
+
+      `).join("")}
+
+    </div>
+  `;
+
+}
+
+
+function creatorFamily(){
+
+  return `
+    <h2 class="section-title">Family & Bloodline</h2>
+
+    <p class="section-description">
+      Your family can affect your reputation, relationships,
+      history and how other characters perceive you.
+    </p>
+
+    <div class="card-grid">
+
+      ${FAMILIES.map(f=>`
+
+        <div
+          class="option-card ${creatorData.family.id===f[0]?'selected':''}"
+          onclick="selectFamily('${f[0]}')"
+        >
+
+          <strong>${escapeHtml(f[1])}</strong>
+
+          <span>
+            ${escapeHtml(f[2])}
+          </span>
+
+        </div>
+
+      `).join("")}
+
+    </div>
+
+    ${
+      creatorData.family.id==="custom"
+      ? `
+        <div class="form-group">
+          <label>Custom Family Name</label>
+          <input
+            value="${escapeHtml(creatorData.family.customName)}"
+            oninput="
+              creatorData.family.customName=this.value;
+              creatorData.family.name=this.value || 'Custom Family';
+            "
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Family History / Reputation</label>
+          <textarea
+            oninput="
+              creatorData.family.customDescription=this.value;
+              creatorData.family.reputation=this.value;
+            "
+          >${escapeHtml(creatorData.family.customDescription)}</textarea>
+        </div>
+      `
+      : ""
+    }
+  `;
+
+}
+
+
+function creatorAppearance(){
+
+  return `
+    <h2 class="section-title">Appearance</h2>
+
+    <p class="section-description">
+      You can write anything you want. Suggestions are optional.
+    </p>
+
+    <div class="suggestion-row">
+
+      ${[
+        "Dark hair",
+        "Pale complexion",
+        "Brown eyes",
+        "Green eyes",
+        "Tall",
+        "Petite",
+        "Athletic",
+        "Soft features",
+        "Sharp features",
+        "Distinctive smile"
+      ].map(x=>`
+        <button
+          class="suggestion"
+          onclick="
+            creatorData.appearance +=
+              (creatorData.appearance ? ', ' : '') +
+              '${x}';
+            render();
+          "
+        >
+          + ${x}
+        </button>
+      `).join("")}
+
+    </div>
+
+    <textarea
+      rows="10"
+      placeholder="Describe your OC however you want..."
+      oninput="creatorData.appearance=this.value"
+    >${escapeHtml(creatorData.appearance)}</textarea>
+  `;
+
+}
+
+
+function creatorPersonality(){
+
+  return `
+    <h2 class="section-title">Personality</h2>
+
+    <p class="section-description">
+      Select suggestions or write your own personality.
+    </p>
+
+    <div class="suggestion-row">
+
+      ${PERSONALITY_SUGGESTIONS.map(x=>`
+        <button
+          class="suggestion"
+          onclick="toggleTrait('${x}')"
+        >
+          ${creatorData.personalityTraits.includes(x)?"✓ ":""}${x}
+        </button>
+      `).join("")}
+
+    </div>
+
+    <textarea
+      rows="10"
+      placeholder="Describe their personality, flaws, habits, fears, humor, values..."
+      oninput="creatorData.personality=this.value"
+    >${escapeHtml(creatorData.personality)}</textarea>
+  `;
+
+}
+
+
+function creatorAbilities(){
+
+  const species=getSpecies();
+
+  return `
+    <h2 class="section-title">Abilities</h2>
+
+    <p class="section-description">
+      Abilities available for:
+      <strong>${escapeHtml(species.name)}</strong>
+    </p>
+
+    <div class="card-grid">
+
+      ${species.abilities.map(x=>`
+
+        <div
+          class="option-card ${creatorData.abilities.includes(x)?'selected':''}"
+          onclick="toggleAbility('${x}')"
+        >
+          <strong>
+            ${creatorData.abilities.includes(x)?"✓ ":""}${escapeHtml(x)}
+          </strong>
+        </div>
+
+      `).join("")}
+
+    </div>
+
+    ${
+      creatorData.species==="vampire"
+      ? `
+        <h3>Vampire Gift</h3>
+
+        <div class="card-grid">
+
+          ${VAMPIRE_GIFTS.map(g=>`
+
+            <div
+              class="option-card"
+              onclick="
+                creatorData.vampireGift.enabled=true;
+                creatorData.vampireGift.name='${g[0]}';
+                creatorData.vampireGift.description='${g[1]}';
+                creatorData.vampireGift.limitations='${g[2]}';
+                render();
+              "
+            >
+              <strong>${escapeHtml(g[0])}</strong>
+              <span>${escapeHtml(g[1])}</span>
+            </div>
+
+          `).join("")}
+
+        </div>
+
+        <div class="form-group">
+          <label>Custom Gift Name</label>
+          <input
+            value="${escapeHtml(creatorData.vampireGift.name)}"
+            oninput="
+              creatorData.vampireGift.enabled=true;
+              creatorData.vampireGift.name=this.value
+            "
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Gift Description</label>
+          <textarea
+            oninput="
+              creatorData.vampireGift.enabled=true;
+              creatorData.vampireGift.description=this.value
+            "
+          >${escapeHtml(creatorData.vampireGift.description)}</textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Gift Limitations</label>
+          <textarea
+            oninput="
+              creatorData.vampireGift.limitations=this.value
+            "
+          >${escapeHtml(creatorData.vampireGift.limitations)}</textarea>
+        </div>
+      `
+      : ""
+    }
+
+    <div class="form-group">
+      <label>Other Custom Abilities</label>
+      <textarea
+        placeholder="Anything else your character can do..."
+        oninput="creatorData.customAbilities=this.value"
+      >${escapeHtml(creatorData.customAbilities)}</textarea>
+    </div>
+  `;
+
+}
+
+
+function creatorBackground(){
+
+  return `
+    <h2 class="section-title">Background</h2>
+
+    <div class="form-group">
+      <label>Backstory</label>
+      <textarea
+        rows="9"
+        placeholder="Family history, childhood, secrets, major events..."
+        oninput="creatorData.background=this.value"
+      >${escapeHtml(creatorData.background)}</textarea>
+    </div>
+
+    <div class="card-grid">
+
+      <div class="form-group">
+        <label>Education</label>
+        <textarea
+          rows="5"
+          oninput="creatorData.education=this.value"
+        >${escapeHtml(creatorData.education)}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Occupation</label>
+        <textarea
+          rows="5"
+          oninput="creatorData.occupation=this.value"
+        >${escapeHtml(creatorData.occupation)}</textarea>
+      </div>
+
+    </div>
+  `;
+
+}
+
+
+function creatorRelationships(){
+
+  return `
+    <h2 class="section-title">Relationships</h2>
+
+    <p class="section-description">
+      Describe existing relationships, rivalries, friendships,
+      crushes, family ties or secrets.
+    </p>
+
+    <textarea
+      rows="12"
+      placeholder="Example: My OC has known Jessica since middle school..."
+      oninput="creatorData.relationships=this.value"
+    >${escapeHtml(creatorData.relationships)}</textarea>
+  `;
+
+}
+
+
+function creatorPet(){
+
+  return `
+    <h2 class="section-title">Pet</h2>
+
+    <p class="section-description">
+      Your pet is optional. The AI will portray the animal according
+      to the profile rather than making it behave like a human.
+    </p>
+
+    <button
+      class="${creatorData.pet.enabled?'primary':''}"
+      onclick="
+        creatorData.pet.enabled=!creatorData.pet.enabled;
+        render();
+      "
+    >
+      ${creatorData.pet.enabled?"Pet Enabled":"Add a Pet"}
+    </button>
+
+    ${
+      creatorData.pet.enabled
+      ? `
+        <div style="margin-top:20px">
+
+          <div class="card-grid">
+
+            <div class="form-group">
+              <label>Animal</label>
+              <input
+                value="${escapeHtml(creatorData.pet.animal)}"
+                oninput="creatorData.pet.animal=this.value"
+                placeholder="Dog, cat, horse..."
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Name</label>
+              <input
+                value="${escapeHtml(creatorData.pet.name)}"
+                oninput="creatorData.pet.name=this.value"
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Breed / Type</label>
+              <input
+                value="${escapeHtml(creatorData.pet.breed)}"
+                oninput="creatorData.pet.breed=this.value"
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Bond With OC</label>
+              <input
+                value="${escapeHtml(creatorData.pet.bond)}"
+                oninput="creatorData.pet.bond=this.value"
+              >
+            </div>
+
+          </div>
+
+          <div class="form-group">
+            <label>Appearance</label>
+            <textarea
+              oninput="creatorData.pet.appearance=this.value"
+            >${escapeHtml(creatorData.pet.appearance)}</textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Personality</label>
+            <textarea
+              oninput="creatorData.pet.personality=this.value"
+            >${escapeHtml(creatorData.pet.personality)}</textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Habits</label>
+            <textarea
+              oninput="creatorData.pet.habits=this.value"
+            >${escapeHtml(creatorData.pet.habits)}</textarea>
+          </div>
+
+          <div class="card-grid">
+
+            <div class="form-group">
+              <label>Likes</label>
+              <textarea
+                oninput="creatorData.pet.likes=this.value"
+              >${escapeHtml(creatorData.pet.likes)}</textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Dislikes</label>
+              <textarea
+                oninput="creatorData.pet.dislikes=this.value"
+              >${escapeHtml(creatorData.pet.dislikes)}</textarea>
+            </div>
+
+          </div>
+
+        </div>
+      `
+      : ""
+    }
+  `;
+
+}
+
+
+function creatorPreferences(){
+
+  return `
+    <h2 class="section-title">Roleplay Preferences</h2>
+
+    <div class="form-group">
+      <label>Romance</label>
+      <textarea
+        placeholder="What type of romance do you want?"
+        oninput="creatorData.preferences.romance=this.value"
+      >${escapeHtml(creatorData.preferences.romance)}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Violence</label>
+      <textarea
+        placeholder="Preferred intensity..."
+        oninput="creatorData.preferences.violence=this.value"
+      >${escapeHtml(creatorData.preferences.violence)}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Narration Style</label>
+      <textarea
+        placeholder="Cinematic, detailed, dialogue-heavy..."
+        oninput="creatorData.preferences.narration=this.value"
+      >${escapeHtml(creatorData.preferences.narration)}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Canon Strictness</label>
+      <select
+        onchange="creatorData.preferences.canonStrictness=this.value"
+      >
+        <option value="strict" ${creatorData.preferences.canonStrictness==="strict"?"selected":""}>
+          Strict Book Canon
+        </option>
+        <option value="adaptive" ${creatorData.preferences.canonStrictness==="adaptive"?"selected":""}>
+          Canon With Logical Divergence
+        </option>
+      </select>
+    </div>
+  `;
+
+}
+
+
+function creatorReview(){
+
+  const oc=creatorData;
+
+  return `
+    <h2 class="section-title">Review Your Character</h2>
+
+    <div class="message-body">
+
+<strong>Name:</strong> ${escapeHtml(oc.name)}
+
+<strong>Species:</strong> ${escapeHtml(getSpecies().name)}
+
+<strong>Family:</strong> ${escapeHtml(oc.family.name)}
+
+<strong>Family Reputation:</strong> ${escapeHtml(oc.family.reputation)}
+
+<strong>Appearance:</strong>
+${escapeHtml(oc.appearance)}
+
+<strong>Personality:</strong>
+${escapeHtml(oc.personality)}
+
+<strong>Abilities:</strong>
+${escapeHtml(oc.abilities.join(", "))}
+
+<strong>Background:</strong>
+${escapeHtml(oc.background)}
+
+<strong>Relationships:</strong>
+${escapeHtml(oc.relationships)}
+
+<strong>Pet:</strong>
+${oc.pet.enabled
+  ? escapeHtml(`${oc.pet.name} — ${oc.pet.animal}`)
+  : "None"}
+
+    </div>
+
+    <p class="muted" style="margin-top:25px">
+      Everything above will be stored with the roleplay so the AI
+      can continue portraying your character consistently.
+    </p>
+  `;
+
+}
+
+
+/* ============================================================
+   LOAD SCREEN
+============================================================ */
+
+async function renderLoad(){
+
+  const saves=await getSaves();
+
+  const app=document.getElementById("app");
+
+  app.innerHTML=`
+    <section class="load-screen">
+
+      <div class="load-inner">
+
+        <div class="creator-header">
+
+          <div>
+            <h1>Load Game</h1>
+            <p class="muted">
+              Continue a saved Twilight roleplay.
+            </p>
+          </div>
+
+          <button onclick="setScreen('home')">
+            Back
+          </button>
+
+        </div>
+
+        ${
+          saves.length
+          ? saves.map(save=>`
+
+            <div class="save-card">
+
+              <div class="save-info">
+
+                <strong>
+                  ${escapeHtml(save.name)}
+                </strong>
+
+                <span>
+                  Last saved:
+                  ${escapeHtml(formatDate(save.updated_at))}
+                </span>
+
+              </div>
+
+              <div class="save-actions">
+
+                <button
+                  class="primary"
+                  onclick="loadSave('${save.id}')"
+                >
+                  Load
+                </button>
+
+                <button
+                  class="danger"
+                  onclick="deleteSave('${save.id}')"
+                >
+                  Delete
+                </button>
+
+              </div>
+
+            </div>
+
+          `).join("")
+          : `
+            <div class="auth-box">
+              <p>No saved games yet.</p>
+
+              <button
+                class="primary"
+                onclick="
+                  creatorData=createDefaultOC();
+                  creatorStep=0;
+                  setScreen('creator');
+                "
+              >
+                Create New Game
+              </button>
+            </div>
+          `
+        }
+
+      </div>
+
+    </section>
+  `;
+
+}
+
+
+/* ============================================================
+   RP RENDER
+============================================================ */
+
+function renderConversation(){
+
+  if(!currentGame) return "";
+
+  return `
+    <div class="conversation-inner">
+
+      ${currentGame.conversation
+        .filter(m=>m.role!=="system")
+        .map(m=>{
+
+          const isPlayer=m.role==="user";
+
+          return `
+            <article class="message ${isPlayer?"player":"narrator"}">
+
+              <div class="message-role">
+                ${isPlayer
+                  ? escapeHtml(currentGame.oc.name)
+                  : "Narrator"}
+              </div>
+
+              <div class="message-body">
+                ${escapeHtml(m.content)}
+              </div>
+
+            </article>
+          `;
+
+        }).join("")}
+
+      ${
+        generating
+        ? `
+          <article class="message narrator">
+            <div class="message-role">Narrator</div>
+            <div class="message-body muted">
+              The world is continuing...
+            </div>
+          </article>
+        `
+        : ""
+      }
+
+    </div>
+  `;
+
+}
+
+
+function renderRP(){
+
+  const oc=currentGame.oc;
+
+  return `
+    <section class="rp-layout">
+
+      <aside
+        id="rpSidebar"
+        class="rp-sidebar"
+      >
+
+        <h3>${escapeHtml(oc.name)}</h3>
+
+        <div class="muted small">
+          ${escapeHtml(SPECIES[oc.species]?.name || oc.species)}
+        </div>
+
+        <div class="sidebar-section">
+
+          <div class="sidebar-stat">
+            <span>Family</span>
+            <span>${escapeHtml(oc.family.name)}</span>
+          </div>
+
+          <div class="sidebar-stat">
+            <span>Book</span>
+            <span>${escapeHtml(currentGame.book)}</span>
+          </div>
+
+          <div class="sidebar-stat">
+            <span>Location</span>
+            <span>${escapeHtml(currentGame.location)}</span>
+          </div>
+
+          <div class="sidebar-stat">
+            <span>Messages</span>
+            <span>${currentGame.conversation.length}</span>
+          </div>
+
+        </div>
+
+        <div class="sidebar-section">
+
+          <button
+            style="width:100%"
+            onclick="createVersion()"
+          >
+            Create Version
+          </button>
+
+          <button
+            style="width:100%;margin-top:7px"
+            onclick="showVersions()"
+          >
+            Version History
+          </button>
+
+          <button
+            style="width:100%;margin-top:7px"
+            onclick="saveGame()"
+          >
+            Save Now
+          </button>
+
+          <button
+            style="width:100%;margin-top:7px"
+            onclick="setScreen('home')"
+          >
+            Main Menu
+          </button>
+
+        </div>
+
+      </aside>
+
+
+      <main class="rp-main">
+
+        <header class="rp-header">
+
+          <button
+            class="mobile-menu"
+            onclick="toggleSidebar()"
+          >
+            Menu
+          </button>
+
+          <div class="rp-title">
+
+            <strong>
+              Twilight
+            </strong>
+
+            <span>
+              ${escapeHtml(currentGame.book)}
+              ·
+              ${escapeHtml(currentGame.location)}
+            </span>
+
+          </div>
+
+          <div class="rp-header-actions">
+
+            <button
+              onclick="saveGame()"
+            >
+              Save
+            </button>
+
+            <button
+              onclick="createVersion()"
+            >
+              Version
+            </button>
+
+          </div>
+
+        </header>
+
+
+        <section
+          id="conversation"
+          class="conversation"
+        >
+          ${renderConversation()}
+        </section>
+
+
+        <div class="composer">
+
+          <div class="composer-inner">
+
+            <textarea
+              id="replyInput"
+              placeholder="${
+                generating
+                ? "The scene is continuing..."
+                : "What does your character do or say?"
+              }"
+              ${generating?"disabled":""}
+              oninput="updateWordCount()"
+              onkeydown="
+                if((event.ctrlKey || event.metaKey) && event.key==='Enter'){
+                  event.preventDefault();
+                  executePlayerAction();
+                }
+              "
+            ></textarea>
+
+            <div class="composer-actions">
+
+              <button
+                onclick="polishReply()"
+                ${generating?"disabled":""}
+              >
+                Polish Reply
+              </button>
+
+              <button
+                onclick="rewriteReply()"
+                ${generating?"disabled":""}
+              >
+                Rewrite
+              </button>
+
+              <button
+                onclick="retryWithCorrection()"
+                ${generating?"disabled":""}
+              >
+                OOC Retry
+              </button>
+
+              <button
+                onclick="continueScene()"
+                ${generating?"disabled":""}
+              >
+                Continue Scene
+              </button>
+
+              <button
+                class="primary"
+                onclick="executePlayerAction()"
+                ${generating?"disabled":""}
+              >
+                Send
+              </button>
+
+              <span
+                id="wordCount"
+                class="word-count"
+              >
+                0 words
+              </span>
+
+            </div>
+
+            <div class="muted small" style="margin-top:6px">
+              Ctrl + Enter / Cmd + Enter to send.
+              Put corrections in parentheses for OOC retry.
+            </div>
+
+          </div>
+
+        </div>
+
+      </main>
+
+    </section>
+  `;
+
+}
+
+
+/* ============================================================
+   MAIN RENDER
+============================================================ */
+
+function render(){
+
+  const app=document.getElementById("app");
+
+  if(currentScreen==="home"){
+
+    app.innerHTML=renderHome();
+    return;
+
   }
-});
 
-checkSession();
+  if(currentScreen==="auth"){
+
+    app.innerHTML=renderAuth();
+    return;
+
+  }
+
+  if(currentScreen==="creator"){
+
+    app.innerHTML=renderCreator();
+    return;
+
+  }
+
+  if(currentScreen==="rp"){
+
+    if(!currentGame){
+
+      currentScreen="home";
+      render();
+      return;
+
+    }
+
+    app.innerHTML=renderRP();
+
+    updateWordCount();
+
+    scrollConversationToBottom();
+
+    return;
+
+  }
+
+  if(currentScreen==="load"){
+
+    renderLoad();
+    return;
+
+  }
+
+}
+
+
+/* ============================================================
+   INITIALIZE
+============================================================ */
+
+initializeAuth();
+startAutosave();
 
 </script>
+
 </body>
 </html>
