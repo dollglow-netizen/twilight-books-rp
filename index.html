@@ -2457,9 +2457,9 @@ async function executePlayerAction(){
       content:answer
     });
 
-    updateMemory();
+ await updateMemory();
 
-    await saveGame(true);
+await saveGame(true);
 
   }catch(error){
 
