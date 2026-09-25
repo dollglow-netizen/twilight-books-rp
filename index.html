@@ -2453,7 +2453,7 @@ async function loadSave(id){
     }
 
     if(!data.data){
-      alert("The save exists, but it contains no data.");
+      alert("The save contains no game data.");
       return;
     }
 
@@ -2463,16 +2463,74 @@ async function loadSave(id){
 
     currentSaveId = data.id;
 
+    /*
+     * Restore the OC
+     */
     if(payload.oc){
-      creatorData = payload.oc;
+
+      creatorData = {
+        ...createDefaultOC(),
+        ...payload.oc
+      };
+
+    }else{
+
+      creatorData = createDefaultOC();
+
     }
 
+    /*
+     * Restore the game
+     */
     if(payload.game){
-      currentGame = payload.game;
+
+      currentGame = {
+        ...currentGame,
+        ...payload.game
+      };
+
     }
 
-    alert("SAVE LOADED SUCCESSFULLY");
+    /*
+     * Make sure important game arrays exist.
+     */
+    if(!Array.isArray(currentGame.conversation)){
+      currentGame.conversation = [];
+    }
 
+    if(!Array.isArray(currentGame.memory)){
+      currentGame.memory = [];
+    }
+
+    if(!Array.isArray(currentGame.versions)){
+      currentGame.versions = [];
+    }
+
+    /*
+     * Make sure the OC has the fields
+     * the RP interface expects.
+     */
+    const defaultOC = createDefaultOC();
+
+    Object.keys(defaultOC).forEach(key => {
+
+      if(
+        creatorData[key] === undefined ||
+        creatorData[key] === null
+      ){
+
+        creatorData[key] = defaultOC[key];
+
+      }
+
+    });
+
+    console.log("RESTORED OC:", creatorData);
+    console.log("RESTORED GAME:", currentGame);
+
+    /*
+     * Go to the roleplay screen.
+     */
     setScreen("rp");
 
   }catch(error){
