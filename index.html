@@ -3508,11 +3508,11 @@ ${oc.pet.enabled
 
 async function renderLoad(){
 
-  const saves=await getSaves();
+  const saves = await getSaves();
 
-  const app=document.getElementById("app");
+  const app = document.getElementById("app");
 
-  app.innerHTML=`
+  app.innerHTML = `
     <section class="load-screen">
 
       <div class="load-inner">
@@ -3526,7 +3526,7 @@ async function renderLoad(){
             </p>
           </div>
 
-          <button onclick="setScreen('home')">
+          <button type="button" onclick="setScreen('home')">
             Back
           </button>
 
@@ -3534,7 +3534,7 @@ async function renderLoad(){
 
         ${
           saves.length
-          ? saves.map(save=>`
+          ? saves.map(save => `
 
             <div class="save-card">
 
@@ -3555,13 +3555,15 @@ async function renderLoad(){
 
                 <button
                   class="primary"
-                  onclick="loadSave('${save.id}')"
+                  type="button"
+                  onclick="alert('LOAD BUTTON WORKS'); window.loadSave('${save.id}')"
                 >
                   Load
                 </button>
 
                 <button
                   class="danger"
+                  type="button"
                   onclick="deleteSave('${save.id}')"
                 >
                   Delete
@@ -3573,11 +3575,14 @@ async function renderLoad(){
 
           `).join("")
           : `
+
             <div class="auth-box">
+
               <p>No saved games yet.</p>
 
               <button
                 class="primary"
+                type="button"
                 onclick="
                   creatorData=createDefaultOC();
                   creatorStep=0;
@@ -3586,7 +3591,9 @@ async function renderLoad(){
               >
                 Create New Game
               </button>
+
             </div>
+
           `
         }
 
@@ -3596,7 +3603,6 @@ async function renderLoad(){
   `;
 
 }
-
 
 /* ============================================================
    RP RENDER
