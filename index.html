@@ -4675,34 +4675,39 @@ function renderHome(){
 
             <button
               class="primary"
+              type="button"
               onclick="
                 creatorData=createDefaultOC();
                 creatorStep=0;
                 setScreen('creator');
               "
-              <button
-  type="button"
-  onclick="openMultiplayer()"
->
-  Multiplayer
-</button>
             >
               New Game
             </button>
 
             <button
+              type="button"
               onclick="setScreen('load')"
             >
               Load Game
             </button>
 
             <button
+              type="button"
+              onclick="openMultiplayer()"
+            >
+              Multiplayer
+            </button>
+
+            <button
+              type="button"
               onclick="setScreen('auth')"
             >
               Account
             </button>
 
             <button
+              type="button"
               onclick="signOut()"
             >
               Sign Out
@@ -4737,6 +4742,7 @@ function renderHome(){
 
           <button
             class="primary"
+            type="button"
             onclick="setScreen('auth')"
           >
             Sign In / Create Account
