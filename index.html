@@ -2735,7 +2735,7 @@ async function rewriteReply(){
    MEMORY
 ============================================================ */
 
-function updateMemory(){
+async function updateMemory(){
 
   if(!currentGame) return;
 
@@ -2743,10 +2743,558 @@ function updateMemory(){
     .filter(x=>x.role==="assistant" || x.role==="user")
     .slice(-12);
 
+  /*
+  Keep the recent conversation available
+  for continuity.
+  */
+
   currentGame.memory.recentConversation=recent;
 
   currentGame.memory.canonTimelinePosition=
-    currentGame.timeline || currentGame.memory.canonTimelinePosition;
+    currentGame.timeline ||
+    currentGame.memory.canonTimelinePosition ||
+    "Beginning of Twilight";
+
+
+  /*
+  ==========================================
+  MEMORY EXTRACTION
+  ==========================================
+  */
+
+  const memoryPrompt=`
+
+You are the persistent memory manager for a Twilight Saga BOOK-CANON roleplaying game.
+
+Read the recent roleplay below and identify ONLY information that should remain important after the current scene is forgotten from the short-term conversation.
+
+Do NOT invent information.
+
+Do NOT change established facts.
+
+Do NOT create memories from assumptions.
+
+Do NOT control the player's OC.
+
+Only record things that actually happened, were explicitly stated, or were clearly established.
+
+CURRENT GAME:
+
+Book:
+${currentGame.book}
+
+Chapter:
+${currentGame.chapter}
+
+Timeline:
+${currentGame.timeline}
+
+Location:
+${currentGame.location}
+
+CURRENT MEMORY:
+
+${JSON.stringify(currentGame.memory,null,2)}
+
+RECENT ROLEPLAY:
+
+${JSON.stringify(recent,null,2)}
+
+
+Return ONLY valid JSON.
+
+Use exactly this structure:
+
+{
+  "importantEvents": [],
+  "relationships": {},
+  "knownSecrets": [],
+  "discoveredFacts": [],
+  "inventory": [],
+  "reputation": "",
+  "familyReputation": "",
+  "petStatus": "",
+  "worldChanges": [],
+  "currentGoals": [],
+  "characters": {},
+  "locations": {},
+  "playerKnowledge": {},
+  "unresolvedThreads": [],
+  "consequences": [],
+  "worldState": {
+    "timeOfDay": "",
+    "weather": "",
+    "date": "",
+    "currentEvents": [],
+    "canonEventsChanged": [],
+    "supernaturalActivity": [],
+    "importantNPCsPresent": []
+  }
+}
+
+MEMORY RULES:
+
+1. Only record meaningful information.
+
+2. Do not store every line of dialogue.
+
+3. Do not duplicate existing memories.
+
+4. Preserve existing information unless the new scene clearly changes it.
+
+5. Never erase an established fact just because it was not mentioned recently.
+
+6. Record important character relationship changes.
+
+7. Record important discoveries.
+
+8. Record supernatural information that the player actually learned.
+
+9. Record important objects gained, lost, or used.
+
+10. Record injuries or lasting physical consequences.
+
+11. Record important promises, arguments, conflicts, friendships, or betrayals.
+
+12. Record important changes to the world caused by player actions.
+
+13. Record unresolved mysteries and unfinished situations.
+
+14. Record important canon divergences.
+
+15. Keep player knowledge separate from general world knowledge.
+
+16. A player only knows something if they learned, witnessed, or were told it.
+
+17. Do not give one player another player's private knowledge.
+
+18. Do not turn temporary dialogue into permanent facts unless it is meaningful.
+
+19. Keep memory concise.
+
+20. Never invent canon events.
+
+`;
+
+
+  try{
+
+    const raw=await callAI([
+      {
+        role:"system",
+        content:memoryPrompt
+      }
+    ]);
+
+
+    /*
+    ==========================================
+    PARSE MEMORY RESPONSE
+    ==========================================
+    */
+
+    let extracted;
+
+    try{
+
+      extracted=JSON.parse(raw);
+
+    }catch(parseError){
+
+      /*
+      Sometimes the AI may surround JSON
+      with extra text. Try extracting the
+      JSON object.
+      */
+
+      const start=raw.indexOf("{");
+      const end=raw.lastIndexOf("}");
+
+      if(start!==-1 && end!==-1){
+
+        extracted=JSON.parse(
+          raw.slice(start,end+1)
+        );
+
+      }else{
+
+        console.warn(
+          "Memory extraction returned invalid JSON."
+        );
+
+        return;
+
+      }
+
+    }
+
+
+    /*
+    ==========================================
+    MERGE MEMORY
+    ==========================================
+    */
+
+    const memory=currentGame.memory;
+
+
+    /*
+    Arrays
+    */
+
+    const arrayFields=[
+      "importantEvents",
+      "knownSecrets",
+      "discoveredFacts",
+      "inventory",
+      "worldChanges",
+      "currentGoals",
+      "unresolvedThreads",
+      "consequences"
+    ];
+
+
+    for(const field of arrayFields){
+
+      if(!Array.isArray(extracted[field])){
+        continue;
+      }
+
+      if(!Array.isArray(memory[field])){
+        memory[field]=[];
+      }
+
+      for(const item of extracted[field]){
+
+        const value=
+          typeof item==="string"
+          ? item.trim()
+          : JSON.stringify(item);
+
+        if(!value) continue;
+
+        const exists=
+          memory[field].some(existing=>
+            JSON.stringify(existing)===value
+          );
+
+        if(!exists){
+
+          memory[field].push(item);
+
+        }
+
+      }
+
+    }
+
+
+    /*
+    ==========================================
+    RELATIONSHIPS
+    ==========================================
+    */
+
+    if(
+      extracted.relationships &&
+      typeof extracted.relationships==="object"
+    ){
+
+      memory.relationships={
+        ...memory.relationships,
+        ...extracted.relationships
+      };
+
+    }
+
+
+    /*
+    ==========================================
+    CHARACTERS
+    ==========================================
+    */
+
+    if(
+      extracted.characters &&
+      typeof extracted.characters==="object"
+    ){
+
+      if(!memory.characters){
+        memory.characters={};
+      }
+
+      for(
+        const [name,data]
+        of Object.entries(extracted.characters)
+      ){
+
+        if(
+          !memory.characters[name] ||
+          typeof memory.characters[name]!=="object"
+        ){
+
+          memory.characters[name]={};
+
+        }
+
+        memory.characters[name]={
+          ...memory.characters[name],
+          ...data
+        };
+
+      }
+
+    }
+
+
+    /*
+    ==========================================
+    LOCATIONS
+    ==========================================
+    */
+
+    if(
+      extracted.locations &&
+      typeof extracted.locations==="object"
+    ){
+
+      if(!memory.locations){
+        memory.locations={};
+      }
+
+      for(
+        const [name,data]
+        of Object.entries(extracted.locations)
+      ){
+
+        if(
+          !memory.locations[name] ||
+          typeof memory.locations[name]!=="object"
+        ){
+
+          memory.locations[name]={};
+
+        }
+
+        memory.locations[name]={
+          ...memory.locations[name],
+          ...data
+        };
+
+      }
+
+    }
+
+
+    /*
+    ==========================================
+    PLAYER KNOWLEDGE
+    ==========================================
+    */
+
+    if(
+      extracted.playerKnowledge &&
+      typeof extracted.playerKnowledge==="object"
+    ){
+
+      if(!memory.playerKnowledge){
+        memory.playerKnowledge={};
+      }
+
+      for(
+        const [playerId,data]
+        of Object.entries(extracted.playerKnowledge)
+      ){
+
+        if(
+          !memory.playerKnowledge[playerId] ||
+          typeof memory.playerKnowledge[playerId]!=="object"
+        ){
+
+          memory.playerKnowledge[playerId]={};
+
+        }
+
+        const existing=
+          memory.playerKnowledge[playerId];
+
+        memory.playerKnowledge[playerId]={
+          ...existing,
+          ...data
+        };
+
+        /*
+        Merge knowledge arrays without
+        creating duplicates.
+        */
+
+        const knowledgeFields=[
+          "knownFacts",
+          "knownSecrets",
+          "witnessedEvents",
+          "discoveredCharacters"
+        ];
+
+        for(const field of knowledgeFields){
+
+          if(
+            Array.isArray(data[field])
+          ){
+
+            if(!Array.isArray(existing[field])){
+              existing[field]=[];
+            }
+
+            for(const item of data[field]){
+
+              if(
+                !existing[field].some(
+                  x=>JSON.stringify(x)===JSON.stringify(item)
+                )
+              ){
+
+                existing[field].push(item);
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+
+    /*
+    ==========================================
+    WORLD STATE
+    ==========================================
+    */
+
+    if(
+      extracted.worldState &&
+      typeof extracted.worldState==="object"
+    ){
+
+      if(!memory.worldState){
+        memory.worldState={};
+      }
+
+      const worldFields=[
+        "timeOfDay",
+        "weather",
+        "date"
+      ];
+
+      for(const field of worldFields){
+
+        if(
+          extracted.worldState[field] !== undefined &&
+          extracted.worldState[field] !== ""
+        ){
+
+          memory.worldState[field]=
+            extracted.worldState[field];
+
+        }
+
+      }
+
+      const worldArrayFields=[
+        "currentEvents",
+        "canonEventsChanged",
+        "supernaturalActivity",
+        "importantNPCsPresent"
+      ];
+
+      for(const field of worldArrayFields){
+
+        if(!Array.isArray(extracted.worldState[field])){
+          continue;
+        }
+
+        if(!Array.isArray(memory.worldState[field])){
+          memory.worldState[field]=[];
+        }
+
+        for(const item of extracted.worldState[field]){
+
+          if(
+            !memory.worldState[field].some(
+              x=>JSON.stringify(x)===JSON.stringify(item)
+            )
+          ){
+
+            memory.worldState[field].push(item);
+
+          }
+
+        }
+
+      }
+
+    }
+
+
+    /*
+    ==========================================
+    SIMPLE CURRENT VALUES
+    ==========================================
+    */
+
+    if(
+      extracted.reputation &&
+      extracted.reputation.trim()
+    ){
+
+      memory.reputation=
+        extracted.reputation;
+
+    }
+
+    if(
+      extracted.familyReputation &&
+      extracted.familyReputation.trim()
+    ){
+
+      memory.familyReputation=
+        extracted.familyReputation;
+
+    }
+
+    if(
+      extracted.petStatus &&
+      extracted.petStatus.trim()
+    ){
+
+      memory.petStatus=
+        extracted.petStatus;
+
+    }
+
+
+    console.log(
+      "MEMORY UPDATED:",
+      currentGame.memory
+    );
+
+
+  }catch(error){
+
+    /*
+    Memory failure should NEVER destroy
+    or interrupt the roleplay.
+    */
+
+    console.error(
+      "MEMORY UPDATE ERROR:",
+      error
+    );
+
+  }
 
 }
 
