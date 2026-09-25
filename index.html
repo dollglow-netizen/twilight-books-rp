@@ -4183,6 +4183,179 @@ function getSavePayload(){
   };
 
 }
+  async function saveGame(silent=false){
+
+  if(!session){
+
+    if(!silent){
+      showToast(
+        "Please sign in first.",
+        "error"
+      );
+    }
+
+    return;
+
+  }
+
+  if(!currentGame){
+
+    if(!silent){
+      showToast(
+        "There is no active game to save.",
+        "error"
+      );
+    }
+
+    return;
+
+  }
+
+  try{
+
+    const payload=getSavePayload();
+
+    const saveRecord={
+
+      user_id:session.user.id,
+
+      name:
+        creatorData?.name
+        ? `${creatorData.name}'s Twilight Game`
+        : "Twilight Roleplay",
+
+      data:payload,
+
+      updated_at:new Date().toISOString()
+
+    };
+
+
+    let result;
+
+
+    if(currentSaveId){
+
+      result=await supabaseClient
+
+        .from("saved_games")
+
+        .update(saveRecord)
+
+        .eq(
+          "id",
+          currentSaveId
+        )
+
+        .eq(
+          "user_id",
+          session.user.id
+        )
+
+        .select()
+        .single();
+
+    }else{
+
+      result=await supabaseClient
+
+        .from("saved_games")
+
+        .insert(saveRecord)
+
+        .select()
+        .single();
+
+    }
+
+
+    const {
+      data,
+      error
+    }=result;
+
+
+    if(error){
+
+      console.error(
+        "SAVE ERROR:",
+        error
+      );
+
+      console.error(
+        "SAVE ERROR MESSAGE:",
+        error.message
+      );
+
+      console.error(
+        "SAVE ERROR DETAILS:",
+        error.details
+      );
+
+      console.error(
+        "SAVE ERROR HINT:",
+        error.hint
+      );
+
+      showToast(
+        "Save failed: " +
+        (
+          error.message ||
+          "Unknown error"
+        ),
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    if(data){
+
+      currentSaveId=data.id;
+
+    }
+
+
+    currentGame.lastSaved=
+      new Date().toISOString();
+
+
+    console.log(
+      "GAME SAVED:",
+      data
+    );
+
+
+    if(!silent){
+
+      showToast(
+        "Game saved.",
+        "success"
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "SAVE CRASH:",
+      error
+    );
+
+    showToast(
+      "Save failed: " +
+      (
+        error?.message ||
+        String(error)
+      ),
+      "error"
+    );
+
+  }
+
+}
 function startAutosave(){
 
   clearInterval(autosaveTimer);
