@@ -4189,80 +4189,23 @@ function getSavePayload(){
 }
 
 
-async function saveGame(silent=false){
+function getSavePayload(){
 
-  if(!session || !currentGame) return;
+  return {
+    oc: JSON.parse(
+      JSON.stringify(
+        creatorData || createDefaultOC()
+      )
+    ),
 
-  updateMemory();
-
-  const payload=getSavePayload();
-
-  const name=
-    currentGame.oc?.name
-      ? `${currentGame.oc.name} — ${currentGame.book}`
-      : `Twilight RP — ${currentGame.book}`;
-
-  let result;
-
-  if(currentSaveId){
-
-    result=await supabaseClient
-      .from("saved_games")
-      .update({
-        name,
-        data:payload,
-        updated_at:new Date().toISOString()
-      })
-      .eq("id",currentSaveId)
-      .eq("user_id",session.user.id);
-
-  }else{
-
-    result=await supabaseClient
-      .from("saved_games")
-      .insert({
-        user_id:session.user.id,
-        name,
-        data:payload
-      })
-      .select()
-      .single();
-
-    if(!result.error){
-
-      currentSaveId=result.data.id;
-
-    }
-
-  }
-
-  if(result.error){
-
-    console.error(result.error);
-
-    if(!silent){
-
-      showToast(
-        "Save failed: "+result.error.message,
-        "error"
-      );
-
-    }
-
-    return;
-
-  }
-
-  currentGame.lastSaved=new Date().toISOString();
-
-  if(!silent){
-
-    showToast("Game saved.","success");
-
-  }
+    game: JSON.parse(
+      JSON.stringify(
+        currentGame || createNewGame()
+      )
+    )
+  };
 
 }
-
 
 function startAutosave(){
 
